@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import 'package:image_stack/image_stack.dart';
 import '../../../components/buttons.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_fonts.dart';
@@ -40,6 +40,26 @@ class _PropertyDetailsState extends State<PropertyDetails> {
     super.initState();
   }
 
+  List<String> images = <String>[
+    "https://images.unsplash.com/photo-1458071103673-6a6e4c4a3413?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+    "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
+    "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+    "https://images.unsplash.com/photo-1473700216830-7e08d47f858e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+  ];
+  List<Map<String, dynamic>> features = [
+    {"icon": AppImages.football, "text": "Football"},
+    {"icon": AppImages.swim, "text": "Pool"},
+    {"icon": AppImages.wifi, "text": "Wifi"},
+    {"icon": AppImages.flower, "text": "Garden"},
+    {"icon": AppImages.laundry, "text": "Laundry"}
+  ];
+    List<Map<String, dynamic>> features2 = [
+    {"icon": AppImages.weightlifting, "text": "Fitness"},
+    {"icon": AppImages.power, "text": "24 hrs Power"},
+    {"icon": AppImages.wifi, "text": "Wifi"},
+    {"icon": AppImages.flower, "text": "Garden"},
+    {"icon": AppImages.laundry, "text": "Laundry"}
+  ];
   @override
   Widget build(BuildContext context) {
     final _getSize = MediaQuery.of(context).size;
@@ -212,7 +232,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                     ),
                                     Text(
                                       formattedDate,
-                                      style: AppFonts.body1,
+                                      style: AppFonts.body1.copyWith(fontWeight: FontWeight.w600),
                                     )
                                   ],
                                 ),
@@ -255,159 +275,19 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                   ],
                                 ),
                                 SizedBox(
-                                  height: _getSize.height * 0.025,
+                                  height: _getSize.height * 0.005,
                                 ),
                                 Row(
                                   children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.bedroom,
-                                              width: 24,
-                                            ),
-                                            SizedBox(
-                                              width: _getSize.width * 0.01,
-                                            ),
-                                            Text("2")
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: _getSize.height * 0.001,
-                                        ),
-                                        Text(
-                                          "Bedroom",
-                                          style: AppFonts.bodyText
-                                              .copyWith(fontSize: 12),
-                                        )
-                                      ],
-                                    ),
+                                    Image.asset(AppImages.location, width: 14),
                                     SizedBox(
-                                      width: _getSize.width * 0.05,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.toilet,
-                                              width: 24,
-                                            ),
-                                            SizedBox(
-                                              width: _getSize.width * 0.01,
-                                            ),
-                                            Text("2")
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: _getSize.height * 0.001,
-                                        ),
-                                        Text(
-                                          "Toilet",
-                                          style: AppFonts.bodyText
-                                              .copyWith(fontSize: 12),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: _getSize.width * 0.05,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.bathroom,
-                                              width: 24,
-                                            ),
-                                            SizedBox(
-                                              width: _getSize.width * 0.01,
-                                            ),
-                                            Text("2")
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: _getSize.height * 0.001,
-                                        ),
-                                        Text(
-                                          "Bathroom",
-                                          style: AppFonts.bodyText
-                                              .copyWith(fontSize: 12),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: _getSize.width * 0.05,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.nepa,
-                                              width: 24,
-                                            ),
-                                            SizedBox(
-                                              width: _getSize.width * 0.01,
-                                            ),
-                                            Text("No.1393579")
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: _getSize.height * 0.001,
-                                        ),
-                                        Text(
-                                          "Water Meter",
-                                          style: AppFonts.bodyText
-                                              .copyWith(fontSize: 12),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: _getSize.height * 0.005,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          AppImages.nepa,
-                                          width: 24,
-                                        ),
-                                        SizedBox(
-                                          width: _getSize.width * 0.01,
-                                        ),
-                                        Text("No.1393579")
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: _getSize.height * 0.003,
+                                      width: _getSize.width * 0.008,
                                     ),
                                     Text(
-                                      "Light Meter",
-                                      style: AppFonts.bodyText
-                                          .copyWith(fontSize: 12),
+                                      "24 commercial avenue Kampal",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: AppFonts.body1.copyWith(
+                                          color: Pallete.fade, fontSize: 14),
                                     )
                                   ],
                                 ),
@@ -424,6 +304,9 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                           color: Pallete.text,
                                           fontSize: 14),
                                     ),
+                                    SizedBox(
+                                      height: _getSize.height * 0.0035,
+                                    ),
                                     Text(
                                       "Bright, spacious 2-bedroom apartment in a quiet neighborhood. Close to shops, restaurants, and public transportation.",
                                       maxLines: 2,
@@ -432,9 +315,12 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                     )
                                   ],
                                 ),
+
                                 SizedBox(
-                                  height: _getSize.height * 0.015,
+                                  height: _getSize.height * 0.025,
                                 ),
+
+                                //Features
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -448,43 +334,14 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                     SizedBox(
                                       height: _getSize.height * 0.005,
                                     ),
-                                    Row(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.wifi,
-                                              width: 20,
-                                            ),
-                                            SizedBox(
-                                              width: _getSize.width * 0.015,
-                                            ),
-                                            Text(
-                                              "Wifi",
-                                              style: AppFonts.body1,
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          width: _getSize.width * 0.02,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.power,
-                                              width: 24,
-                                            ),
-                                            SizedBox(
-                                              width: _getSize.width * 0.005,
-                                            ),
-                                            Text(
-                                              "24hrs Power",
-                                              style: AppFonts.body1,
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    )
+                                    Features(_getSize, features, 4),
+                                    SizedBox(
+                                      height: _getSize.height * 0.005,
+                                    ),
+                                    Features(_getSize, features2, 2),
+                                    SizedBox(
+                                      width: _getSize.width * 0.02,
+                                    ),
                                   ],
                                 ),
                                 SizedBox(
@@ -500,7 +357,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Tenant Name",
+                                      "Tenants",
                                       style: AppFonts.boldText.copyWith(
                                           fontWeight: FontWeight.bold,
                                           color: Pallete.text,
@@ -513,21 +370,28 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.tenants,
-                                              width: 36,
-                                            ),
-                                            SizedBox(
-                                              width: _getSize.width * 0.015,
-                                            ),
-                                            Text("Susan Okello"),
-                                          ],
+                                        ImageStack(
+                                          imageList: images,
+                                          backgroundColor:
+                                              Color.fromARGB(49, 209, 209, 209),
+                                          extraCountTextStyle: AppFonts.body1
+                                              .copyWith(
+                                                  color: Pallete.primaryColor,
+                                                  fontWeight: FontWeight.w600),
+                                          totalCount: images
+                                              .length, // If larger than images.length, will show extra empty circle
+                                          imageRadius:
+                                              45, // Radius of each images
+                                          imageCount:
+                                              3, // Maximum number of images to be shown in stack
+                                          imageBorderWidth:
+                                              0.6, // Border width around the images
                                         ),
                                         Text(
-                                          "20 June, 2023",
-                                          style: AppFonts.body1,
+                                          "See More",
+                                          style: AppFonts.body1.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Pallete.secondaryColor),
                                         )
                                       ],
                                     ),
@@ -536,28 +400,6 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                 SizedBox(
                                   height: _getSize.height * 0.015,
                                 ),
-                                Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Total Repairs",
-                                          style: AppFonts.boldText.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                              color: Pallete.text,
-                                              fontSize: 14),
-                                        ),
-                                        Text(
-                                          "view details",
-                                          style: AppFonts.body1.copyWith(
-                                              color: Pallete.secondaryColor),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                )
                               ],
                             ),
                           ],
@@ -574,6 +416,45 @@ class _PropertyDetailsState extends State<PropertyDetails> {
           ),
         ),
       ),
+    );
+  }
+
+  SizedBox Features(Size _getSize, List features, int lng) {
+    return SizedBox(
+      width: _getSize.width,
+      height: _getSize.height * 0.05,
+      child: ListView.builder(
+          itemCount: lng,
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 0.5, color: Pallete.fade),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Image.asset(
+                        features[index]['icon'],
+                        width: 20,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: _getSize.width * 0.015,
+                  ),
+                  Text(
+                    features[index]['text'],
+                    style: AppFonts.body1,
+                  )
+                ],
+              ),
+            );
+          }),
     );
   }
 }

@@ -36,10 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isNumAdded = false;
   bool isAboveEight = false;
 
-  final Map<String, dynamic> _resetPasswordData = {
-    'code': 0,
-    'password': '',
-  };
+
 
   void _checkPasswordStrength(String value) {
     dynamic password = value.trim();
@@ -111,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Fill in the details below to setup your ',
+                            'Fill in the details below to login your ',
                             style: AppFonts.bodyText.copyWith(
                               color: Pallete.whiteColor,
                               fontSize: 14,
@@ -121,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           GestureDetector(
                             onTap: () {},
                             child: Text(
-                              'tenant profile',
+                              'Abja Property',
                               style: AppFonts.body1.copyWith(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14,
@@ -168,9 +165,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         CustomInput3(
                           validator: Validators.nameValidator,
-                          label: 'email/phone',
+                          label: 'Phone Number or Email',
                           hint: 'Phone Number or Email',
-                          onSaved: (value) {},
+                          onSaved: (value) {
+                            _loginData['email'] = value;
+                          },
                         ),
                         SizedBox(
                           height: _getSize.height * 0.05,
@@ -196,7 +195,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           label: 'Password',
                           hint: 'Password',
                           onChanged: (String? value) {},
-                          onSaved: (value) {},
+                          onSaved: (value) {
+                            _loginData['password'] = value;
+                          },
                         ),
                         SizedBox(
                           height: _getSize.height * 0.05,
@@ -236,16 +237,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32.0, vertical: 16),
-                  child: ButtonWithFuction(text: 'Login', onPressed: () {
-                        Navigator.of(context)
-                              .pushReplacementNamed(AppRoutes.loadHome);
-                  }),
+                  child: ButtonWithFuction(
+                      text: 'Login',
+                      onPressed: () {
+                        LoginUtil.login(_loginFormKey, context, _loginData);
+                      }),
                 ),
                 SizedBox(height: _getSize.height * 0.01),
                 const LoginNavigation(
                   text2: "Don'\t have an account? ",
                   text: 'Sign Up',
-                  dir: AppRoutes.registerScreen,
+                  dir: AppRoutes.welcomeScreen,
                 )
               ],
             ),

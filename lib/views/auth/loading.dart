@@ -27,7 +27,7 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen>
       vsync: this,
     );
 
-    _animation = Tween<double>(begin: 0.2, end: 2.0) // Range of scale values
+    _animation = Tween<double>(begin: 0.2, end: 0.6) // Range of scale values
         .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut))
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {

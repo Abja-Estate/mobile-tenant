@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../components/buttons.dart';
@@ -26,9 +25,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   bool isNumAdded = false;
   bool isAboveEight = false;
 
-  final Map<String, dynamic> _resetPasswordData = {
-    'password': '',
-  };
+  String password = "";
+    String cPassword = "";
 
   void _checkPasswordStrength(String value) {
     dynamic password = value.trim();
@@ -39,7 +37,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       } else {
         isNumAdded = false;
       }
-       if (Validators.lettersmallReg.hasMatch(password) &&Validators.letterReg.hasMatch(password) ) {
+      if (Validators.lettersmallReg.hasMatch(password) &&
+          Validators.letterReg.hasMatch(password)) {
         // Password has number
         isLetterAdded = true;
       } else {
@@ -51,7 +50,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       } else {
         isAboveEight = false;
       }
-      if (isLetterAdded&& isNumAdded && isAboveEight) {
+      if (isLetterAdded && isNumAdded && isAboveEight) {
         enabled = true;
       } else {
         enabled = false;
@@ -62,7 +61,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   bool isSpecialAdded = false;
 
   String confirmPassword = '';
-  final _registerFormKey = GlobalKey<FormState>();
+  final _resetFormKey = GlobalKey<FormState>();
   bool value = false;
   bool passwordVisible = false;
   String? selectedValue;
@@ -110,10 +109,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          
                         ],
                       ),
-                   
                     ],
                   ),
                 ),
@@ -122,79 +119,80 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
             Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
-              child: Column(
-                children: [
-                 
-                          CustomInput3(
-                            validator: Validators.passwordValidator,
-                            obsecure: !passwordVisible,
-                            suffixIcon: IconButton(
-                                onPressed: () {
-                                  //call set state so that the UI is rebuilt on click
-                                  setState(() {
-                                    //loop through either state when clicked
-                                    passwordVisible = !passwordVisible;
-                                  });
-                                },
-                                icon: Icon(
-                                  // if password visibilty is default false set icon to visible icon or else set to hide icon
-                                  passwordVisible
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off,
-                                  color: Pallete.fade, size: 18,
-                                )),
-                            label: 'Password',
-                            hint: 'New Password',
-                            onChanged: (String? value) {
-                              confirmPassword = value!;
-                            },
-                            onSaved: (value) {
-                              _resetPasswordData['password'] = value;
-                            },
-                          ),
-                          SizedBox(
-                            height: _getSize.height * 0.05,
-                          ),
-                          CustomInput3(
-                            obsecure: !passwordVisible,
-                            suffixIcon: IconButton(
-                                onPressed: () {
-                                  //call set state so that the UI is rebuilt on click
-                                  setState(() {
-                                    //loop through either state when clicked
-                                    passwordVisible = !passwordVisible;
-                                  });
-                                },
-                                icon: Icon(
-                                  // if password visibilty is default false set icon to visible icon or else set to hide icon
-                                  passwordVisible
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off,
-                                  color: Pallete.fade, size: 18,
-                                )),
-                            validator: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'Confirm password cannot be empty';
-                              }
-                              if (value != confirmPassword) {
-                                return 'Password does not match';
-                              }
-                              return null;
-                            },
-                            label: 'Confirm Password',
-                            hint: 'Confirm Password',
-                            onSaved: (value) {
-                              //_registerData['password'] = value;
-                            },
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                ],
+              child: Form(
+                key: _resetFormKey,
+                child: Column(
+                  children: [
+                    CustomInput3(
+                      validator: Validators.passwordValidator,
+                      obsecure: !passwordVisible,
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            //call set state so that the UI is rebuilt on click
+                            setState(() {
+                              //loop through either state when clicked
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                          icon: Icon(
+                            // if password visibilty is default false set icon to visible icon or else set to hide icon
+                            passwordVisible
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off,
+                            color: Pallete.fade, size: 18,
+                          )),
+                      label: 'Password',
+                      hint: 'New Password',
+                      onChanged: (String? value) {
+                        confirmPassword = value!;
+                      },
+                      onSaved: (value) {
+                      password = value!;
+                      },
+                    ),
+                    SizedBox(
+                      height: _getSize.height * 0.05,
+                    ),
+                    CustomInput3(
+                      obsecure: !passwordVisible,
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            //call set state so that the UI is rebuilt on click
+                            setState(() {
+                              //loop through either state when clicked
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                          icon: Icon(
+                            // if password visibilty is default false set icon to visible icon or else set to hide icon
+                            passwordVisible
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off,
+                            color: Pallete.fade, size: 18,
+                          )),
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'Confirm password cannot be empty';
+                        }
+                        if (value != confirmPassword) {
+                          return 'Password does not match';
+                        }
+                        return null;
+                      },
+                      label: 'Confirm Password',
+                      hint: 'Confirm Password',
+                      onSaved: (value) {
+                        cPassword = value!;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                  ],
+                ),
               ),
             ),
             SizedBox(height: _getSize.height * 0.01),
-
             SizedBox(height: _getSize.height * 0.15),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -203,11 +201,14 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32.0, vertical: 16),
-                  child: ButtonWithFuction(text: 'Submit', onPressed: () {
-                     Navigator.of(context).pushNamed(AppRoutes.loginScreen);
-                  }),
+                  child: ButtonWithFuction(
+                      text: 'Submit',
+                      onPressed: () {
+                        ResetPasswordUtil.resetPassword(
+                            _resetFormKey, context, password, cPassword);
+                        // Navigator.of(context).pushNamed(AppRoutes.loginScreen);
+                      }),
                 ),
-             
               ],
             ),
           ],

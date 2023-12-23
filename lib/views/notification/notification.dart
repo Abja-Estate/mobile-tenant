@@ -129,166 +129,134 @@ class bottom extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map> services = [
       {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFDAE7D9),
-        'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
         'icon': AppImages.plumber,
         'color': Color(0xFFFCEADA),
         'text': 'Painter',
-        'text2': "Painting of Apartment 004"
+        'text2': "Painting of Apartment 004",
+        'data': [
+          {
+            'icon': AppImages.plumber,
+            'color': Color(0xFFFCEADA),
+            'text': 'Painter',
+            'text2':   "Agent Emmanuel has received rent payment from Miss Susan for June 2023."
+          },
+        ]
+      }, {
+        'icon': AppImages.funmigate,
+        'color': Color(0xFFEADAFF),
+        'text': 'Rent Paid',
+        'text2':
+            "Agent Emmanuel has received rent payment from Miss Susan for June 2023.",
+        'data': [
+          {
+            'icon': AppImages.plumber,
+            'color': Color(0xFFFCEADA),
+            'text': 'Painter',
+            'text2': "Painting of Apartment 004"
+          },
+          {
+            'icon': AppImages.funmigate,
+            'color': Color(0xFFEADAFF),
+            'text': 'Rent Paid',
+            'text3':"Alert!",
+            'text2':
+                "Agent Emmanuel has received rent payment from Miss Susan for June 2023."
+          },
+          {
+            'icon': AppImages.funmigate,
+            'color': Color(0xFFFFE4E9),
+            'text': 'Successfully',
+            'text2':
+                "New Tenant, Susan with ID Number 197235 has been onboarded to The Spring Lodge Property."
+          },
+       
+        ]
       },
+     
       {
         'icon': AppImages.funmigate,
         'color': Color(0xFFEADAFF),
         'text': 'Rent Paid',
         'text2':
-            "Agent Emmanuel has received rent payment from Miss Susan for June 2023."
+            "Agent Emmanuel has received rent payment from Miss Susan for June 2023.",
+        'data': [
+          {
+            'icon': AppImages.plumber,
+            'color': Color(0xFFFCEADA),
+            'text': 'Painter',
+            'text2': "Painting of Apartment 004"
+          },
+          {
+            'icon': AppImages.funmigate,
+            'color': Color(0xFFEADAFF),
+            'text': 'Rent Paid',
+            'text2':
+                "Agent Emmanuel has received rent payment from Miss Susan for June 2023."
+          },
+          {
+            'icon': AppImages.funmigate,
+            'color': Color(0xFFFFE4E9),
+            'text': 'Front',
+              'text3':"1st Floor",
+            'text2':
+                "New Tenant, Susan with ID Number 197235 has been onboarded to The Spring Lodge Property."
+          },
+          {
+            'icon': AppImages.electrician,
+            'color': Color(0xFFDAE7D9),
+            'text': '2nd Floor- Back',
+            'text2':
+                "New Tenant, Susan with ID Number 197235 has been onboarded to The Spring Lodge Property."
+          },
+        ]
       },
       {
         'icon': AppImages.funmigate,
         'color': Color(0xFFFFE4E9),
         'text': 'Successfully',
         'text2':
-            "New Tenant, Susan with ID Number 197235 has been onboarded to The Spring Lodge Property."
+            "New Tenant, Susan with ID Number 197235 has been onboarded to The Spring Lodge Property.",
+        'data': [
+          {
+            'icon': AppImages.plumber,
+            'color': Color(0xFFFCEADA),
+            'text': 'Painter',
+            'text2': "Painting of Apartment 004"
+          },
+          {
+            'icon': AppImages.funmigate,
+            'color': Color(0xFFEADAFF),
+            'text': 'Rent Paid',
+            'text3':"Alert!",
+            'text2':
+                "Agent Emmanuel has received rent payment from Miss Susan for June 2023."
+          },
+        ]
       },
       {
         'icon': AppImages.electrician,
         'color': Color(0xFFDAE7D9),
         'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFFCEADA),
-        'text': 'Painter',
-        'text2': "Painting of Apartment 004"
-      },
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFDAE7D9),
-        'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFFCEADA),
-        'text': 'Painter',
-        'text2': "Painting of Apartment 004"
-      },
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFDAE7D9),
-        'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFFCEADA),
-        'text': 'Painter',
-        'text2': "Painting of Apartment 004"
-      },
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFDAE7D9),
-        'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFFCEADA),
-        'text': 'Painter',
-        'text2': "Painting of Apartment 004"
-      },
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFDAE7D9),
-        'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFFCEADA),
-        'text': 'Painter',
-        'text2': "Painting of Apartment 004"
-      },
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFDAE7D9),
-        'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFFCEADA),
-        'text': 'Painter',
-        'text2': "Painting of Apartment 004"
-      },
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFDAE7D9),
-        'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFFCEADA),
-        'text': 'Painter',
-        'text2': "Painting of Apartment 004"
-      },
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFDAE7D9),
-        'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFFCEADA),
-        'text': 'Painter',
-        'text2': "Painting of Apartment 004"
-      },
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFDAE7D9),
-        'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFFCEADA),
-        'text': 'Painter',
-        'text2': "Painting of Apartment 004"
-      },
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFDAE7D9),
-        'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFFCEADA),
-        'text': 'Painter',
-        'text2': "Painting of Apartment 004"
-      },
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFDAE7D9),
-        'text': '2nd Floor- Back',
-        'text2': "Mr. Eric is in need of house cleaning."
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFFCEADA),
-        'text': 'Painter',
-        'text2': "Painting of Apartment 004"
+        'text2': "Mr. Eric is in need of house cleaning.",
+        "data": [
+          {
+            'icon': AppImages.plumber,
+            'color': Color(0xFFFCEADA),
+            'text': 'Painter',
+            'text2': "Painting of Apartment 004"
+          },
+          {
+            'icon': AppImages.funmigate,
+            'color': Color(0xFFEADAFF),
+            'text': 'Rent Paid',
+            'text2':
+                "Agent Emmanuel has received rent payment from Miss Susan for June 2023."
+          },
+        ]
       },
     ];
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0,bottom: 16),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 16),
       child: SizedBox(
           width: _getSize.width * 0.9,
           height: _getSize.height * 0.9,
@@ -301,7 +269,15 @@ class bottom extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       top: 16.0, bottom: 8, right: 16, left: 16),
                   child: Container(
-                    height: _getSize.height * 0.1,
+                    height: services[index]['data'].length == 1
+                                ? _getSize.height * 0.12 // For length < 2 
+                                : services[index]['data'].length == 2
+                                ? _getSize.height * 0.17 // For length < 2 
+                               : services[index]['data'].length == 3
+                                ? _getSize.height * 0.24 // For length < 2 
+                                :services[index]['data'].length == 4
+                        ? _getSize.height * 0.3
+                        : _getSize.height * 0.3,
                     width: _getSize.width,
                     decoration: BoxDecoration(
                         color: Pallete.whiteColor,
@@ -317,50 +293,30 @@ class bottom extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 12,
-                              ),
-                              Image.asset(
-                                services[index]['icon'],
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              SizedBox(
-                                width: _getSize.width * 0.6,
-                                child: RichText(
-                                  text: TextSpan(
-                                    style: DefaultTextStyle.of(context).style,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: services[index]['text'],
-                                        style: AppFonts.body1.copyWith(
-                                            color: Pallete.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(
-                                        text: ' - ${services[index]['text2']}',
-                                        style: AppFonts.body1.copyWith(
-                                            color: Pallete.fade,
-                                            fontSize: 12,
-                                            overflow: TextOverflow.ellipsis,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 24,
-                              ),
-                              Icon(Icons.more_vert)
-                            ],
+                          Text(
+                            "Today",
+                            style: AppFonts.boldText.copyWith(
+                                fontSize: 14, fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          SizedBox(
+                            height:  services[index]['data'].length == 1
+                                ? _getSize.height * 0.06 // For length < 2
+                                :services[index]['data'].length == 2
+                                ? _getSize.height * 0.11 // For length < 2
+                                : services[index]['data'].length == 3
+                                    ? _getSize.height * 0.17 // For length < 3
+                                    : services[index]['data'].length == 4
+                                        ? _getSize.height *
+                                            0.24 // For length < 4
+                                        : _getSize.height *
+                                            0.24, // For length >= 4
+                            child: buildListItem(context,
+                                services[index]['data'], _getSize.width),
                           ),
                         ],
                       ),
@@ -370,4 +326,91 @@ class bottom extends StatelessWidget {
               })),
     );
   }
+}
+
+Widget buildListItem(BuildContext context, List<Map<String, dynamic>> service,
+    double getSizeWidth) {
+  // Assuming AppFonts and Pallete are defined elsewhere in your project.
+  return ListView.builder(
+      itemCount: service.length,
+      physics: BouncingScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(service[index]['icon']),
+              const SizedBox(width: 12),
+              SizedBox(
+                width: getSizeWidth * 0.6,
+                child: RichText(
+                  text: TextSpan(
+                    style: DefaultTextStyle.of(context).style,
+                    children: <TextSpan>[
+                     service[index]['text3']!=null?  TextSpan(
+                        text: service[index]['text3'],
+                        style: TextStyle(
+                          color: service[index]['text3']!='Alert!'? Colors
+                              .black:Color.fromARGB(255, 224, 10, 10), // Replace with Pallete.black if defined
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ):TextSpan(
+                        text: '',
+                        style: TextStyle(
+                          color: Colors
+                              .black, // Replace with Pallete.black if defined
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      service[index]['text3']!=null?  TextSpan(
+                        text: ' - ',
+                        style: TextStyle(
+                          color:  Colors
+                              .black,// Replace with Pallete.black if defined
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ):TextSpan(
+                        text: '',
+                        style: TextStyle(
+                          color: Colors
+                              .black, // Replace with Pallete.black if defined
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '${service[index]['text']} ',
+                        style: TextStyle(
+                          color: Colors
+                              .black, // Replace with Pallete.black if defined
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' - ${service[index]['text2']}',
+                        style: TextStyle(
+                          color: Colors
+                              .grey, // Replace with Pallete.fade if defined
+                          fontSize: 10,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 24),
+              const Icon(Icons.more_vert),
+            ],
+          ),
+        );
+      });
 }

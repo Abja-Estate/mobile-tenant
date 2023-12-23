@@ -312,6 +312,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  image_stack:
+    dependency: "direct main"
+    description:
+      name: image_stack
+      sha256: a41c2b14779d0c70652eade36eb7353b7bdcd14ca6657177ee83673398b1bef0
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   intl:
     dependency: transitive
     description:

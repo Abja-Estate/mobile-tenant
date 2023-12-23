@@ -9,38 +9,36 @@ import '../local_storage.dart';
 
 class UpdateUtil {
   static Future<String> update(GlobalKey<FormState> formkey,
-      BuildContext context, Map<String, dynamic> loginData) async {
-    // print(loginData);
-    //var token2 = await showToken();
-    //var id2 = await showId();
+      BuildContext context, Map<String, dynamic> updateData) async {
+     print(updateData);
+
 
     var result;
-    await saveEmail(loginData['email']);
+
     if (formkey.currentState!.validate()) {
       formkey.currentState!.save();
 
       AppUtils.showLoader(context);
       Provider.of<AuthProvider>(context, listen: false)
-          .login(
-        loginData['email'],
-        loginData['password'],
-      )
+          .update(
+              updateData['email'],
+              updateData['phone'],
+              updateData['password'],
+              updateData['confirmPassword'],
+              updateData['name'],
+              updateData['surname'],
+              updateData['about'],
+              updateData['token'])
           .then((value) async {
         print(value);
         Navigator.of(context).pop();
 
         if (value['statusCode'] == 200) {
-          print("yes ${value}");
+       
           // formkey.currentState!.reset();
-          await saveId(value['data']['id'].toString());
-          await saveEmail(value['data']['email']);
-          await saveName(value['data']['name']);
-          await savePhone(value['data']['phone']);
-          await saveSurname(value['data']['surname']);
-          await saveRef(value['data']['refcode']);
-          await saveOnce(3);
-          await setSecured(value['data']['status']);
-          Navigator.of(context).popAndPushNamed(AppRoutes.dashboardScreen);
+          await saveSelfie(value['data']['selfie']);
+       
+         // Navigator.of(context).popAndPushNamed(AppRoutes.dashboardScreen);
         } else {
           if (value['statusCode'] == 404) {
             AppUtils.showAlertDialog(
@@ -63,11 +61,11 @@ class UpdateUtil {
                     .pushNamed(AppRoutes.registerOTPScreen));
           }
 
-          if (value['statusCode'] == 302 && value['data']['status'] == false) {
+          if (value['statusCode'] == 302) {
             AppUtils.showAlertDialog(
                 context,
                 'Oops, something isn\'t right!',
-                value['data'],
+                value['error'],
                 'Contact Support',
                 'Close',
                 () =>

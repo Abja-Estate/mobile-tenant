@@ -21,6 +21,7 @@ import '../views/auth/register/register.dart';
 import '../views/auth/register/register_otp.dart';
 import '../views/dashboard/dashboard.dart';
 import '../views/navbar/nav.dart';
+import '../views/onboarding/onboarding.dart';
 import '../views/property/details/property-details.dart';
 
 class AppRoutes {
@@ -61,11 +62,13 @@ class AppRoutes {
   static const registerOTPScreen = '/registerOTPScreen';
   static const changePassword = '/changePassword';
   static const registerScreen = '/registerScreen';
+    static const onboarding = '/onboarding';
   static const resetOTPScreen = '/resetOTPScreen';
    static const confirmLandlordScreen = '/confirmLandlordScreen';
   static Map<String, WidgetBuilder> routes() {
     return <String, WidgetBuilder>{
       AppRoutes.forgotPassword: ((context) => PasswordResetScreen()),
+         AppRoutes.onboarding: (context) =>  OnboardingScreen(),
             AppRoutes.profile: ((context) => Profile()),
                 AppRoutes.editProfile: ((context) => EditProfile()),
                   AppRoutes.taskScreen: ((context) => Task()),

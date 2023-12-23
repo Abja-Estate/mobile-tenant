@@ -1,14 +1,16 @@
 class AppImages {
   // WALKTHROUGH
-  static const doctor = 'assets/images/onboarding/doctor.jpeg';
-  static const others = 'assets/images/onboarding/others.jpeg';
-  static const info = 'assets/images/onboarding/info.jpeg';
-  static const medical = 'assets/images/onboarding/medical.jpeg';
+  static const entrance = 'assets/images/onboarding/entrance.png';
+  static const second = 'assets/images/onboarding/second.png';
+  static const first = 'assets/images/onboarding/first.png';
+  static const third = 'assets/images/onboarding/third.png';
+
 
 //IMAGES
   static const drugs = 'assets/images/images/drugs.png';
   static const bg = 'assets/images/bg.png';
   static const place = 'assets/images/place.png';
+  static const noRequest = 'assets/images/noRequest.png';
   static const tablets = 'assets/images/images/tablets.png';
   static const refer = 'assets/images/images/refer.png';
   static const referred = 'assets/images/images/referred.png';
@@ -60,6 +62,13 @@ class AppImages {
   static const chat = 'assets/icons/chat.png';
   static const electrician = 'assets/icons/elect.png';
   static const funmigate = 'assets/icons/funmigate.png';
+
+  //Tenants
+  static const weightlifting = 'assets/icons/tenant/lifting.png';
+  static const football = 'assets/icons/tenant/football.png';
+  static const swim = 'assets/icons/tenant/swim.png';
+  static const flower = 'assets/icons/tenant/flower.png';
+  static const laundry = 'assets/icons/tenant/laundry.png';
 
   static const cart = 'assets/images/icons/cart.png';
   static const google = 'assets/icons/google.png';

@@ -19,12 +19,12 @@ class Loader extends StatelessWidget {
         children:   [
           Container(
                 decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 229, 229, 229),
+                    color: Color.fromARGB(239, 225, 226, 225),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
             height: 175,width: 275,
             child:Column(mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SpinKitChasingDots(color: Pallete.primaryColor,),
+                SpinKitRing(size: 50,lineWidth: 2.5, color: Pallete.primaryColor,),
                
               ],
             )),]

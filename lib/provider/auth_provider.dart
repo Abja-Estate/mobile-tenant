@@ -39,14 +39,14 @@ class AuthProvider extends ChangeNotifier {
     return data;
   }
 
-  Future<Map<String, dynamic>> registerOTP(id,otp) async {
+  Future<Map<String, dynamic>> registerOTP(email, token, otp) async {
     dynamic data;
 
     notifyListeners();
 
     try {
-      var responseData  = await AuthAPI.OTPVerfication(id,otp);
-      
+      var responseData = await AuthAPI.OTPVerfication(email, token, otp);
+
       if (responseData['statusCode'] == 200) {
         notifyListeners();
         data = responseData;
@@ -62,13 +62,13 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> register(
-      firstName, lastName, password, confirmPassword, email, phone,ref) async {
+      firstName, lastName, password, confirmPassword, email, phone) async {
     dynamic data;
     notifyListeners();
 
     try {
       var responseData = await AuthAPI.register(
-          firstName, lastName, password, confirmPassword, email, phone,ref);
+          firstName, lastName, password, confirmPassword, email, phone);
 
       print(responseData);
       if (responseData['statusCode'] == 200) {
@@ -86,6 +86,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> forgotPassword(email) async {
+    print(email);
     dynamic data;
     notifyListeners();
 
@@ -104,19 +105,44 @@ class AuthProvider extends ChangeNotifier {
     return data;
   }
 
-  Future<Map<String, dynamic>> changePassword(password) async {
+  Future<Map<String, dynamic>> changePassword(id,token,cpassword,password) async {
     dynamic data;
     notifyListeners();
-    var id = await showId();
-    print(id);
-    print(password);
+  
     try {
-      var response = await AuthAPI.resetPassword(id, password);
-      var responseData = json.decode(response.body);
-      if (responseData != null) {
+      var response = await AuthAPI.resetPassword(id,token,password, password);
+  
+      if (response!= null) {
         notifyListeners();
 
-        data = responseData;
+        data = response;
+      }
+    } catch (e) {
+      notifyListeners();
+      data = {'error': e};
+    }
+    return data;
+  }
+
+  Future<Map<String, dynamic>> update(email, phone, password, confirmPassword,
+      name, surname, about,  token) async {
+    dynamic data;
+    //dynamic dataz;
+    //List<dynamic> data;
+    notifyListeners();
+
+    try {
+      var responseData = await AuthAPI.updateData(email, phone, password,
+          confirmPassword, name, surname, about,  token);
+
+      data = responseData;
+
+      if (responseData['statusCode'] == 200) {
+        notifyListeners();
+        print(data);
+        data;
+      } else {
+        data;
       }
     } catch (e) {
       notifyListeners();

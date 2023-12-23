@@ -60,19 +60,6 @@ class _DashboardState extends State<Dashboard> {
 
   String searchItem = '';
 
-  static const alarmValueKey = ValueKey('Alarm');
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final ValueNotifier<Key> valueNotifier = ValueNotifier<Key>(alarmValueKey);
-  void toggleDrawer() {
-    setState(() {
-      if (_scaffoldKey.currentState!.isDrawerOpen) {
-        _scaffoldKey.currentState!.openEndDrawer();
-      } else {
-        _scaffoldKey.currentState!.openDrawer();
-      }
-    });
-  }
-
   List<Map> ListItem = [
     {'image': "assets/images/icons/pills.png", 'text': 'Get medications.'},
     {
@@ -132,10 +119,28 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     getName();
     getData();
-
+    getPropertyItems();
     super.initState();
   }
 
+  bool isLoadingProperty = true;
+  Map<String, dynamic> property = {};
+  getPropertyItems() async {
+    isLoadingProperty = true;
+    var propertyString = await showUnitData();
+
+    var getproperty = Map<String, dynamic>.from(jsonDecode(propertyString));
+    if (getproperty.isEmpty) {
+    } else {
+      setState(() {
+        property = getproperty;
+
+        isLoadingProperty = false;
+      });
+    }
+  }
+
+  var noRequest = false;
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -152,21 +157,14 @@ class _DashboardState extends State<Dashboard> {
     List<Widget> items = [];
 
     return Scaffold(
-      key: _scaffoldKey,
-      drawer: SideBar(
-        email: "ayoseunsolomon@gmai.com",
-        fullname: "ayo solomon",
-        photo: photo,
-        
-      ),
       backgroundColor: Pallete.backgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: _getSize.width,
-              height: _getSize.height,
+          child: Container(
+            width: _getSize.width,
+            height: _getSize.height,
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   Column(
@@ -178,12 +176,6 @@ class _DashboardState extends State<Dashboard> {
                             children: [
                               Row(
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      toggleDrawer();
-                                    },
-                                    child: Image.asset(AppImages.ham,width: _getSize.width*0.08,),
-                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8.0),
                                     child: Column(
@@ -203,7 +195,7 @@ class _DashboardState extends State<Dashboard> {
                                                   fontSize: 18),
                                             ),
                                             Text(
-                                              "Daniel",
+                                              name,
                                               style: AppFonts.bodyText.copyWith(
                                                   color: Pallete.primaryColor,
                                                   fontSize: 18),
@@ -237,10 +229,12 @@ class _DashboardState extends State<Dashboard> {
                                   onTap: () {},
                                   child: Padding(
                                     padding: EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      AppImages.boy,
-                                      width: 56,
-                                      height: 56,
+                                    child: ClipOval(
+                                      child: Image.network(
+                                        photo,
+                                        width: 56,
+                                        height: 56,
+                                      ),
                                     ),
                                   ))
                             ],
@@ -314,7 +308,7 @@ class _DashboardState extends State<Dashboard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Your Rented Property',
+                        'Your Rented Unit',
                         style: AppFonts.boldText.copyWith(
                             fontSize: _getSize.height * 0.018,
                             fontWeight: FontWeight.w300,
@@ -323,23 +317,82 @@ class _DashboardState extends State<Dashboard> {
                       SizedBox(
                         height: _getSize.height * 0.015,
                       ),
-                      properties(getSize: _getSize),
-                      middle(
-                        getSize: _getSize,
-                      ),
-                      SizedBox(
-                        height: _getSize.height * 0.035,
+                      properties(
+                        getSizeWidth: _getSize.width,
+                        getSizeHeight: _getSize.height,
+                        unit: property,
                       ),
                       Text(
-                        'Recent Request',
+                        'Make A Request',
                         style: AppFonts.boldText.copyWith(
                             fontSize: _getSize.height * 0.018,
                             fontWeight: FontWeight.w300,
                             color: Pallete.text),
                       ),
-                      bottom(
-                        getSize: _getSize,
+                      SizedBox(
+                        height: 4,
                       ),
+                      middle(getSize: _getSize),
+                      SizedBox(
+                        height: _getSize.height * 0.035,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Recent Request',
+                            style: AppFonts.boldText.copyWith(
+                                fontSize: _getSize.height * 0.018,
+                                fontWeight: FontWeight.w300,
+                                color: Pallete.text),
+                          ),
+                          Text(
+                            'View All',
+                            style: AppFonts.boldText.copyWith(
+                                fontSize: _getSize.height * 0.015,
+                                fontWeight: FontWeight.w300,
+                                color: Pallete.text),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      noRequest
+                          ? bottom(
+                              getSizeWidth: _getSize.width,
+                              getSizeHeight: _getSize.height,
+                            )
+                          : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                                height: _getSize.height * 0.2,
+                                width: _getSize.width,
+                                decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color.fromARGB(44, 85, 80, 80),
+                                        blurRadius: 11,
+                                        spreadRadius: 1,
+                                        offset: Offset(0, 5),
+                                      )
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      AppImages.noRequest,
+                                      width: _getSize.width * 0.6,
+                                    ),
+                                    Text(
+                                        'You currently have no Request at this time...')
+                                  ],
+                                ),
+                              ),
+                          ),
                     ],
                   ),
                 ],
@@ -353,18 +406,21 @@ class _DashboardState extends State<Dashboard> {
 }
 
 class properties extends StatelessWidget {
-  const properties({
-    super.key,
-    required Size getSize,
-  }) : _getSize = getSize;
+  const properties(
+      {super.key,
+      required this.getSizeWidth,
+      required this.getSizeHeight,
+      required this.unit});
 
-  final Size _getSize;
+  final double getSizeHeight;
+  final double getSizeWidth;
+  final Map<String, dynamic> unit;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: _getSize.width,
-        height: _getSize.height * 0.45,
+        width: getSizeWidth,
+        height: getSizeHeight * 0.45,
         child: ListView.builder(
             itemCount: 1,
             physics: BouncingScrollPhysics(),
@@ -376,14 +432,14 @@ class properties extends StatelessWidget {
                 },
                 child: Column(
                   children: [
-                    Image.asset(
-                      AppImages.condo1,
-                      fit: BoxFit.fill,
-                      width: _getSize.width,
-                      height: _getSize.height*0.25,
+                    Image.network(
+                      unit["data"]["photo"],
+                      fit: BoxFit.cover,
+                      width: getSizeWidth,
+                      height: getSizeHeight * 0.25,
                     ),
                     SizedBox(
-                      height: _getSize.height * 0.01,
+                      height: getSizeHeight * 0.01,
                     ),
                     Row(
                       children: [
@@ -392,14 +448,14 @@ class properties extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "The Spring Lounge",
+                              unit["propertyName"],
                               style: AppFonts.boldText.copyWith(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w900,
-                                  color: Color(0xFF333436)),
+                                  color: Color.fromARGB(255, 79, 88, 106)),
                             ),
                             SizedBox(
-                              height: _getSize.height * 0.005,
+                              height: getSizeHeight * 0.005,
                             ),
                             Row(
                               children: [
@@ -410,26 +466,26 @@ class properties extends StatelessWidget {
                                       width: 20,
                                     ),
                                     SizedBox(
-                                      width: _getSize.width * 0.008,
+                                      width: getSizeWidth * 0.008,
                                     ),
                                     Text(
-                                      "Condo Apartment",
+                                      unit["propertyStructure"],
                                       style: AppFonts.body1.copyWith(
                                           color: Pallete.fade, fontSize: 14),
                                     )
                                   ],
                                 ),
                                 SizedBox(
-                                  width: _getSize.width * 0.06,
+                                  width: getSizeWidth * 0.06,
                                 ),
                                 Row(
                                   children: [
                                     Image.asset(AppImages.location, width: 14),
                                     SizedBox(
-                                      width: _getSize.width * 0.008,
+                                      width: getSizeWidth * 0.008,
                                     ),
                                     Text(
-                                      "24 commercial avenue Kampal",
+                                      unit["location"],
                                       overflow: TextOverflow.ellipsis,
                                       style: AppFonts.body1.copyWith(
                                           color: Pallete.fade, fontSize: 14),
@@ -443,7 +499,7 @@ class properties extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: _getSize.height * 0.02,
+                      height: getSizeHeight * 0.02,
                     ),
                     Row(
                       children: [
@@ -458,13 +514,15 @@ class properties extends StatelessWidget {
                                   width: 24,
                                 ),
                                 SizedBox(
-                                  width: _getSize.width * 0.01,
+                                  width: getSizeWidth * 0.01,
                                 ),
-                                Text("2")
+                                Text(
+                                  unit["data"]["bedroom"],
+                                )
                               ],
                             ),
                             SizedBox(
-                              height: _getSize.height * 0.001,
+                              height: getSizeHeight * 0.001,
                             ),
                             Text(
                               "Bedroom",
@@ -473,7 +531,7 @@ class properties extends StatelessWidget {
                           ],
                         ),
                         SizedBox(
-                          width: _getSize.width * 0.05,
+                          width: getSizeWidth * 0.05,
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -486,13 +544,13 @@ class properties extends StatelessWidget {
                                   width: 24,
                                 ),
                                 SizedBox(
-                                  width: _getSize.width * 0.01,
+                                  width: getSizeWidth * 0.01,
                                 ),
-                                Text("2")
+                                Text(unit["data"]["toilet"])
                               ],
                             ),
                             SizedBox(
-                              height: _getSize.height * 0.001,
+                              height: getSizeHeight * 0.001,
                             ),
                             Text(
                               "Toilet",
@@ -501,7 +559,7 @@ class properties extends StatelessWidget {
                           ],
                         ),
                         SizedBox(
-                          width: _getSize.width * 0.05,
+                          width: getSizeWidth * 0.05,
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -514,13 +572,13 @@ class properties extends StatelessWidget {
                                   width: 24,
                                 ),
                                 SizedBox(
-                                  width: _getSize.width * 0.01,
+                                  width: getSizeWidth * 0.01,
                                 ),
-                                Text("2")
+                                Text(unit["data"]["bathroom"])
                               ],
                             ),
                             SizedBox(
-                              height: _getSize.height * 0.001,
+                              height: getSizeHeight * 0.001,
                             ),
                             Text(
                               "Bathroom",
@@ -529,7 +587,7 @@ class properties extends StatelessWidget {
                           ],
                         ),
                         SizedBox(
-                          width: _getSize.width * 0.05,
+                          width: getSizeWidth * 0.05,
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -542,13 +600,13 @@ class properties extends StatelessWidget {
                                   width: 24,
                                 ),
                                 SizedBox(
-                                  width: _getSize.width * 0.01,
+                                  width: getSizeWidth * 0.01,
                                 ),
-                                Text("No.1393579")
+                                Text(unit["data"]["waterMeter"])
                               ],
                             ),
                             SizedBox(
-                              height: _getSize.height * 0.001,
+                              height: getSizeHeight * 0.001,
                             ),
                             Text(
                               "Water Meter",
@@ -559,46 +617,50 @@ class properties extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: _getSize.height * 0.01,
+                      height: getSizeHeight * 0.01,
                     ),
                     Row(
                       children: [
-                        Row(
-                          children: [
-                            Image.asset(
-                              AppImages.wifi,
-                              width: 20,
-                            ),
-                            SizedBox(
-                              width: _getSize.width * 0.015,
-                            ),
-                            Text(
-                              "Wifi",
-                              style: AppFonts.body1,
-                            )
-                          ],
-                        ),
+                        unit["data"]["wifi"]
+                            ? Row(
+                                children: [
+                                  Image.asset(
+                                    AppImages.wifi,
+                                    width: 20,
+                                  ),
+                                  SizedBox(
+                                    width: getSizeWidth * 0.015,
+                                  ),
+                                  Text(
+                                    "Wifi",
+                                    style: AppFonts.body1,
+                                  )
+                                ],
+                              )
+                            : Container(),
                         SizedBox(
-                          width: _getSize.width * 0.05,
+                          width: getSizeWidth * 0.05,
                         ),
-                        Row(
-                          children: [
-                            Image.asset(
-                              AppImages.power,
-                              width: 24,
-                            ),
-                            SizedBox(
-                              width: _getSize.width * 0.005,
-                            ),
-                            Text(
-                              "24hrs Power",
-                              style: AppFonts.body1,
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          width: _getSize.width * 0.05,
-                        ),
+                        unit["data"]["power"]
+                            ? Row(
+                                children: [
+                                  Image.asset(
+                                    AppImages.power,
+                                    width: 24,
+                                  ),
+                                  SizedBox(
+                                    width: getSizeWidth * 0.005,
+                                  ),
+                                  Text(
+                                    "24hrs Power",
+                                    style: AppFonts.body1,
+                                  ),
+                                  SizedBox(
+                                    width: getSizeWidth * 0.05,
+                                  ),
+                                ],
+                              )
+                            : Container(),
                         Row(
                           children: [
                             Image.asset(
@@ -606,16 +668,17 @@ class properties extends StatelessWidget {
                               width: 24,
                             ),
                             SizedBox(
-                              width: _getSize.width * 0.005,
+                              width: getSizeWidth * 0.005,
                             ),
-                            Column(mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                            
                                 Text(
-                                  "No.56433323",
-                                ),    Text(
-                                  "Electricity",
+                                  unit["data"]["lightMeter"],
+                                ),
+                                Text(
+                                  "Light Meter",
                                   style: AppFonts.body1,
                                 ),
                               ],
@@ -665,13 +728,13 @@ class middle extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: (){
-                    Navigator.of(context).pushNamed(
-                                                  AppRoutes.taskScreen,
-                                                  arguments: {
-                                                    'request': services[index]['text'],
-                                                  },
-                                                );
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                    AppRoutes.taskScreen,
+                    arguments: {
+                      'request': services[index]['text'],
+                    },
+                  );
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -717,9 +780,14 @@ class middle extends StatelessWidget {
 }
 
 class bottom extends StatelessWidget {
-  const bottom({super.key, required Size getSize}) : _getSize = getSize;
+  const bottom({
+    super.key,
+    required this.getSizeWidth,
+    required this.getSizeHeight,
+  });
 
-  final Size _getSize;
+  final double getSizeHeight;
+  final double getSizeWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -742,8 +810,8 @@ class bottom extends StatelessWidget {
       },
     ];
     return SizedBox(
-        width: _getSize.width,
-        height: _getSize.height * 0.17,
+        width: getSizeWidth,
+        height: getSizeHeight * 0.38,
         child: ListView.builder(
             itemCount: services.length,
             physics: BouncingScrollPhysics(),
@@ -753,8 +821,8 @@ class bottom extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     top: 8.0, bottom: 8, right: 8, left: 4),
                 child: Container(
-                  height: _getSize.height * 0.1,
-                  width: _getSize.width,
+                  height: getSizeHeight * 0.07,
+                  width: getSizeWidth,
                   decoration: BoxDecoration(
                       color: services[index]['color'],
                       boxShadow: [
@@ -767,7 +835,8 @@ class bottom extends StatelessWidget {
                       ],
                       borderRadius: BorderRadius.all(Radius.circular(8))),
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 2.0, horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -776,40 +845,41 @@ class bottom extends StatelessWidget {
                           services[index]['icon'],
                         ),
                         SizedBox(
-                          width: 8,
+                          width: 12,
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Text(
-                                  services[index]['text'],
-                                  style: AppFonts.body1.copyWith(
-                                      color: Pallete.text,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  width: _getSize.width * 0.35,
-                                ),
-                                Text(
-                                  "2 hours ago",
-                                  style: AppFonts.body1.copyWith(
-                                      color: Pallete.primaryColor,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
+                            SizedBox(
+                              width: getSizeWidth * 0.71,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Text(
+                                    services[index]['text'],
+                                    style: AppFonts.body1.copyWith(
+                                        color: Pallete.text,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Text(
+                                    "2 hours ago",
+                                    style: AppFonts.body1.copyWith(
+                                        color: Pallete.primaryColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(
-                              height: _getSize.height * 0.007,
+                              height: getSizeHeight * 0.007,
                             ),
                             SizedBox(
-                              width: _getSize.width * 0.6,
+                              width: getSizeWidth * 0.6,
                               child: Text(
                                 'I need an electrician to install a new light fixture in my living room. The light fixture is a chandelier and it will need to be wired into the existing electrical system.',
                                 style: AppFonts.body1.copyWith(

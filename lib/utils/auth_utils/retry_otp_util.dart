@@ -12,6 +12,7 @@ class RetryOTPUtil {
   static Future<String> retry(BuildContext context) async {
     var email = await showEmail();
     var phone = await showPhone();
+    print(email);
     AppUtils.showLoader(context);
     var result;
     Provider.of<AuthProvider>(context, listen: false)
@@ -22,7 +23,7 @@ class RetryOTPUtil {
       if (value['statusCode'] != 200) {
         AppUtils.ErrorDialog(
           context,
-          value['data']??"",
+          value['error'] ?? "",
           'User not found',
           'Close',
           Icon(
@@ -32,7 +33,7 @@ class RetryOTPUtil {
           ),
         );
       } else {
-      AppUtils.ErrorDialog(
+        AppUtils.ErrorDialog(
           context,
           "Sent",
           'An OTP has been resent to you',

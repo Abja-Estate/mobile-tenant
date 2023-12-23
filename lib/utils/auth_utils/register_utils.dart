@@ -25,74 +25,38 @@ class RegisterUtil {
       AppUtils.showLoader(context);
       Provider.of<AuthProvider>(context, listen: false)
           .register(
-        registerData['firstName'].trim(),
-        registerData['lastName'].trim(),
-        registerData['password'].trim(),
-        registerData['password'].trim(),
-        registerData['email'].trim(),
-        registerData['phone'].trim(),
-         registerData['referred'].trim(),
-      )
+              registerData['name'].trim(),
+              registerData['surname'].trim(),
+              registerData['password'].trim(),
+              registerData['password'].trim(),
+              registerData['email'].trim(),
+              registerData['phone'].trim())
           .then((value) async {
         Navigator.of(context).pop();
         print(value);
         if (value['statusCode'] == 200) {
           formkey.currentState!.reset();
-          await saveId(value['data'].toString());
+
           saveOnce(1);
+          await saveId(value['data']['_id'].toString());
+          await saveToken(value['data']['accessToken']);
+          await saveEmail(value['data']['email']);
           Navigator.of(context).pushNamed(AppRoutes.registerOTPScreen);
         } else {
-          if (value['statusCode'] == 302) {
-            AppUtils.ErrorDialog(
-              context,
-              'Ooops, seems you didn\'t get it right!',
-              value['data'],
-              'Close',
-              const Icon(
-                Icons.error,
-                color: Color.fromARGB(255, 205, 5, 5),
-                size: 30,
-              ),
-            );
-          }
-          if (value['statusCode'] == 400) {
-            AppUtils.ErrorDialog(
-              context,
-              'Ooops, There seems to be an error!',
-              value['data'],
-              'Close',
-              const Icon(
-                Icons.error,
-                color: Color.fromARGB(255, 205, 5, 5),
-                size: 30,
-              ),
-            );
-          }
-          if (value['statusCode'] == 404) {
-            AppUtils.ErrorDialog(
-              context,
-              'Ooops, seems this email is already taken!',
-              value['data'],
-              'Close',
-              const Icon(
-                Icons.error,
-                color: Color.fromARGB(255, 205, 5, 5),
-                size: 30,
-              ),
-            );
-          }
-          // } else {
-          //   AppUtils.ErrorDialog(
-          //     context,
-          //     'Error',
-          //     'User already exist',
-          //     'Close',
-          //   );
-          // }
+          AppUtils.ErrorDialog(
+            context,
+            'Ooops, seems you didn\'t get it right!',
+            value['error'],
+            'Close',
+            const Icon(
+              Icons.error,
+              color: Color.fromARGB(255, 205, 5, 5),
+              size: 30,
+            ),
+          );
         }
       });
     }
-
     return result;
   }
 }

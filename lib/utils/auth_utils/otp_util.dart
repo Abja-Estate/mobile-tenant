@@ -8,14 +8,16 @@ import '../app_utils.dart';
 import '../local_storage.dart';
 
 class RegisterOTPUtil {
-  static Future<String> register(
-      BuildContext context, Map<String, dynamic> resetData) async {
+  static Future<String> register(BuildContext context, resetData) async {
     print(resetData);
     AppUtils.showLoader(context);
     var result;
-    var id = await showId();
+    var email = await showEmail();
+    var token = await showToken();
+    print(token);
+    print(email);
     Provider.of<AuthProvider>(context, listen: false)
-        .registerOTP(id, resetData['otp'])
+        .registerOTP(email.toString(), token.toString(), resetData)
         .then((value) async {
       Navigator.of(context).pop();
       print(value);
@@ -23,7 +25,7 @@ class RegisterOTPUtil {
         AppUtils.ErrorDialog(
           context,
           'Error',
-          value['data'],
+          value['error'].toString(),
           'Close',
           Icon(
             Icons.error_rounded,
@@ -32,7 +34,8 @@ class RegisterOTPUtil {
           ),
         );
       } else {
-        Navigator.of(context).pushNamed(AppRoutes.loginScreen);
+          saveOnce(2);
+        Navigator.of(context).popAndPushNamed(AppRoutes.loginScreen);
       }
     });
 

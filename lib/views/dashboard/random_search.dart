@@ -7,7 +7,6 @@ import '../../../constants/app_fonts.dart';
 import '../../../constants/app_images.dart';
 import '../../../constants/app_routes.dart';
 import '../../../constants/resources.dart';
-import '../../../network/alldrugs.dart';
 import '../../../utils/local_storage.dart';
 import '../../components/buttons.dart';
 import '../../utils/app_utils.dart';
@@ -43,84 +42,14 @@ class _RandomSearchItemState extends State<RandomSearchItem> {
   void initState() {
     super.initState();
     getCartItems();
-    _fetchItems();
+  
   }
 
-  _fetchItems() async {
-    setState(() {
-      query = searchQuery;
-    });
-
-    loadingDrugs = true;
-    await Future.delayed(Duration(seconds: 1));
-    print('searchfromdashoard ${searchQuery}');
-    // Make the API call using the page and limit parameters
-    var jsonData = await StoreAPI.getProductByName(searchQuery);
-    var itemData = jsonData['products'];
-    print('here ${itemData}');
-    if (itemData.length == 0) {
-      print('heres ${itemData}');
-      loadingDrugs = false;
-      setState(() {
-        items;
-         query = searchQuery;
-      });
-    } else {
-      setState(() {
-        dataList = itemData.map((item) {
-          item['counts'] = counts;
-          item['added'] = false;
-          return item;
-        }).toList();
-        items = dataList;
-        loadingDrugs = false;
-        searchQuery = "";
-        print(searchQuery);
-      });
-    }
-  }
-
-  _fetchwithSearch() async {
-    setState(() {
-      loadingDrugs = true;
-    });
-
-    items = [];
-
-    await Future.delayed(Duration(seconds: 1));
-    print('aya ${query}');
-    // Make the API call using the page and limit parameters
-    var jsonData = await StoreAPI.getProductByName(query);
-    var itemData = jsonData['products'];
-    print('here ${itemData}');
-    if (itemData.length == 0) {
-      print('heres ${itemData}');
-      loadingDrugs = false;
-      setState(() {
-        loadingDrugs;
-        items;
-        
-      });
-    } else {
-      loadingDrugs = false;
-      setState(() {
-        dataList = itemData.map((item) {
-          item['counts'] = counts;
-          item['added'] = false;
-          return item;
-        }).toList();
-        items = dataList;
-
-        searchQuery = "";
-        loadingDrugs;
-      });
-    }
-  }
 
   List<Map<String, dynamic>> cartDrugs = [];
   bool loaded = false;
   getCartItems() async {
-    var cartItemsString = await showCartItem();
+    var cartItemsString = await showPropertyItem();
     cartDrugs = List<Map<String, dynamic>>.from(jsonDecode(cartItemsString));
     if (cartDrugs.isEmpty) {
       loaded = false;
@@ -183,7 +112,7 @@ class _RandomSearchItemState extends State<RandomSearchItem> {
         drug["counts"] = newItem['counts'];
         setState(() {
           sumAll(cartItems);
-          saveCartItem(cartItems);
+          savePropertyItem(cartItems);
         });
         break;
       }
@@ -234,7 +163,7 @@ class _RandomSearchItemState extends State<RandomSearchItem> {
     setState(() {
       cartItems;
       sumAll(cartItems);
-      saveCartItem(cartItems);
+      savePropertyItem(cartItems);
     });
   }
 
@@ -336,7 +265,7 @@ class _RandomSearchItemState extends State<RandomSearchItem> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    _fetchwithSearch();
+                                   
                                   },
                                   child: Container(
                                     height: 50,
@@ -787,7 +716,7 @@ class _RandomSearchItemState extends State<RandomSearchItem> {
                                                                                             };
     
                                                                                             cartItems.add(item);
-                                                                                            saveCartItem(cartItems);
+                                                                                            savePropertyItem(cartItems);
                                                                                             // addToCart(item);
                                                                                             sumAll(cartItems);
                                                                                           });

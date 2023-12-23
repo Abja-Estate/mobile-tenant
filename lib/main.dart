@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:abjatenant/views/onboarding/entrance.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'views/auth/login/login.dart';
 import 'views/auth/register/register.dart';
 import 'views/auth/welcome/welcome.dart';
 import 'views/dashboard/dashboard.dart';
+import 'views/onboarding/onboarding.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -91,12 +93,14 @@ class MyApp extends StatelessWidget {
 
                     switch (data) {
                       case 0:
-                        return Welcome();
+                        return Entrance();
                       case 1:
-                        return SignUp();
+                        return Welcome();
                       case 2:
                         return LoginScreen();
                       case 3:
+                        return Dashboard();
+                        case 3:
                         return Dashboard();
                     }
                     // if we got our data

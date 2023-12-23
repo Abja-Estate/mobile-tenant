@@ -27,22 +27,56 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
   bool hasError = false;
   String currentText = "";
 
-  String otp = 'tolu*****yeru@gmail.com';
+  String otp = '';
 
-  final controller = TextEditingController();
-  final _OTPFormKey = GlobalKey<FormState>();
+
   bool value = false;
   bool passwordVisible = false;
-  final Map<String, dynamic> _OTPData = {'otp': ''};
- OtpFieldController otpController = OtpFieldController();
+
+
   final focusNode = FocusNode();
+
+   Duration _duration = Duration(minutes: 4);
+  Timer? _timer;
+
+  void startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_duration.inSeconds == 0) {
+        timer.cancel();
+        onTimerComplete();
+      } else {
+        setState(() {
+          _duration -= Duration(seconds: 1);
+        });
+      }
+    });
+  }
+
+  void onTimerComplete() {
+    // Function to handle logic when timer completes
+   Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.loginScreen, (Route<dynamic> route) => false);
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+
+  @override
+  void initState() {
+     startTimer();
+    super.initState();
+    
+  }
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, // transparent status bar
         statusBarIconBrightness: Brightness.dark // dark text for status bar
         ));
-    _OTPData['otp'] = controller.text.toString();
+
     final _getSize = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
@@ -106,57 +140,75 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
                       ),
                     ),
                   ],
-                ),OTPTextField(
-             
-            controller: otpController,
-            length: 5,
-            width: MediaQuery.of(context).size.width,
-            textFieldAlignment: MainAxisAlignment.spaceAround,
-            fieldWidth: 45,
-            fieldStyle: FieldStyle.underline,
-            outlineBorderRadius: 15,
-            style: TextStyle(fontSize: 17),
-            onChanged: (pin) {
-              print("Changed: " + pin);
-            },
-            onCompleted: (pin) {
-              print("Completed: " + pin);
-            }), SizedBox(
-                            height: _getSize.height * 0.025,
-                          ),
+                ),
+                OTPTextField(
+                   
+                    length: 5,
+                    width: MediaQuery.of(context).size.width,
+                    textFieldAlignment: MainAxisAlignment.spaceAround,
+                    fieldWidth: 45,
+                    fieldStyle: FieldStyle.underline,
+                    outlineBorderRadius: 15,
+                    style: TextStyle(fontSize: 17),
+                    onChanged: (pin) {
+                      print("Changed: " + pin);
+                       setState(() {
+                        otp = pin;
+                       
+                      });
+                    },
+                    onCompleted: (pin) {
+                      print("Completed: " + pin);
+                    }),
+                SizedBox(
+                  height: _getSize.height * 0.025,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32.0),
                   child: Column(
                     children: [
                       Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Didn't get a code? ",
-                                style: AppFonts.body1.copyWith(
-                                    color: Pallete.text,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                "Click to resend",
-                                style: AppFonts.body1
-                                    .copyWith(color: Pallete.secondaryColor),
-                              )
-                            ],
-                          ), SizedBox(
+                          InkWell(
+                            onTap: () {
+                              RetryOTPUtil.retry(context);
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Didn't get a code? ",
+                                  style: AppFonts.body1.copyWith(
+                                      color: Pallete.text,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  "Click to resend",
+                                  style: AppFonts.body1
+                                      .copyWith(color: Pallete.secondaryColor),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
                             height: _getSize.height * 0.005,
                           ),
-                          Text("04:00",style: AppFonts.body1,)
+                          Text(
+                           formatDuration(_duration),
+                            style: AppFonts.body1,
+                          )
                         ],
-                      ), SizedBox(
-                            height: _getSize.height * 0.4,
-                          ),
-                      ButtonWithFuction(text: "Continue", onPressed: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed(AppRoutes.loginScreen);
-                      }),
+                      ),
+                      SizedBox(
+                        height: _getSize.height * 0.4,
+                      ),
+                      ButtonWithFuction(
+                          text: "Continue",
+                          onPressed: () {
+                            RegisterOTPUtil.register(context, otp);
+                            // Navigator.of(context)
+                            //     .pushReplacementNamed(AppRoutes.loginScreen);
+                          }),
                     ],
                   ),
                 )
@@ -167,4 +219,13 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
       ),
     );
   }
+    
+
 }
+
+String formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$twoDigitMinutes:$twoDigitSeconds";
+  }

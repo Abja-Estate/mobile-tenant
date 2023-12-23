@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:intl/intl.dart';
 
-const BaseURL = "https://pharmplug-api.onrender.com/api";
+const BaseURL = "https://casmara-app-api.onrender.com/api";
 String getCurrency() {
   return '₦'; // Unicode character for Naira symbol
 }
-
+String APIKEY = '4f1fe63a-5f8b-4e7f-ad38-e68445079351';
 const String policy = "";
 
 const String aboutUs =

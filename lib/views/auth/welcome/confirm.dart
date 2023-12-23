@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../../components/buttons.dart';
 import '../../../components/input_field.dart';
 import '../../../constants/app_colors.dart';
@@ -17,6 +18,24 @@ class ConfirmLandlord extends StatefulWidget {
 class _ConfirmLandlordState extends State<ConfirmLandlord> {
   String name = '';
   var photo = 'https://picsum.photos/200';
+
+  bool loading = false;
+
+  initLandlord() async {
+    loading = false;
+    await Future.delayed(Duration(seconds: 1));
+    landlord;
+    loading = true;
+    setState(() {});
+  }
+
+  Map<String, dynamic> landlord = {};
+  @override
+  void initState() {
+    initLandlord();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -24,6 +43,9 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
         statusBarIconBrightness: Brightness.light // dark text for status bar
         ));
     final _getSize = MediaQuery.of(context).size;
+    final dataFromRoute = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    landlord = dataFromRoute["data"];
     return Scaffold(
         backgroundColor: Pallete.onboardColor,
         body: SingleChildScrollView(
@@ -72,78 +94,95 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        width: _getSize.width * 0.8,
-                        height: _getSize.height * 0.08,
-                        decoration: BoxDecoration(
-                            color: Pallete.whiteColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color.fromARGB(29, 134, 130, 130),
-                                blurRadius: 11,
-                                spreadRadius: 1,
-                                offset: Offset(0, 5),
-                              )
-                            ],
-                            borderRadius: BorderRadius.all(Radius.circular(2))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ClipOval(
-                                child: Image.network(
-                                  photo,
-                                  width: _getSize.width * 0.14,
+                      loading
+                          ? Container(
+                              width: _getSize.width * 0.8,
+                              height: _getSize.height * 0.08,
+                              decoration: const BoxDecoration(
+                                  color: Pallete.whiteColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color.fromARGB(29, 134, 130, 130),
+                                      blurRadius: 11,
+                                      spreadRadius: 1,
+                                      offset: Offset(0, 5),
+                                    )
+                                  ],
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: _getSize.width * 0.03,
+                                    ),
+                                    ClipOval(
+                                      child: Image.network(
+                                        landlord["landlordSelfie"],
+                                        fit: BoxFit.cover,
+                                        width: _getSize.width * 0.14,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: _getSize.width * 0.05,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Landlord",
+                                          style: AppFonts.bodyText.copyWith(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          height: _getSize.height * 0.003,
+                                        ),
+                                        Text(landlord["fullName"],
+                                            style: AppFonts.body1.copyWith(
+                                                color: Pallete.text,
+                                                fontWeight: FontWeight.w600)),
+                                        SizedBox(
+                                          height: _getSize.height * 0.003,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              AppImages.location,
+                                              width: 14,
+                                            ),
+                                            SizedBox(
+                                              width: 12,
+                                            ),
+                                            Text(
+                                              landlord["location"],
+                                              style: AppFonts.body1.copyWith(
+                                                  color: Pallete.text),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ),
-                              SizedBox(
-                                width: _getSize.width * 0.03,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Landlord",
-                                    style: AppFonts.bodyText.copyWith(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text("Akello Buma",
-                                      style: AppFonts.body1.copyWith(
-                                          color: Pallete.text,
-                                          fontWeight: FontWeight.w600)),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        AppImages.location,
-                                        width: 14,
-                                      ),
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      Text(
-                                        "24, Commercial Avenue, Kampala",
-                                        style: AppFonts.body1
-                                            .copyWith(color: Pallete.text),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-
+                            )
+                          : const SpinKitRing(
+                              size: 30,
+                              color: Pallete.primaryColor,
+                              lineWidth: 2.0,
+                            ),
                       SizedBox(
                         height: _getSize.height * 0.3,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
                             onTap: () {
@@ -151,7 +190,7 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
                                   .pushNamed(AppRoutes.welcomeScreen);
                             },
                             child: Container(
-                              width: _getSize.width * 0.3,
+                              width: _getSize.width * 0.4,
                               height: _getSize.height * 0.06,
                               decoration: BoxDecoration(
                                   color: Color.fromARGB(255, 255, 255, 255),
@@ -167,9 +206,9 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
                             ),
                           ),
                           SizedBox(
-                            width: _getSize.width * 0.3,
+                            width: _getSize.width * 0.4,
                             child: ButtonWithFuction(
-                                text: "Continue",
+                                text: "Proceed",
                                 onPressed: () {
                                   Navigator.of(context)
                                       .pushNamed(AppRoutes.registerScreen);

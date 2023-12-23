@@ -97,27 +97,18 @@ class SideBar extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(AppRoutes.profile);
-                        },
-                        child: items(
-                          text: "Profile",
-                          img: AppImages.profile,
-                        ),
+                      items(
+                        text: "Profile",
+                        route: AppRoutes.profile,
+                        img: AppImages.profile,
                       ),
                       SizedBox(
                         height: 16,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(AppRoutes.propDetails);
-                        },
-                        child: items(
-                          text: "My Rented Property",
-                          img: AppImages.estate,
-                        ),
+                      items(
+                        route: AppRoutes.propDetails,
+                        text: "My Rented Property",
+                        img: AppImages.estate,
                       ),
                       SizedBox(
                         height: 16,
@@ -301,35 +292,46 @@ class SideBar extends StatelessWidget {
 }
 
 class items extends StatelessWidget {
-  const items({super.key, required this.text, required this.img});
+  const items({super.key, required this.text, required this.img, this.route});
   final String text;
   final String img;
+  final String? route;
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamed(route!);
+      },
+      child: Container(
+        width: double.infinity, // Expands to fill the available space
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
           children: [
-            Image.asset(
-              img,
-              width: 24,
+            Row(
+              children: [
+                Image.asset(
+                  img,
+                  width: 24,
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+                Text(
+                  text,
+                  style: AppFonts.body1.copyWith(
+                      fontWeight: FontWeight.w900, color: Pallete.primaryColor),
+                )
+              ],
             ),
-            SizedBox(
-              width: 12,
-            ),
-            Text(
-              text,
-              style: AppFonts.body1.copyWith(
-                  fontWeight: FontWeight.w900, color: Pallete.primaryColor),
+            Icon(
+              Icons.chevron_right,
+              color: Color(0xFF47893F),
             )
           ],
         ),
-        Icon(
-          Icons.chevron_right,
-          color: Color(0xFF47893F),
-        )
-      ],
+      ),
     );
   }
 }

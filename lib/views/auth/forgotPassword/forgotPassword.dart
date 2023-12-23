@@ -23,10 +23,10 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
   bool enabled = false;
 
   final Map<String, dynamic> _resetPasswordData = {
-    'data': '',
+    'email': '',
   };
-
-   @override
+  final _resetPasswordFormKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, // transparent status bar
@@ -70,10 +70,8 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          
                         ],
                       ),
-                   
                     ],
                   ),
                 ),
@@ -84,25 +82,33 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
               child: Column(
                 children: [
-                  Column(
-                    children: [
-                      CustomInput3(
-                        validator: Validators.nameValidator,
-                        label: 'email/phone',
-                        hint: 'Phone Number or Email',
-                        onSaved: (value) {},
-                      ),
-                    
-                      SizedBox(
-                        height: _getSize.height * 0.05,
-                      ),
-                    ],
+                  Form(
+                      key: _resetPasswordFormKey,
+                    child: Column(
+                      children: [
+                        CustomInput3(
+                          validator: Validators.nameValidator,
+                          label: 'Email',
+                          hint: 'Email',
+                          onChanged: (value) {
+                            print(value);
+                            _resetPasswordData['email'] = value;
+                          },
+                          onSaved: (value) {
+                            print(value);
+                            _resetPasswordData['email'] = value;
+                          },
+                        ),
+                        SizedBox(
+                          height: _getSize.height * 0.05,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
             SizedBox(height: _getSize.height * 0.01),
-
             SizedBox(height: _getSize.height * 0.15),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,11 +117,15 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32.0, vertical: 16),
-                  child: ButtonWithFuction(text: 'Get OTP', onPressed: () {
-                     Navigator.of(context).pushNamed(AppRoutes.resetOTPScreen);
-                  }),
+                  child: ButtonWithFuction(
+                      text: 'Get OTP',
+                      onPressed: () {
+                        print(_resetPasswordData);
+                        ForgotPasswordUtil.forgotPassword(
+                            context, _resetPasswordData);
+                        // Navigator.of(context).pushNamed(AppRoutes.resetOTPScreen);
+                      }),
                 ),
-             
               ],
             ),
           ],

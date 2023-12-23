@@ -32,53 +32,14 @@ class _SignUpState extends State<SignUp> {
   bool value = false;
   bool passwordVisible = false;
   String? selectedValue;
-  final List<String> items = [
-    'Abia',
-    'Adamawa',
-    'Akwa Ibom',
-    'Anambra',
-    'Bauchi',
-    'Bayelsa',
-    'Benue',
-    'Borno',
-    'Cross River',
-    'Delta',
-    'Ebonyi',
-    'Edo',
-    'Ekiti',
-    'Enugu',
-    'FCT (Abuja)',
-    'Gombe',
-    'Imo',
-    'Jigawa',
-    'Kaduna',
-    'Kano',
-    'Katsina',
-    'Kebbi',
-    'Kogi',
-    'Kwara',
-    'Lagos',
-    'Nassarawa',
-    'Niger',
-    'Ogun',
-    'Ondo',
-    'Osun',
-    'Oyo',
-    'Plateau',
-    'Rivers',
-    'Sokoto',
-    'Taraba',
-    'Yobe',
-    'Zamfara'
-  ];
 
   final Map<String, dynamic> _registerData = {
-    'firstName': '',
-    'lastName': '',
+    'name': '',
+    'surname': '',
     'email': '',
     'phone': '',
     'password': '',
-    'referred': ''
+    
   };
   void _checkPasswordStrength(String value) {
     dynamic password = value.trim();
@@ -189,20 +150,19 @@ class _SignUpState extends State<SignUp> {
                 ],
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric( horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   children: [
                     Form(
                       key: _registerFormKey,
                       child: Column(
                         children: [
-                              CustomInput3(
+                          CustomInput3(
                             validator: Validators.nameValidator,
                             label: 'Email',
                             hint: 'Email',
                             onSaved: (value) {
-                              _registerData['firstName'] = value;
+                              _registerData['email'] = value;
                             },
                           ),
                           SizedBox(
@@ -211,20 +171,32 @@ class _SignUpState extends State<SignUp> {
                           CustomInput3(
                             validator: Validators.nameValidator,
                             label: 'First Name',
-                            hint: 'Full Name',
+                            hint: 'First Name',
                             onSaved: (value) {
-                              _registerData['firstName'] = value;
+                              _registerData['name'] = value;
                             },
                           ),
                           SizedBox(
                             height: _getSize.height * 0.05,
-                          ), CustomInput3(
+                          ),
+                          CustomInput3(
+                            validator: Validators.nameValidator,
+                            label: 'Last Name',
+                            hint: 'Last Name',
+                            onSaved: (value) {
+                              _registerData['surname'] = value;
+                            },
+                          ),
+                          SizedBox(
+                            height: _getSize.height * 0.05,
+                          ),
+                          CustomInput3(
                             validator: Validators.nameValidator,
                             type: "number",
                             label: 'Phone Number',
                             hint: 'Phone Number',
                             onSaved: (value) {
-                              _registerData['firstName'] = value;
+                              _registerData['phone'] = value;
                             },
                           ),
                           SizedBox(
@@ -302,30 +274,7 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               SizedBox(height: _getSize.height * 0.02),
-          
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32.0, vertical: 16),
-                    child: ButtonWithFuction(
-                        text: 'Sign Up',
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(AppRoutes.registerOTPScreen);
-                        }),
-                  ),
-                  SizedBox(height: _getSize.height * 0.01),
-                  const LoginNavigation(
-                    text2: "Already have an account? ",
-                    text: 'Login',
-                    dir: AppRoutes.loginScreen,
-                  )
-                ],
-              ),
-                SizedBox(height: _getSize.height * 0.04), SizedBox(
+              SizedBox(
                 width: _getSize.width * 0.7,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -334,7 +283,7 @@ class _SignUpState extends State<SignUp> {
                     Row(
                       children: [
                         Text(
-                          'By clicking "Continue" you agree to the ',
+                          'By clicking "Sign Up" you agree to the ',
                           style: AppFonts.bodyText.copyWith(
                             color: Pallete.text,
                             fontWeight: FontWeight.w600,
@@ -383,7 +332,33 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
               ),
-              SizedBox(height: _getSize.height * 0.07), ],
+              SizedBox(height: _getSize.height * 0.03),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32.0, vertical: 16),
+                    child: ButtonWithFuction(
+                        text: 'Sign Up',
+                        onPressed: () {
+                          RegisterUtil.register(
+                              _registerFormKey, context, _registerData);
+                         // Navigator.of(context)
+                             // .pushNamed(AppRoutes.registerOTPScreen);
+                        }),
+                  ),
+                  SizedBox(height: _getSize.height * 0.01),
+                  const LoginNavigation(
+                    text2: "Already have an account? ",
+                    text: 'Login',
+                    dir: AppRoutes.loginScreen,
+                  )
+                ],
+              ),
+              SizedBox(height: _getSize.height * 0.04),
+            ],
           ),
         ),
       ),

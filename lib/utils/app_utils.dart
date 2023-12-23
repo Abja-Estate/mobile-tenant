@@ -1,5 +1,6 @@
 import 'dart:io';
 //import 'package:cashflakes/views/screens/dashboard/transfer/components/pay_notifier.dart';
+import 'package:abjatenant/utils/loader_login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
@@ -16,10 +17,10 @@ class AppUtils {
     String titleText,
     String contentText,
     String price,
-      String contentText2,
+    String contentText2,
     String confirmText,
     String cancelText,
-    Map<String,dynamic> urlGotten,
+    Map<String, dynamic> urlGotten,
   ) {
     // set up the buttons
     Widget cancelButton = TextButton(
@@ -37,8 +38,8 @@ class AppUtils {
           style: AppFonts.dialogColoredText.copyWith(
               fontWeight: FontWeight.w600, color: Pallete.primaryColor),
         ),
-        onPressed: () => Navigator.of(context)
-            .pushNamed(arguments: {"data": urlGotten}, AppRoutes.webviewScreen));
+        onPressed: () => Navigator.of(context).pushNamed(
+            arguments: {"data": urlGotten}, AppRoutes.webviewScreen));
 
     // title
     Widget title = Center(
@@ -61,11 +62,13 @@ class AppUtils {
           style: AppFonts.body1.copyWith(fontSize: 13),
           textAlign: TextAlign.center,
         ),
-          Text(
+        Text(
           price,
-          style: AppFonts.boldText.copyWith(color: Pallete.black,fontSize: 14,fontWeight: FontWeight.w600),
+          style: AppFonts.boldText.copyWith(
+              color: Pallete.black, fontSize: 14, fontWeight: FontWeight.w600),
           textAlign: TextAlign.center,
-        ), Text(
+        ),
+        Text(
           contentText2,
           style: AppFonts.body1.copyWith(fontSize: 13),
           textAlign: TextAlign.center,
@@ -228,8 +231,15 @@ class AppUtils {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  static dynamic successDialog(BuildContext context, String titleText,
-      String contentText, String closeText, Widget Icon, Function() confirmFunction,) {
+  static dynamic singleDialog(
+    BuildContext context,
+    String titleText,
+    String contentText,
+    String closeText,
+    Widget Icon,
+    Widget? extraWidget,
+    Function() confirmFunction,
+  ) {
     // set up the buttons
     Widget cancelButton = TextButton(
       child: Text(
@@ -261,10 +271,16 @@ class AppUtils {
     );
 
     // content
-    Widget content = Text(
-      contentText,
-      style: AppFonts.bodyText.copyWith(fontSize: 11, color: Pallete.text),
-      textAlign: TextAlign.center,
+    Widget content = Row(
+           mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          contentText,
+          style: AppFonts.bodyText.copyWith(fontSize: 11, color: Pallete.text),
+          textAlign: TextAlign.center,
+        ),
+        extraWidget!
+      ],
     );
 
     // set up the AlertDialog
@@ -308,7 +324,7 @@ class AppUtils {
       },
     );
   }
- 
+
   static dynamic ErrorDialog(BuildContext context, String titleText,
       String contentText, String cancelText, Widget Icon) {
     // set up the buttons
@@ -389,8 +405,9 @@ class AppUtils {
       },
     );
   }
-  static dynamic PaymentSuccessDialog(BuildContext context, String titleText,
-      String contentText,  Widget Icon) {
+
+  static dynamic SuccessDialog(BuildContext context, String titleText,
+      String contentText, Widget Icon, String bottomText,String sroute) {
     // set up the buttons
 
     // title
@@ -403,21 +420,49 @@ class AppUtils {
           ),
           Text(
             titleText,
-            style: AppFonts.coloredHeading.copyWith(
+            style: AppFonts.bodyText.copyWith(
               fontWeight: FontWeight.w600,
-              fontSize: 17,
+              color: Pallete.black,
+              fontSize: 14,
             ),
             textAlign: TextAlign.center,
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.35,
+            child: Text(
+              contentText,
+              style:
+                  AppFonts.bodyText.copyWith(fontSize: 12, color: Pallete.text),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(
+            height: 4,
           ),
         ],
       ),
     );
 
     // content
-    Widget content = Text(
-      contentText,
-      style: AppFonts.bodyText.copyWith(fontSize: 11, color: Pallete.text),
-      textAlign: TextAlign.center,
+    Widget content = GestureDetector(
+      onTap: () {
+     Navigator.of(context).pushNamedAndRemoveUntil(
+          sroute,
+          (route) => false,
+        );
+
+      },
+      child: Text(
+        bottomText,
+        style: TextStyle(
+            // decoration: TextDecoration.underline,
+            color: Pallete.secondaryColor,
+            fontSize: 12),
+        textAlign: TextAlign.center,
+      ),
     );
 
     // set up the AlertDialog
@@ -425,9 +470,7 @@ class AppUtils {
         ? CupertinoAlertDialog(
             title: title,
             content: content,
-            actions: [
-              
-            ],
+            actions: [],
           )
         : AlertDialog(
             title: title,
@@ -438,9 +481,7 @@ class AppUtils {
               ),
             ),
             backgroundColor: const Color.fromRGBO(242, 242, 242, 1),
-            actions: [
-             
-            ],
+            actions: [],
           );
 
     // show the dialog
@@ -686,5 +727,10 @@ class AppUtils {
     );
   }
 
-
+  static void showLoginLoader(context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => const LoginLoader(),
+    );
+  }
 }

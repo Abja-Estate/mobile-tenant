@@ -12,18 +12,18 @@ class ForgotPasswordUtil {
   static Future<String> forgotPassword(
       BuildContext context, Map<String, dynamic> forgotData) async {
     AppUtils.showLoader(context);
-    await saveEmail(forgotData['data']);
+    await saveEmail(forgotData['email']);
     var result;
     Provider.of<AuthProvider>(context, listen: false)
-        .forgotPassword(forgotData['data'])
+        .forgotPassword(forgotData['email'].toString())
         .then((value) async {
       Navigator.of(context).pop();
       print(value);
       if (value['statusCode'] != 200) {
         AppUtils.ErrorDialog(
           context,
-          value['data'] ?? 'error',
-          'User not found',
+          "Something isn't right!",
+          value['error'],
           'Close',
           Icon(
             Icons.error_rounded,
@@ -33,7 +33,9 @@ class ForgotPasswordUtil {
         );
       } else {
         //TO DO
-        await saveId(value['data'].toString());
+        await saveToken(value['data']['accessToken'].toString());
+         await saveId(value['data']['_id']);
+          await saveEmail(value['data']['email']);
 
         // IsFirstTime().once(2);
         Navigator.of(context).pushNamed(AppRoutes.resetOTPScreen);

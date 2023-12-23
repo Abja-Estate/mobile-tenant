@@ -109,7 +109,7 @@ class _NavBarState extends State<NavBar> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                AppImages.search,
+                                AppImages.request,
                                 color: currentTab == 1
                                     ? Color(0xC7171A1C)
                                     : Pallete.fade,
@@ -119,7 +119,7 @@ class _NavBarState extends State<NavBar> {
                               SizedBox(
                                 height: 4,
                               ),
-                              Text('Search',
+                              Text('Request',
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: currentTab == 1

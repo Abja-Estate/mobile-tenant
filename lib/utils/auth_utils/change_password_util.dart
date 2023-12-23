@@ -8,15 +8,24 @@ import '../../constants/app_routes.dart';
 
 import '../../provider/auth_provider.dart';
 import '../app_utils.dart';
+import '../local_storage.dart';
 
 class ResetPasswordUtil {
-  static Future<String> resetPassword(
-      BuildContext context, Map<String, dynamic> resetData) async {
-    print(resetData);
+  static Future<String> resetPassword(GlobalKey<FormState> formkey,
+      BuildContext context,  password,cpassword) async {
+    print(password);
+    var id = await showId();
+    var token = await showToken();
+    print("$id, $token  $password $cpassword");
+
+    if (formkey.currentState!.validate()) {
+      formkey.currentState!.save();
+    }
+
     AppUtils.showLoader(context);
     var result;
     Provider.of<AuthProvider>(context, listen: false)
-        .changePassword(resetData['password'])
+        .changePassword(id, token, password, cpassword)
         .then((value) async {
       Navigator.of(context).pop();
       print(value);
@@ -24,7 +33,7 @@ class ResetPasswordUtil {
         AppUtils.ErrorDialog(
           context,
           'Error',
-          value['data'],
+          value['error'],
           'Close',
           const Icon(
             Icons.error_rounded,
@@ -33,18 +42,9 @@ class ResetPasswordUtil {
           ),
         );
       } else {
-        AppUtils.successDialog(
-            context,
-           'Success',
-            'You are',
-            'Close',
-            const Icon(
-              Icons.error_rounded,
-              color: Color.fromARGB(255, 213, 10, 10),
-              size: 30,
-            ),
-            () => null);
-        Navigator.of(context).pushNamed(AppRoutes.loginScreen);
+
+       Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.loginScreen, (Route<dynamic> route) => false);
+
       }
     });
 
