@@ -133,9 +133,9 @@ class AuthAPI {
   }
 
   static Future updateData(email, phone, password, confirmPassword, name,
-      surname, about, token) async {
+      surname, about,selfie) async {
     var response = await http.put(
-      Uri.parse('$BaseURL/auth/tenant/update_landlord'),
+      Uri.parse('$BaseURL/auth/tenant/update_tenant'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'authorization': APIKEY
@@ -148,8 +148,7 @@ class AuthAPI {
         "name": name,
         "surname": surname,
         "about": about,
-        "token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDIyMTc3OTAsImRhdGEiOiJheW9zZXVuc29sb21vbkBnbWFpbC5jb20kMmIkMTAkdy9vZHdFSjZ3ZVhBR081eHhrSklldS9FYnRYU2hsZ2lMcWlyMVBtT3QuZy5qTDZ4RUdKbkcyNDI1NTVBYmphV2h5U2F2ZTAwNz8iLCJpYXQiOjE3MDE4NTc3OTB9.5o0udhyxsi4Kznl4WPgk2fPAzwQTiCUzSRCF_mCk2kM"
+        "selfie":selfie
       }),
     );
 

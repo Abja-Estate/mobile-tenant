@@ -9,6 +9,7 @@ class Pallete {
   static const primaryColor2 = Color(0xFF1971A3);
   static const black = Color(0xFF000000);
   static const shadowcolor = Color(0xFF0000);
+  static const disabledColor = Color(0xFF7C9177);
   static const whiteColor = Color(0xFFffffff);
   static const text = Color(0xFF333436);
   static const fade = Color(0xFF949494);

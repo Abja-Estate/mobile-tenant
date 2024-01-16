@@ -38,25 +38,40 @@ class LoginUtil {
           await saveName(value['data']['name']);
           await savePhone(value['data']['phone']);
           await saveSurname(value['data']['surname']);
-          await saveSelfie(value['data']['selfie'] ??
-              "https://i.ibb.co/txwfp3w/37f70b1b79e6.jpg");
-          await saveToken(value['data']['accessTken'] ?? "");
-          await saveAbout(value['data']['about'] ?? "");
-          await saveOnce(3);
+          await saveSelfie(value['data']['selfie']);
+          await saveToken(value['data']['accessToken']);
+          await saveAbout(value['data']['about']??"");
+           await saveCreatedAt(value['data']['created']);
+         
           AppUtils.showLoginLoader(context);
 
           var responseData = await PropertyAPI.accessCode(
               value['data']['rentHistory'][0]['accessCode']);
-
+        
           if (responseData['statusCode'] == 200) {
             await saveAccessCode(value['data']['rentHistory'][0]['accessCode']);
             await saveUnitData(responseData['data']);
+             await saveOnce(3);
             Navigator.of(context).pop();
             Navigator.of(context).pushNamedAndRemoveUntil(
               AppRoutes.navbar, // The route name of the new screen
               (Route<dynamic> route) =>
                   false, // Predicate to remove all previous routes
             );
+          } else {
+            
+            if (responseData['statusCode'] == 404) {
+                Navigator.of(context).pop();
+              // ignore: use_build_context_synchronously
+              AppUtils.showAlertDialog(
+                  context,
+                  'There\'s no unit attached to you',
+                  responseData['error'],
+                  'Enter Code again',
+                  'Close',
+                  () =>
+                      Navigator.of(context).pushNamed(AppRoutes.welcomeScreen));
+            }
           }
         } else {
           if (value['statusCode'] == 404) {
@@ -74,12 +89,12 @@ class LoginUtil {
                 context,
                 'Oops, something isn\'t right!',
                 value['error'],
-                'Enter OTP',
+                'Sign Up',
                 'Close',
-                () => Navigator.of(context)
-                    .pushNamed(AppRoutes.registerOTPScreen));
+                () =>
+                    Navigator.of(context).pushNamed(AppRoutes.registerScreen));
           }
-          if (value['statusCode'] == 400 &&value['validated'] == false ) {
+          if (value['statusCode'] == 400 && value['validated'] == false) {
             AppUtils.showAlertDialog(
                 context,
                 'Oops, something isn\'t right!',
@@ -100,7 +115,7 @@ class LoginUtil {
                 () =>
                     Navigator.of(context).pushNamed(AppRoutes.registerScreen));
           }
-               if (value['statusCode'] == 500) {
+          if (value['statusCode'] == 500) {
             AppUtils.showAlertDialog(
                 context,
                 'Oops, something isn\'t right!',

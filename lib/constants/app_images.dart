@@ -5,7 +5,6 @@ class AppImages {
   static const first = 'assets/images/onboarding/first.png';
   static const third = 'assets/images/onboarding/third.png';
 
-
 //IMAGES
   static const drugs = 'assets/images/images/drugs.png';
   static const bg = 'assets/images/bg.png';
@@ -15,7 +14,7 @@ class AppImages {
   static const refer = 'assets/images/images/refer.png';
   static const referred = 'assets/images/images/referred.png';
   static const sachet = 'assets/images/images/sachet.png';
-  static const canDrugs = 'assets/images/images/canDrugs.png';
+  static const no_prop = 'assets/images/no_prop.png';
   static const banner = 'assets/images/banner.png';
   static const logo = 'assets/icons/logo.png';
 
@@ -61,7 +60,18 @@ class AppImages {
   static const cam = 'assets/icons/cam.png';
   static const chat = 'assets/icons/chat.png';
   static const electrician = 'assets/icons/elect.png';
+    static const tag = 'assets/icons/tag.png';
   static const funmigate = 'assets/icons/funmigate.png';
+  static const gardener = 'assets/icons/request/Gardener.png';
+  static const carpenter = 'assets/icons/request/Carpenter.png';
+  static const painter = 'assets/icons/request/Painter.png';
+  static const alert = 'assets/icons/request/alert.png';
+  static const movers = 'assets/icons/request/Movers.png';
+  static const cleaner = 'assets/icons/request/Cleaners.png';
+  static const money = 'assets/icons/money.png';
+  static const bank = 'assets/icons/bank.png';
+  static const dwn = 'assets/icons/dwn.png';
+  static const notifyfilled = 'assets/icons/notif-f.png';
 
   //Tenants
   static const weightlifting = 'assets/icons/tenant/lifting.png';

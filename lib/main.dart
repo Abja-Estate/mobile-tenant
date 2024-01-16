@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:abjatenant/views/navbar/nav.dart';
 import 'package:abjatenant/views/onboarding/entrance.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -99,9 +100,8 @@ class MyApp extends StatelessWidget {
                       case 2:
                         return LoginScreen();
                       case 3:
-                        return Dashboard();
-                        case 3:
-                        return Dashboard();
+                        return NavBar();
+                       
                     }
                     // if we got our data
                   }

@@ -56,133 +56,135 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFF6F9F5),
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: _getSize.height * 0.8,
-              child: PageView.builder(
-                  scrollDirection: Axis.horizontal,
-                  controller: _controller,
-                  onPageChanged: (value) {
-                    setState(() {
-                      currentIndex = value;
-                    });
-                  },
-                  itemCount: _slidiingItem.length,
-                  itemBuilder: (context, index) {
-                    // contents of slider
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            height: _getSize.height * 0.01,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(AppRoutes.welcomeScreen);
-                            },
-                            child: Text(
-                              'Skip >>>',
-                              style: AppFonts.bodyText.copyWith(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Pallete.secondaryColor),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: _getSize.height * 0.75,
+                child: PageView.builder(
+                    scrollDirection: Axis.horizontal,
+                    controller: _controller,
+                    onPageChanged: (value) {
+                      setState(() {
+                        currentIndex = value;
+                      });
+                    },
+                    itemCount: _slidiingItem.length,
+                    itemBuilder: (context, index) {
+                      // contents of slider
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              height: _getSize.height * 0.01,
                             ),
-                          ),
-                          SizedBox(
-                            height: _getSize.height * 0.05,
-                          ),
-                          SizedBox(
-                            width: _getSize.width * 0.9,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child:
-                                    Image.asset(_slidiingItem[index]['img'])),
-                          ),
-                          SizedBox(
-                            height: _getSize.height * 0.06,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _slidiingItem[index]['title'],
-                                style: AppFonts.boldText.copyWith(
-                                    fontSize: _getSize.width * 0.06,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF47893F)),
-                              ),
-                              SizedBox(
-                                height: _getSize.height * 0.01,
-                              ),
-                              Text(
-                                _slidiingItem[index]['desc'],
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(AppRoutes.welcomeScreen);
+                              },
+                              child: Text(
+                                'Skip >>>',
                                 style: AppFonts.bodyText.copyWith(
-                                    fontSize: _getSize.width * 0.04,
+                                    fontSize: _getSize.height * 0.02,
                                     fontWeight: FontWeight.w600,
-                                    color: Pallete.text),
+                                    color: Pallete.secondaryColor),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  _slidiingItem.length,
-                  (index) => buildDot(index, context),
+                            ),
+                            SizedBox(
+                              height: _getSize.height * 0.05,
+                            ),
+                            SizedBox(
+                              width: _getSize.width * 0.9,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child:
+                                      Image.asset(_slidiingItem[index]['img'])),
+                            ),
+                            SizedBox(
+                              height: _getSize.height * 0.06,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _slidiingItem[index]['title'],
+                                  style: AppFonts.boldText.copyWith(
+                                      fontSize: _getSize.width * 0.055,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF47893F)),
+                                ),
+                                SizedBox(
+                                  height: _getSize.height * 0.01,
+                                ),
+                                Text(
+                                  _slidiingItem[index]['desc'],
+                                  style: AppFonts.bodyText.copyWith(
+                                      fontSize: _getSize.width * 0.035,
+                                      fontWeight: FontWeight.w600,
+                                      color: Pallete.text),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    _slidiingItem.length,
+                    (index) => buildDot(index, context),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: _getSize.height * 0.025,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(''),
-                  Container(
-                    width: _getSize.width * 0.55,
-                    height: _getSize.height * 0.05,
-                    decoration: BoxDecoration(
-                        color: Pallete.primaryColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Center(
-                      child: GestureDetector(
-                        child: Text(
-                          currentIndex == _slidiingItem.length - 1
-                              ? "Continue"
-                              : "Next",
-                          style: AppFonts.smallWhiteBold.copyWith(fontSize: 20),
+              SizedBox(
+                height: _getSize.height * 0.025,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(''),
+                    Container(
+                      width: _getSize.width * 0.55,
+                      height: _getSize.height * 0.05,
+                      decoration: BoxDecoration(
+                          color: Pallete.primaryColor,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                        child: GestureDetector(
+                          child: Text(
+                            currentIndex == _slidiingItem.length - 1
+                                ? "Continue"
+                                : "Next",
+                            style: AppFonts.smallWhiteBold.copyWith(fontSize: 20),
+                          ),
+                          onTap: () {
+                            if (currentIndex == _slidiingItem.length - 1) {
+                              saveOnce(1);
+                              Navigator.of(context)
+                                  .pushNamed(AppRoutes.welcomeScreen);
+                              // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> NavBar()),
+                              // );
+                            }
+                            _controller.nextPage(
+                                duration: Duration(milliseconds: 100),
+                                curve: Curves.bounceIn);
+                          },
                         ),
-                        onTap: () {
-                          if (currentIndex == _slidiingItem.length - 1) {
-                            saveOnce(1);
-                            Navigator.of(context)
-                                .pushNamed(AppRoutes.welcomeScreen);
-                            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> NavBar()),
-                            // );
-                          }
-                          _controller.nextPage(
-                              duration: Duration(milliseconds: 100),
-                              curve: Curves.bounceIn);
-                        },
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

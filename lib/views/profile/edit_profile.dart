@@ -1,10 +1,17 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:abjatenant/components/buttons.dart';
 import 'package:abjatenant/components/input_field.dart';
 import 'package:abjatenant/constants/app_routes.dart';
+import 'package:abjatenant/utils/app_utils.dart';
+import 'package:abjatenant/utils/auth_utils/update_userdata_utils.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-
+import 'package:image_picker/image_picker.dart' as imgpika;
 import '../../constants/app_images.dart';
+import '../../utils/local_storage.dart';
 import '../../utils/validator.dart';
 
 class EditProfile extends StatefulWidget {
@@ -16,6 +23,55 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   var photo = 'https://picsum.photos/200';
+  final _updateFormKey = GlobalKey<FormState>();
+  final Map<String, dynamic> _updateData = {
+    'email': '',
+    'password': '',
+    'confirmPassword': "",
+    "phone": "",
+    "name": "",
+    "surname": "",
+    "about": "",
+    "selfie": ""
+  };
+  bool isFetchingImage = false;
+  bool isuploaded = false;
+
+  imgpika.XFile? image; //this is the state variable
+  upload() async {
+    final imgpika.ImagePicker _picker = imgpika.ImagePicker();
+    final img = await _picker.pickImage(source: imgpika.ImageSource.gallery);
+    if (img != null) {
+      File imageFile = File(img.path);
+      Uint8List imageBytes = await imageFile.readAsBytes();
+      String base64String = base64Encode(imageBytes);
+      setState(() {
+        print(base64String);
+        _updateData['selfie'] = base64String;
+        isuploaded = true;
+      });
+    }
+  }
+
+  getData() async {
+    photo = await showSelfie();
+    if (photo == '') {
+      photo = 'https://picsum.photos/200';
+    } else {
+      photo;
+    }
+
+    setState(() {
+      photo;
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _getSize = MediaQuery.of(context).size;
@@ -47,88 +103,145 @@ class _EditProfileState extends State<EditProfile> {
               SizedBox(
                 height: _getSize.height * 0.04,
               ),
-              Stack(
-                      children: [
-                        DottedBorder(
-                          borderType: BorderType.Circle,
-                          strokeWidth: 2,
-                          color: Color(0xFF47893F),
-                          dashPattern: [10, 16],
-                          child: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: ClipOval(
-                              child: Image.network(
-                                photo,
-                                width: _getSize.width * 0.24,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                            top: 82,
-                            bottom: 1,
-                            left: 70,
-                            right: 0,
-                            child: SizedBox(
-                                width: 4,
-                                child: Image.asset(
-                                  AppImages.cam,
-                                )))
-                      ],
-                    ),
-                   
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: Column(
+              GestureDetector(
+                onTap: () {
+                  upload();
+                },
+                child: Stack(
                   children: [
-                    CustomInput3(
-                      validator: Validators.nameValidator,
-                      label: 'fullname',
-                      hint: 'Full Name',
-                      onSaved: (value) {},
+                    DottedBorder(
+                      borderType: BorderType.Circle,
+                      strokeWidth: 2,
+                      color: Color(0xFF47893F),
+                      dashPattern: [10, 16],
+                      child: Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: ClipOval(
+                          child: !isuploaded
+                              ? Image.network(
+                                  photo,
+                                  fit: BoxFit.cover,
+                                  width: _getSize.width * 0.25,
+                                  height: _getSize.height * 0.12,
+                                )
+                              : Image.memory(
+                                  base64Decode(_updateData['selfie']),   fit: BoxFit.cover,
+                                    width: _getSize.width * 0.25,
+                                  height: _getSize.height * 0.12,
+                                ),
+                        ),
+                      ),
                     ),
-                    SizedBox(
-                      height: _getSize.height * 0.04,
-                    ),
-                    CustomInput3(
-                      validator: Validators.nameValidator,
-                      label: 'email/phone',
-                      hint: 'Phone Number or Email',
-                      onSaved: (value) {},
-                    ),
-                    SizedBox(
-                      height: _getSize.height * 0.04,
-                    ),
-                    CustomInput3(
-                      validator: Validators.nameValidator,
-                      label: 'password',
-                      hint: 'Password',
-                      onSaved: (value) {},
-                    ),
-                    SizedBox(
-                      height: _getSize.height * 0.04,
-                    ),
-                    CustomInput3(
-                      validator: Validators.nameValidator,
-                      label: 'password',
-                      hint: 'Confirm Password',
-                      onSaved: (value) {},
-                    ),
+                    Positioned(
+                        top: 82,
+                        bottom: 1,
+                        left: 70,
+                        right: 0,
+                        child: SizedBox(
+                            width: 4,
+                            child: Image.asset(
+                              AppImages.cam,
+                            )))
                   ],
                 ),
               ),
               SizedBox(
-                height: _getSize.height * 0.2,
+                height: _getSize.height * 0.04,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: Form(
+                  key: _updateFormKey,
+                  child: Column(
+                    children: [
+                      CustomInput3(
+                        validator: Validators.nameValidator,
+                        label: 'First Name',
+                        hint: 'First Name',
+                        onSaved: (value) {
+                          _updateData['name'] = value;
+                        },
+                      ),
+                      CustomInput3(
+                        validator: Validators.nameValidator,
+                        label: 'Last Name',
+                        hint: 'Last Name',
+                        onSaved: (value) {
+                          _updateData['surname'] = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: _getSize.height * 0.04,
+                      ),
+                      CustomInput3(
+                        validator: Validators.nameValidator,
+                        label: 'Email',
+                        hint: 'Email',
+                        onSaved: (value) {
+                          _updateData['email'] = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: _getSize.height * 0.04,
+                      ),
+                      CustomInput3(
+                        validator: Validators.nameValidator,
+                        label: 'Phone',
+                        hint: 'Phone',
+                        onSaved: (value) {
+                          _updateData['phone'] = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: _getSize.height * 0.04,
+                      ),
+                      CustomInput3(
+                        validator: Validators.nameValidator,
+                        label: 'About',
+                        hint: 'About',
+                        onSaved: (value) {
+                          _updateData['about'] = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: _getSize.height * 0.04,
+                      ),
+                      CustomInput3(
+                        validator: Validators.nameValidator,
+                        label: 'password',
+                        hint: 'Password',
+                        onSaved: (value) {
+                          _updateData['password'] = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: _getSize.height * 0.04,
+                      ),
+                      CustomInput3(
+                        validator: Validators.nameValidator,
+                        label: 'password',
+                        hint: 'Confirm Password',
+                        onSaved: (value) {
+                          _updateData['confirmPassword'] = value;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: _getSize.height * 0.1,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 64),
                 child: ButtonWithFuction(
                     text: 'Save Changes',
                     onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(AppRoutes.navbar);
+                      UpdateUtil.update(_updateFormKey, context, _updateData);
                     }),
-              )
+              ),  SizedBox(
+                height: _getSize.height * 0.1,
+              ),
             ],
           ),
         ),

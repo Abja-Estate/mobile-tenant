@@ -215,7 +215,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                             ),
                             ButtonWithFuction(
                                 text: 'I agree',
-                                enabled: false,
+                                disabled: false,
                                 onPressed: () {
                                   Navigator.of(context)
                                       .pushReplacementNamed(AppRoutes.navbar);

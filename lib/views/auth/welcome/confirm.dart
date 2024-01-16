@@ -142,10 +142,13 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
                                         SizedBox(
                                           height: _getSize.height * 0.003,
                                         ),
-                                        Text(landlord["fullName"],
-                                            style: AppFonts.body1.copyWith(
-                                                color: Pallete.text,
-                                                fontWeight: FontWeight.w600)),
+                                        SizedBox(
+                                                   width: _getSize.width*0.45,
+                                          child: Text(landlord["fullName"],
+                                              style: AppFonts.body1.copyWith(
+                                                  color: Pallete.text,
+                                                  fontWeight: FontWeight.w600)),
+                                        ),
                                         SizedBox(
                                           height: _getSize.height * 0.003,
                                         ),
@@ -160,10 +163,14 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
                                             SizedBox(
                                               width: 12,
                                             ),
-                                            Text(
-                                              landlord["location"],
-                                              style: AppFonts.body1.copyWith(
-                                                  color: Pallete.text),
+                                            SizedBox(
+                                              width: _getSize.width*0.45,
+                                              child: Text(
+                                                landlord["location"],
+                                                overflow: TextOverflow.ellipsis,
+                                                style: AppFonts.body1.copyWith(
+                                                    color: Pallete.text),
+                                              ),
                                             )
                                           ],
                                         )

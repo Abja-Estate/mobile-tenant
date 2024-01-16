@@ -12,6 +12,7 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_fonts.dart';
 import '../../constants/app_images.dart';
 import '../../constants/app_routes.dart';
+import '../../constants/resources.dart';
 import '../../models/dashItem.dart';
 import '../../models/pharm.dart';
 import '../../utils/app_utils.dart';
@@ -60,40 +61,6 @@ class _DashboardState extends State<Dashboard> {
 
   String searchItem = '';
 
-  List<Map> ListItem = [
-    {'image': "assets/images/icons/pills.png", 'text': 'Get medications.'},
-    {
-      'image': "assets/images/icons/textrack.png",
-      'text': 'Order for a lab test'
-    },
-    {'image': "assets/images/icons/upload.png", 'text': 'Upload Prescription'},
-    {
-      'image': "assets/images/images/support_doc.jpeg",
-      'text': 'Ask Pharm Josy'
-    },
-  ];
-  List<Map> med = [
-    {
-      'image': "assets/images/images/pharmplug_icon_row3.png",
-      'header': "Instant Home Deliveries",
-      'text': 'Enjoy Home deliveries on products and prescriptions '
-    },
-    {
-      'image': "assets/images/images/pharmplug_icon_row4.png",
-      'header': "24/7 Customer support",
-      'text': "Call, chat or reach a pharmacist anytime anyday"
-    },
-    {
-      'image': "assets/images/images/pharmplug_icon_row1.png",
-      'header': "PharmPlug Special",
-      'text': 'Special programs and services are available from time to time.'
-    },
-    {
-      'image': "assets/images/images/pharmplug_icon_row2.png",
-      'header': 'Instant Discounts',
-      'text': 'Instant discounts are available on products and prescriptions'
-    },
-  ];
   var fullname = "";
   var name = "";
   var surname = "";
@@ -101,10 +68,14 @@ class _DashboardState extends State<Dashboard> {
   getName() async {
     name = await showName();
     surname = await showSurname();
-
+    photo = await showSelfie();
+    if (photo == '') {
+      photo = 'https://picsum.photos/200';
+    } else {
+      photo;
+    }
     setState(() {
-      name;
-      surname;
+      photo;
       fullname = "$name $surname";
     });
   }
@@ -226,12 +197,16 @@ class _DashboardState extends State<Dashboard> {
                                 ],
                               ),
                               GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pushNamed(AppRoutes.profile);
+                                  },
                                   child: Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: ClipOval(
                                       child: Image.network(
                                         photo,
+                                        fit: BoxFit.cover,
                                         width: 56,
                                         height: 56,
                                       ),
@@ -317,11 +292,37 @@ class _DashboardState extends State<Dashboard> {
                       SizedBox(
                         height: _getSize.height * 0.015,
                       ),
-                      properties(
-                        getSizeWidth: _getSize.width,
-                        getSizeHeight: _getSize.height,
-                        unit: property,
-                      ),
+                      property.isNotEmpty
+                          ? properties(
+                              getSizeWidth: _getSize.width,
+                              getSizeHeight: _getSize.height,
+                              unit: property,
+                            )
+                          : Container(
+                              margin: EdgeInsets.only(bottom: 8),
+                              decoration: BoxDecoration(
+                                  color: Color(0xFFF6F9F5),
+                                  borderRadius: BorderRadius.circular(10)),
+                              width: _getSize.width,
+                              height: _getSize.height * 0.25,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SpinKitRing(
+                                      size: 30,
+                                      color: Pallete.primaryColor,
+                                      lineWidth: 2.0,
+                                    ),
+                                    Text(
+                                      "Loading your unit image",
+                                      style: AppFonts.body1,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                       Text(
                         'Make A Request',
                         style: AppFonts.boldText.copyWith(
@@ -364,8 +365,8 @@ class _DashboardState extends State<Dashboard> {
                               getSizeHeight: _getSize.height,
                             )
                           : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
                                 height: _getSize.height * 0.2,
                                 width: _getSize.width,
                                 decoration: BoxDecoration(
@@ -392,7 +393,10 @@ class _DashboardState extends State<Dashboard> {
                                   ],
                                 ),
                               ),
-                          ),
+                            ),
+                      SizedBox(
+                        height: _getSize.height * 0.05,
+                      ),
                     ],
                   ),
                 ],
@@ -421,276 +425,273 @@ class properties extends StatelessWidget {
     return SizedBox(
         width: getSizeWidth,
         height: getSizeHeight * 0.45,
-        child: ListView.builder(
-            itemCount: 1,
-            physics: BouncingScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed(AppRoutes.propDetails);
-                },
-                child: Column(
-                  children: [
-                    Image.network(
-                      unit["data"]["photo"],
-                      fit: BoxFit.cover,
-                      width: getSizeWidth,
-                      height: getSizeHeight * 0.25,
-                    ),
-                    SizedBox(
-                      height: getSizeHeight * 0.01,
-                    ),
-                    Row(
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              unit["propertyName"],
-                              style: AppFonts.boldText.copyWith(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w900,
-                                  color: Color.fromARGB(255, 79, 88, 106)),
-                            ),
-                            SizedBox(
-                              height: getSizeHeight * 0.005,
-                            ),
-                            Row(
-                              children: [
-                                Row(
-                                  children: [
-                                    Image.asset(
-                                      AppImages.estate,
-                                      width: 20,
-                                    ),
-                                    SizedBox(
-                                      width: getSizeWidth * 0.008,
-                                    ),
-                                    Text(
-                                      unit["propertyStructure"],
-                                      style: AppFonts.body1.copyWith(
-                                          color: Pallete.fade, fontSize: 14),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: getSizeWidth * 0.06,
-                                ),
-                                Row(
-                                  children: [
-                                    Image.asset(AppImages.location, width: 14),
-                                    SizedBox(
-                                      width: getSizeWidth * 0.008,
-                                    ),
-                                    Text(
-                                      unit["location"],
-                                      overflow: TextOverflow.ellipsis,
-                                      style: AppFonts.body1.copyWith(
-                                          color: Pallete.fade, fontSize: 14),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: getSizeHeight * 0.02,
-                    ),
-                    Row(
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  AppImages.bedroom,
-                                  width: 24,
-                                ),
-                                SizedBox(
-                                  width: getSizeWidth * 0.01,
-                                ),
-                                Text(
-                                  unit["data"]["bedroom"],
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: getSizeHeight * 0.001,
-                            ),
-                            Text(
-                              "Bedroom",
-                              style: AppFonts.bodyText.copyWith(fontSize: 12),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          width: getSizeWidth * 0.05,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  AppImages.toilet,
-                                  width: 24,
-                                ),
-                                SizedBox(
-                                  width: getSizeWidth * 0.01,
-                                ),
-                                Text(unit["data"]["toilet"])
-                              ],
-                            ),
-                            SizedBox(
-                              height: getSizeHeight * 0.001,
-                            ),
-                            Text(
-                              "Toilet",
-                              style: AppFonts.bodyText.copyWith(fontSize: 12),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          width: getSizeWidth * 0.05,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  AppImages.bathroom,
-                                  width: 24,
-                                ),
-                                SizedBox(
-                                  width: getSizeWidth * 0.01,
-                                ),
-                                Text(unit["data"]["bathroom"])
-                              ],
-                            ),
-                            SizedBox(
-                              height: getSizeHeight * 0.001,
-                            ),
-                            Text(
-                              "Bathroom",
-                              style: AppFonts.bodyText.copyWith(fontSize: 12),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          width: getSizeWidth * 0.05,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  AppImages.nepa,
-                                  width: 24,
-                                ),
-                                SizedBox(
-                                  width: getSizeWidth * 0.01,
-                                ),
-                                Text(unit["data"]["waterMeter"])
-                              ],
-                            ),
-                            SizedBox(
-                              height: getSizeHeight * 0.001,
-                            ),
-                            Text(
-                              "Water Meter",
-                              style: AppFonts.bodyText.copyWith(fontSize: 12),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: getSizeHeight * 0.01,
-                    ),
-                    Row(
-                      children: [
-                        unit["data"]["wifi"]
-                            ? Row(
-                                children: [
-                                  Image.asset(
-                                    AppImages.wifi,
-                                    width: 20,
-                                  ),
-                                  SizedBox(
-                                    width: getSizeWidth * 0.015,
-                                  ),
-                                  Text(
-                                    "Wifi",
-                                    style: AppFonts.body1,
-                                  )
-                                ],
+        child: GestureDetector(
+          onTap: () {
+            // Navigator.of(context).pushNamed(AppRoutes.propDetails);
+          },
+          child: Column(
+            children: [
+              Image.network(
+                unit["data"]["photo"],
+                fit: BoxFit.cover,
+                width: getSizeWidth,
+                height: getSizeHeight * 0.25,
+              ),
+              SizedBox(
+                height: getSizeHeight * 0.01,
+              ),
+              Row(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        unit["propertyName"],
+                        style: AppFonts.boldText.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w900,
+                            color: Color.fromARGB(255, 79, 88, 106)),
+                      ),
+                      SizedBox(
+                        height: getSizeHeight * 0.005,
+                      ),
+                      Row(
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                AppImages.estate,
+                                width: 20,
+                              ),
+                              SizedBox(
+                                width: getSizeWidth * 0.008,
+                              ),
+                              Text(
+                                unit["propertyStructure"],
+                                style: AppFonts.body1.copyWith(
+                                    color: Pallete.fade, fontSize: 14),
                               )
-                            : Container(),
-                        SizedBox(
-                          width: getSizeWidth * 0.05,
-                        ),
-                        unit["data"]["power"]
-                            ? Row(
-                                children: [
-                                  Image.asset(
-                                    AppImages.power,
-                                    width: 24,
-                                  ),
-                                  SizedBox(
-                                    width: getSizeWidth * 0.005,
-                                  ),
-                                  Text(
-                                    "24hrs Power",
-                                    style: AppFonts.body1,
-                                  ),
-                                  SizedBox(
-                                    width: getSizeWidth * 0.05,
-                                  ),
-                                ],
+                            ],
+                          ),
+                          SizedBox(
+                            width: getSizeWidth * 0.06,
+                          ),
+                          Row(
+                            children: [
+                              Image.asset(AppImages.location, width: 14),
+                              SizedBox(
+                                width: getSizeWidth * 0.008,
+                              ),
+                              SizedBox(
+                                width: getSizeWidth * 0.5,
+                                child: Text(
+                                  unit["location"],
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AppFonts.body1.copyWith(
+                                      color: Pallete.fade, fontSize: 14),
+                                ),
                               )
-                            : Container(),
-                        Row(
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: getSizeHeight * 0.02,
+              ),
+              Row(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            AppImages.bedroom,
+                            width: 24,
+                          ),
+                          SizedBox(
+                            width: getSizeWidth * 0.01,
+                          ),
+                          Text(
+                            unit["data"]["bedroom"],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: getSizeHeight * 0.001,
+                      ),
+                      Text(
+                        "Bedroom",
+                        style: AppFonts.bodyText.copyWith(fontSize: 12),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    width: getSizeWidth * 0.05,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            AppImages.toilet,
+                            width: 24,
+                          ),
+                          SizedBox(
+                            width: getSizeWidth * 0.01,
+                          ),
+                          Text(unit["data"]["toilet"])
+                        ],
+                      ),
+                      SizedBox(
+                        height: getSizeHeight * 0.001,
+                      ),
+                      Text(
+                        "Toilet",
+                        style: AppFonts.bodyText.copyWith(fontSize: 12),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    width: getSizeWidth * 0.05,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            AppImages.bathroom,
+                            width: 24,
+                          ),
+                          SizedBox(
+                            width: getSizeWidth * 0.01,
+                          ),
+                          Text(unit["data"]["bathroom"])
+                        ],
+                      ),
+                      SizedBox(
+                        height: getSizeHeight * 0.001,
+                      ),
+                      Text(
+                        "Bathroom",
+                        style: AppFonts.bodyText.copyWith(fontSize: 12),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    width: getSizeWidth * 0.05,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            AppImages.nepa,
+                            width: 24,
+                          ),
+                          SizedBox(
+                            width: getSizeWidth * 0.01,
+                          ),
+                          Text(unit["data"]["waterMeter"])
+                        ],
+                      ),
+                      SizedBox(
+                        height: getSizeHeight * 0.001,
+                      ),
+                      Text(
+                        "Water Meter",
+                        style: AppFonts.bodyText.copyWith(fontSize: 12),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: getSizeHeight * 0.01,
+              ),
+              Row(
+                children: [
+                  unit["data"]["wifi"]
+                      ? Row(
                           children: [
                             Image.asset(
-                              AppImages.nepa,
+                              AppImages.wifi,
+                              width: 20,
+                            ),
+                            SizedBox(
+                              width: getSizeWidth * 0.015,
+                            ),
+                            Text(
+                              "Wifi",
+                              style: AppFonts.body1,
+                            )
+                          ],
+                        )
+                      : Container(),
+                  SizedBox(
+                    width: getSizeWidth * 0.05,
+                  ),
+                  unit["data"]["power"]
+                      ? Row(
+                          children: [
+                            Image.asset(
+                              AppImages.power,
                               width: 24,
                             ),
                             SizedBox(
                               width: getSizeWidth * 0.005,
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  unit["data"]["lightMeter"],
-                                ),
-                                Text(
-                                  "Light Meter",
-                                  style: AppFonts.body1,
-                                ),
-                              ],
-                            )
+                            Text(
+                              "24hrs Power",
+                              style: AppFonts.body1,
+                            ),
+                            SizedBox(
+                              width: getSizeWidth * 0.05,
+                            ),
                           ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }));
+                        )
+                      : Container(),
+                  Row(
+                    children: [
+                      Image.asset(
+                        AppImages.nepa,
+                        width: 24,
+                      ),
+                      SizedBox(
+                        width: getSizeWidth * 0.005,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            unit["data"]["lightMeter"],
+                          ),
+                          Text(
+                            "Light Meter",
+                            style: AppFonts.body1,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ));
   }
 }
 
@@ -701,24 +702,6 @@ class middle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Map> services = [
-      {'icon': AppImages.agent, 'color': Color(0xFFDAE7D9), 'text': 'Agent'},
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFFCEADA),
-        'text': 'Electrician'
-      },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFEADAFF),
-        'text': 'Plumber'
-      },
-      {
-        'icon': AppImages.funmigate,
-        'color': Color(0xFFFFE4E9),
-        'text': 'Fumigator'
-      },
-    ];
     return SizedBox(
         width: _getSize.width,
         height: _getSize.height * 0.1,
@@ -759,6 +742,8 @@ class middle extends StatelessWidget {
                       children: [
                         Image.asset(
                           services[index]['icon'],
+                          width: _getSize.width * 0.06,
+                          color: services[index]['color2'],
                         ),
                         SizedBox(
                           height: 2,

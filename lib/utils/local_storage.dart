@@ -69,9 +69,9 @@ saveToken(tk) async {
   s_prefs.setString("token", tk);
 }
 
-setSecured(secured) async {
+saveCreatedAt(tm) async {
   s_prefs = await SharedPreferences.getInstance();
-  s_prefs.setBool("secured", secured);
+  s_prefs.setString("created", tm);
 }
 
 saveId(id) async {
@@ -86,6 +86,14 @@ showUsername() async {
   s_prefs = await SharedPreferences.getInstance();
 
   String? temp = s_prefs.getString("username");
+
+  return temp;
+}
+
+showCreated() async {
+  s_prefs = await SharedPreferences.getInstance();
+
+  String? temp = s_prefs.getString("created");
 
   return temp;
 }

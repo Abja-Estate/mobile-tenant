@@ -1,5 +1,6 @@
 
 import 'package:abjatenant/views/notification/notification.dart';
+import 'package:abjatenant/views/request/request.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/app_colors.dart';
@@ -101,7 +102,7 @@ class _NavBarState extends State<NavBar> {
                           minWidth: 40,
                           onPressed: () {
                             setState(() {
-                              currentScreen = Dashboard();
+                              currentScreen = RequestScreen();
                               currentTab = 1;
                             });
                           },

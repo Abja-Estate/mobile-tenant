@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_images.dart';
+import '../../utils/local_storage.dart';
+import '../../utils/time_formatter.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -16,6 +18,43 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   var photo = 'https://picsum.photos/200';
+
+  var fullname = "";
+  var name = "";
+  var surname = "";
+  var email = "";
+
+  String createdAt = '';
+
+  var about = 'No Data';
+  getData() async {
+    name = await showName();
+    about = await showAbout();
+    surname = await showSurname();
+    createdAt = await showCreated();
+    photo = await showSelfie();
+    if (photo == '') {
+      photo = 'https://picsum.photos/200';
+    } else {
+      photo;
+    }
+    if (about == '') {
+      about = "No Data";
+    } else {}
+    setState(() {
+      createdAt;
+      about;
+      photo;
+      fullname = "$name $surname";
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _getSize = MediaQuery.of(context).size;
@@ -35,14 +74,15 @@ class _ProfileState extends State<Profile> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              AppRoutes.navbar, (route) => false);
                         },
                         child: Image.asset(
                           AppImages.back,
                           width: 36,
                         ),
                       ),
-                      Text("Profile"),
+                      Text("My Profile"),
                       Text("")
                     ],
                   ),
@@ -69,21 +109,14 @@ class _ProfileState extends State<Profile> {
                             child: ClipOval(
                               child: Image.network(
                                 photo,
-                                width: _getSize.width * 0.24,
+                            fit: BoxFit.cover,
+                            width: _getSize.width * 0.22,
+                            height: _getSize.height * 0.10,
                               ),
                             ),
                           ),
                         ),
-                        Positioned(
-                            top: 82,
-                            bottom: 1,
-                            left: 70,
-                            right: 0,
-                            child: SizedBox(
-                                width: 4,
-                                child: Image.asset(
-                                  AppImages.cam,
-                                )))
+                    
                       ],
                     ),
                     Container(
@@ -101,7 +134,7 @@ class _ProfileState extends State<Profile> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "Ayo Solomon",
+                      fullname,
                       style: AppFonts.boldText
                           .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
@@ -138,7 +171,7 @@ class _ProfileState extends State<Profile> {
                           width: 4,
                         ),
                         Text(
-                          "Joined: 27th January, 2023",
+                          formatTZDate(createdAt),
                           style: AppFonts.body1
                               .copyWith(color: Pallete.text, fontSize: 14),
                         )
@@ -184,16 +217,19 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   height: _getSize.height * 0.05,
                 ),
-                Text("Recommendations"),
-                bottom(getSize: _getSize),
+                bottom(
+                  getSize: _getSize,
+                  about: about,
+                ),
                 SizedBox(
                   height: _getSize.height * 0.05,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 124),
                   child: ButtonWithFuction(
-                      text: 'Logout',
+                      text: 'Log out',
                       onPressed: () {
+                        clear();
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             AppRoutes.welcomeScreen, (route) => false);
                       }),
@@ -208,226 +244,270 @@ class _ProfileState extends State<Profile> {
 }
 
 class middle extends StatelessWidget {
-  const middle({super.key, required Size getSize}) : _getSize = getSize;
+  const middle({
+    super.key,
+    required Size getSize,
+  }) : _getSize = getSize;
 
   final Size _getSize;
 
   @override
   Widget build(BuildContext context) {
-    List<Map> services = [
-      {
-        'icon': AppImages.agent,
-        'color': Color(0xFFDAE7D9),
-        'text': 'Properties',
-        'text2': "Rented"
-      },
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFFCEADA),
-        'text': 'Request',
-        'text2': "Made"
-      }
-    ];
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-            width: _getSize.width * 0.7,
-            height: _getSize.height * 0.1,
-            child: ListView.builder(
-                itemCount: services.length,
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                        top: 8.0,
-                        bottom: 8,
-                        right: _getSize.width * 0.06,
-                        left: 4),
-                    child: Container(
-                      height: _getSize.height * 0.001,
-                      width: _getSize.width * 0.3,
-                      decoration: BoxDecoration(
-                          color: services[index]['color'],
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromARGB(44, 85, 80, 80),
-                              blurRadius: 11,
-                              spreadRadius: 1,
-                              offset: Offset(0, 5),
-                            )
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
-                      child: Center(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: _getSize.width * 0.05,
-                            ),
-                            Image.asset(services[index]['icon']),
-                            SizedBox(
-                              width: _getSize.width * 0.005,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  services[index]['text'],
-                                  style: AppFonts.body1.copyWith(
-                                      color: Pallete.fade,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                SizedBox(
-                                  height: 2,
-                                ),
-                                Text(
-                                  services[index]['text2'],
-                                  style: AppFonts.body1.copyWith(
-                                      color: Pallete.fade,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+        Container(
+          height: _getSize.height * 0.075,
+          width: _getSize.width * 0.28,
+          decoration: BoxDecoration(
+              color: Color(0xFFBBCDD1),
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromARGB(68, 85, 80, 80),
+                  blurRadius: 11,
+                  spreadRadius: 1,
+                  offset: Offset(0, 5),
+                )
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(12))),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("05",
+                        style: AppFonts.boldText.copyWith(
+                          fontSize: _getSize.height * 0.02,
+                          color: Color(0xFF1D5A67),
+                        )),
+                    Image.asset(
+                      AppImages.estate,
+                      height: _getSize.height * 0.02,
+                      color: Color(0xFF1D5A67),
                     ),
-                  );
-                })),
+                  ],
+                ),
+                SizedBox(
+                  width: _getSize.width * 0.04,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Active",
+                      style: AppFonts.body1.copyWith(
+                          color: Color(0xFF1D5A67),
+                          fontSize: _getSize.height * 0.017,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      "Rent",
+                      style: AppFonts.body1.copyWith(
+                          color: Color(
+                            0xFF1D5A67,
+                          ),
+                          fontSize: _getSize.height * 0.017,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          width: _getSize.width * 0.04,
+        ),
+        Container(
+          height: _getSize.height * 0.075,
+          width: _getSize.width * 0.28,
+          decoration: BoxDecoration(
+              color: Color(0xFFFDE7CD),
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromARGB(68, 85, 80, 80),
+                  blurRadius: 11,
+                  spreadRadius: 1,
+                  offset: Offset(0, 5),
+                )
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(12))),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("02",
+                        style: AppFonts.boldText.copyWith(
+                          fontSize: _getSize.height * 0.02,
+                          color: Color(0xFFF58807),
+                        )),
+                    Image.asset(
+                      AppImages.request,
+                      width: 18,
+                      color: Color(0xFFF58807),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: _getSize.width * 0.04,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Service",
+                      style: AppFonts.body1.copyWith(
+                          color: Color(0xFFF58807),
+                          fontSize: _getSize.height * 0.017,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      "Request",
+                      style: AppFonts.body1.copyWith(
+                          color: Color(
+                            0xFFF58807,
+                          ),
+                          fontSize: _getSize.height * 0.017,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
 }
 
 class bottom extends StatelessWidget {
-  const bottom({super.key, required Size getSize}) : _getSize = getSize;
+  const bottom({super.key, required Size getSize, required this.about})
+      : _getSize = getSize;
 
   final Size _getSize;
+  final String about;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        width: _getSize.width * 0.9,
+        height: _getSize.height * 0.27,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            "About",
+            style: AppFonts.body1.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: Pallete.primaryColor),
+          ),
+          SizedBox(
+            height: _getSize.height * 0.005,
+          ),
+          Container(
+            width: _getSize.width * 0.15,
+            height: _getSize.height * 0.0015,
+            color: Pallete.text,
+          ),
+          SizedBox(
+            height: _getSize.height * 0.0124,
+          ),
+          SizedBox(
+            width: _getSize.width,
+            child: Text(
+              about,
+              style: AppFonts.body1.copyWith(color: Pallete.black),
+            ),
+          ),
+          SizedBox(
+            height: _getSize.height * 0.0124,
+          ),
+          Container(
+            width: _getSize.width,
+            height: _getSize.height * 0.0007,
+            color: Pallete.fade,
+          ),
+          SizedBox(
+            height: _getSize.height * 0.02,
+          ),
+          items(
+            text: "My Cards",
+            img: AppImages.card,
+          ),
+          SizedBox(
+            height: _getSize.height * 0.02,
+          ),
+          items(
+            text: "Settings",
+            img: AppImages.settings,
+          ),
+          SizedBox(
+            height: _getSize.height * 0.02,
+          ),
+          items(
+            text: "Help and Support",
+            img: AppImages.help,
+          ),
+          SizedBox(
+            height: _getSize.height * 0.01,
+          ),
+        ]));
+  }
+}
+
+class items extends StatelessWidget {
+  const items({super.key, required this.text, required this.img, this.route});
+  final String text;
+  final String img;
+  final String? route;
 
   @override
   Widget build(BuildContext context) {
-    List<Map> services = [
-      {'icon': AppImages.agent, 'color': Color(0xFFDAE7D9), 'text': 'Agent'},
-      {
-        'icon': AppImages.electrician,
-        'color': Color(0xFFFCEADA),
-        'text': 'Electrician'
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamed(route!);
       },
-      {
-        'icon': AppImages.plumber,
-        'color': Color(0xFFEADAFF),
-        'text': 'Plumber'
-      },
-      {
-        'icon': AppImages.funmigate,
-        'color': Color(0xFFFFE4E9),
-        'text': 'Fumigator'
-      },
-    ];
-    return SizedBox(
-        width: _getSize.width * 0.9,
-        height: _getSize.height * 0.2,
-        child: ListView.builder(
-            itemCount: services.length,
-            physics: BouncingScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(
-                    top: 8.0, bottom: 8, right: 8, left: 4),
-                child: Container(
-                  height: _getSize.height * 0.1,
-                  width: _getSize.width,
-                  decoration: BoxDecoration(
-                      color: Pallete.black,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromARGB(44, 85, 80, 80),
-                          blurRadius: 11,
-                          spreadRadius: 1,
-                          offset: Offset(0, 5),
-                        )
-                      ],
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          AppImages.house,
-                          color: Pallete.whiteColor,
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Text(
-                                  services[index]['text'],
-                                  style: AppFonts.body1.copyWith(
-                                      color: Pallete.whiteColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  width: _getSize.width * 0.35,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Rating",
-                                      style: AppFonts.body1.copyWith(
-                                          color: Pallete.fade,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    Icon(
-                                      Icons.star_rate,
-                                      size: 14,
-                                      color: Color.fromARGB(255, 255, 203, 17),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: _getSize.height * 0.007,
-                            ),
-                            SizedBox(
-                              width: _getSize.width * 0.6,
-                              child: Text(
-                                'I need an electrician to install a new light fixture in my living room. The light fixture is a chandelier and it will need to be wired into the existing electrical system.',
-                                style: AppFonts.body1.copyWith(
-                                    color: Pallete.fade,
-                                    fontSize: 12,
-                                    overflow: TextOverflow.ellipsis,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+      child: Container(
+        width: double.infinity, // Expands to fill the available space
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Row(
+              children: [
+                Image.asset(
+                  img,
+                  width: 24,
                 ),
-              );
-            }));
+                SizedBox(
+                  width: 12,
+                ),
+                Text(
+                  text,
+                  style: AppFonts.body1.copyWith(
+                      fontWeight: FontWeight.w900, color: Pallete.primaryColor),
+                )
+              ],
+            ),
+            Icon(
+              Icons.chevron_right,
+              color: Color(0xFF47893F),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
