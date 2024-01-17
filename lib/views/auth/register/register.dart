@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:abjatenant/models/tenanModel.dart';
+import 'package:abjatenant/utils/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../components/buttons.dart';
@@ -6,6 +10,8 @@ import '../../../constants/app_colors.dart';
 import '../../../constants/app_fonts.dart';
 import '../../../constants/app_images.dart';
 import '../../../constants/app_routes.dart';
+import '../../../models/unit.dart';
+import '../../../network/property.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/auth_utils/register_utils.dart';
 import '../../../utils/google_signup.dart';
@@ -39,7 +45,6 @@ class _SignUpState extends State<SignUp> {
     'email': '',
     'phone': '',
     'password': '',
-    
   };
   void _checkPasswordStrength(String value) {
     dynamic password = value.trim();
@@ -67,7 +72,18 @@ class _SignUpState extends State<SignUp> {
 
   @override
   void initState() {
+    getTenantItems();
+
     super.initState();
+  }
+
+  var tentInfo = {};
+  getTenantItems() async {
+    var tenantString = await showUnitData();
+    Map<String, dynamic> jsonData = json.decode(tenantString);
+    tentInfo = jsonData['tenantInfo'];
+    await saveuuId(tentInfo['unitID']);
+    print(tentInfo['email']);
   }
 
   @override
@@ -158,45 +174,44 @@ class _SignUpState extends State<SignUp> {
                       child: Column(
                         children: [
                           CustomInput3(
-                            validator: Validators.nameValidator,
                             label: 'Email',
-                            hint: 'Email',
+                            hint: tentInfo['email'],
                             onSaved: (value) {
-                              _registerData['email'] = value;
+                              _registerData['email'] = tentInfo['email'];
                             },
                           ),
                           SizedBox(
                             height: _getSize.height * 0.05,
                           ),
                           CustomInput3(
-                            validator: Validators.nameValidator,
                             label: 'First Name',
-                            hint: 'First Name',
+                            hint: tentInfo['name'],
+                            enabled: false,
                             onSaved: (value) {
-                              _registerData['name'] = value;
+                              _registerData['name'] = tentInfo['name'];
                             },
                           ),
                           SizedBox(
                             height: _getSize.height * 0.05,
                           ),
                           CustomInput3(
-                            validator: Validators.nameValidator,
                             label: 'Last Name',
-                            hint: 'Last Name',
+                            hint: tentInfo['surname'],
+                            enabled: false,
                             onSaved: (value) {
-                              _registerData['surname'] = value;
+                              _registerData['surname'] = tentInfo['surname'];
                             },
                           ),
                           SizedBox(
                             height: _getSize.height * 0.05,
                           ),
                           CustomInput3(
-                            validator: Validators.nameValidator,
                             type: "number",
+                            enabled: false,
                             label: 'Phone Number',
-                            hint: 'Phone Number',
+                            hint: tentInfo['phone'],
                             onSaved: (value) {
-                              _registerData['phone'] = value;
+                              _registerData['phone'] = tentInfo['phone'];
                             },
                           ),
                           SizedBox(
@@ -343,10 +358,9 @@ class _SignUpState extends State<SignUp> {
                     child: ButtonWithFuction(
                         text: 'Sign Up',
                         onPressed: () {
+                          print(_registerData);
                           RegisterUtil.register(
                               _registerFormKey, context, _registerData);
-                         // Navigator.of(context)
-                             // .pushNamed(AppRoutes.registerOTPScreen);
                         }),
                   ),
                   SizedBox(height: _getSize.height * 0.01),

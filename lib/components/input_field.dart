@@ -389,7 +389,7 @@ class CustomInput3 extends StatelessWidget {
       controller: myController,
       //maxLengthEnforced: false,
       onSaved: onSaved,
-      //enabled: enabled,
+      enabled: enabled,
       //autofocus: false,
       validator: validator,
       onChanged: onChanged,

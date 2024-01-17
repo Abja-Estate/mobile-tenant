@@ -1,11 +1,18 @@
+import 'dart:convert';
+
 import 'package:abjatenant/components/buttons.dart';
 import 'package:abjatenant/components/input_field.dart';
 import 'package:abjatenant/constants/app_colors.dart';
 import 'package:abjatenant/constants/app_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
+import 'package:provider/provider.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/status.dart' as status;
 import '../../../constants/app_images.dart';
+import '../../../provider/websocket_provider.dart';
+import '../../../utils/local_storage.dart';
 
 class RequestDetails extends StatefulWidget {
   const RequestDetails({Key? key}) : super(key: key);
@@ -15,6 +22,9 @@ class RequestDetails extends StatefulWidget {
 }
 
 class _RequestDetailsState extends State<RequestDetails> {
+  late WebSocketProvider webSocketProvider;
+
+
   List<Map<String, dynamic>> priority = [
     {
       "type": "High Priority",
@@ -38,19 +48,41 @@ class _RequestDetailsState extends State<RequestDetails> {
     },
   ];
 
-
   int selectedIndex = -1;
   bool isSelected = true;
 
- List<Map<String, String>> issues = [];
+  List<Map<String, String>> issues = [];
   List<bool> select = [];
+  Map<String, dynamic> property = {};
+  var landlordid = '';
+  var unitID = '';
+  getPropertyItems() async {
+    var propertyString = await showUnitData();
+
+    var getproperty = Map<String, dynamic>.from(jsonDecode(propertyString));
+    if (getproperty.isEmpty) {
+    } else {
+      setState(() {
+        property = getproperty;
+        landlordid = property['data']['landlordID'];
+        unitID = property['data']['unitID'];
+        print(property);
+      });
+    }
+  }
 
   @override
   void initState() {
+    webSocketProvider = Provider.of<WebSocketProvider>(context, listen: false);
+
+    getPropertyItems();
     super.initState();
     // Initialize your lists here
     issues = [
-      {"problem": "Install, repair, and maintain electrical wiring and fixtures"},
+      {
+        "problem":
+            "Install, repair, and maintain electrical wiring and fixtures"
+      },
       {"problem": "Troubleshoot electrical problems"},
       {"problem": "Upgrade electrical service"},
       {
@@ -61,7 +93,6 @@ class _RequestDetailsState extends State<RequestDetails> {
 
     select = List.generate(issues.length, (index) => false);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -312,8 +343,17 @@ class _RequestDetailsState extends State<RequestDetails> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child:
-                          ButtonWithFuction(text: 'Submit', onPressed: () {}),
+                      child: ButtonWithFuction(
+                          text: 'Submit',
+                          onPressed: () {
+                            Map<String, dynamic> data = {
+                              "target_id": landlordid,
+                              "message": "Sup,postman",
+                              "sender_id": unitID
+                            };
+                            print(data);
+                            webSocketProvider.sendMessage(jsonEncode(data));
+                          }),
                     )
                   ],
                 ),

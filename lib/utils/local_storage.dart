@@ -79,6 +79,11 @@ saveId(id) async {
   s_prefs.setString("id", id);
 }
 
+saveuuId(id) async {
+  s_prefs = await SharedPreferences.getInstance();
+  s_prefs.setString("uuid", id);
+}
+
 
 
 //SHOW SAVE DATA
@@ -126,6 +131,14 @@ showId() async {
   s_prefs = await SharedPreferences.getInstance();
 
   String? temp = s_prefs.getString("id");
+
+  return temp;
+}
+
+showuuId() async {
+  s_prefs = await SharedPreferences.getInstance();
+
+  String? temp = s_prefs.getString("uuid");
 
   return temp;
 }
@@ -258,6 +271,21 @@ saveUnitData(unit) async {
   s_prefs = await SharedPreferences.getInstance();
   String jsonString = jsonEncode(unit);
   s_prefs.setString("unit", jsonString);
+}
+
+savePropertyData(unit) async {
+
+  s_prefs = await SharedPreferences.getInstance();
+  String jsonString = jsonEncode(unit);
+  s_prefs.setString("propD", jsonString);
+}
+
+showPropertyData() async {
+  s_prefs = await SharedPreferences.getInstance();
+
+  String? temp = s_prefs.getString("propD");
+
+  return temp;
 }
 
 showUnitData() async {

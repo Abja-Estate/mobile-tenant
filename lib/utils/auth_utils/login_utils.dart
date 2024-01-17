@@ -50,7 +50,8 @@ class LoginUtil {
         
           if (responseData['statusCode'] == 200) {
             await saveAccessCode(value['data']['rentHistory'][0]['accessCode']);
-            await saveUnitData(responseData['data']);
+           await saveUnitData(responseData['data']['data']);
+          await savePropertyData(responseData['data']);
              await saveOnce(3);
             Navigator.of(context).pop();
             Navigator.of(context).pushNamedAndRemoveUntil(

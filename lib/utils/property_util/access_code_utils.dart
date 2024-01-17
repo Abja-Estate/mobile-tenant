@@ -24,10 +24,11 @@ class AccessCodeUtil {
 
         if (value['statusCode'] == 200) {
           // formkey.currentState!.reset();
+          print(value['data']);
+          await saveAccessCode(code);
+          await saveUnitData(value['data']['data']);
+          await savePropertyData(value['data']);
 
-           await saveAccessCode(code);
-          saveUnitData(value['data']['data'].toString());
-              
           // await setSecured(value['data']['status']);
           Navigator.of(context).pushNamed(
             AppRoutes.confirmLandlordScreen,
@@ -36,18 +37,13 @@ class AccessCodeUtil {
           // Navigator.of(context)
           // .popAndPushNamed(AppRoutes.confirmLandlordScreen);
         } else {
-         
-
-          
-            AppUtils.showAlertDialog(
-                context,
-                'Oops, something isn\'t right!',
-                value['error'],
-                'Contact Support',
-                'Close',
-                () =>
-                    Navigator.of(context).pop());
-          
+          AppUtils.showAlertDialog(
+              context,
+              'Oops, something isn\'t right!',
+              value['error'],
+              'Contact Support',
+              'Close',
+              () => Navigator.of(context).pop());
         }
       });
     }

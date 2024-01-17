@@ -8,13 +8,15 @@ import 'package:location/location.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_fonts.dart';
 import '../../constants/app_images.dart';
 import '../../constants/app_routes.dart';
 import '../../constants/resources.dart';
-import '../../models/dashItem.dart';
-import '../../models/pharm.dart';
+import '../../models/tenanModel.dart';
+import '../../network/property.dart';
+import '../../provider/websocket_provider.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/local_storage.dart';
 import '../../utils/location.dart';
@@ -32,9 +34,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   CarouselController carouselController = CarouselController();
   int _sliderIndex = 0;
-
-  final _sliderItemLength = DashItems.loadItems().length;
-  final _sliderItem = DashItems.loadItems();
+  late WebSocketProvider webSocketProvider;
   // final Size = MediaQuery.of(context).size;
   var photo = 'https://picsum.photos/200';
 
@@ -45,8 +45,11 @@ class _DashboardState extends State<Dashboard> {
   var _permissionGranted;
 
   var fullAddress = 'fetching your location ...';
+  var code;
   getData() async {
     email = await showEmail();
+
+    code =await showAccessCode();
     var mlocate =
         await getAddress(getUserLocation(_serviceEnabled, _permissionGranted));
     print(mlocate['fullAddress'].toString());
@@ -94,6 +97,14 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
   }
 
+  getPropertiesData() async {
+    var res = await PropertyAPI.accessCode(code);
+    var codeInfo = res['statusCode'];
+    if (codeInfo != 200) {
+      
+    } 
+  }
+
   bool isLoadingProperty = true;
   Map<String, dynamic> property = {};
   getPropertyItems() async {
@@ -121,12 +132,10 @@ class _DashboardState extends State<Dashboard> {
     final dataFromRoute = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     final _getSize = MediaQuery.of(context).size;
-    final _sliderItemLength = DashItems.loadItems().length;
-    final _sliderItem = DashItems.loadItems();
-    final Size = MediaQuery.of(context).size;
-    final walkThroughItem = PharmItems.loadItems();
+  
+  
     List<Widget> items = [];
-
+    webSocketProvider = Provider.of<WebSocketProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Pallete.backgroundColor,
       body: SafeArea(

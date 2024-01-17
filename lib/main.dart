@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:abjatenant/provider/websocket_provider.dart';
+import 'package:abjatenant/utils/notification_util.dart';
 import 'package:abjatenant/views/navbar/nav.dart';
 import 'package:abjatenant/views/onboarding/entrance.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -7,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'components/size_config.dart';
 import 'constants/app_colors.dart';
 import 'constants/app_provider.dart';
@@ -101,7 +105,6 @@ class MyApp extends StatelessWidget {
                         return LoginScreen();
                       case 3:
                         return NavBar();
-                       
                     }
                     // if we got our data
                   }
