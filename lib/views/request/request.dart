@@ -1,13 +1,17 @@
 import 'package:abjatenant/constants/app_colors.dart';
 import 'package:abjatenant/constants/app_fonts.dart';
+import 'package:abjatenant/views/dashboard/widgets/request_tab.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/buttons.dart';
 import '../../constants/app_images.dart';
 import '../../constants/app_routes.dart';
+import '../../provider/request_provider.dart';
 import '../../utils/app_utils.dart';
 
 class RequestScreen extends StatefulWidget {
@@ -18,6 +22,7 @@ class RequestScreen extends StatefulWidget {
 }
 
 class _RequestScreenState extends State<RequestScreen> {
+  late RequestProvider requestProvider;
   int _tabIndex = 0;
   bool loaded = false;
   List request = [];
@@ -26,12 +31,16 @@ class _RequestScreenState extends State<RequestScreen> {
   void initState() {
     loaded = true;
     request;
+
+  //requestProvider = Provider.of<RequestProvider>(context, listen: false);
     super.initState();
   }
 
+  var photo = 'https://picsum.photos/200';
   @override
   Widget build(BuildContext context) {
     final _getSize = MediaQuery.of(context).size;
+       Provider.of<RequestProvider>(context).getAllRequest();
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -41,7 +50,11 @@ class _RequestScreenState extends State<RequestScreen> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [Text(""),Text("Request"), Icon(Icons.filter_list)],
+                children: const [
+                  Text(""),
+                  Text("Request"),
+                  Icon(Icons.filter_list)
+                ],
               ),
               SizedBox(
                 height: _getSize.height * 0.035,
@@ -101,114 +114,122 @@ class _RequestScreenState extends State<RequestScreen> {
               SizedBox(
                 height: _getSize.height * 0.76,
                 child: Stack(children: [
-                  DefaultTabController(
-                    length: 2,
-                    child: Column(
-                      children: [
-                        TabNavBar(
-                          tabIndex: _tabIndex,
-                          tabTextList: [
-                            'Pending (${request.length})',
-                            'Active (${request.length})',
-                          ],
-                          onTap: (index) {
-                            setState(() {
-                              _tabIndex = index;
-                            });
-                          },
-                        ),
-                        !loaded
-                            ? Container(
-                                margin: EdgeInsets.only(bottom: 8),
-                                decoration: BoxDecoration(
-                                    color: Color(0xFFF6F9F5),
-                                    borderRadius: BorderRadius.circular(10)),
-                                width: _getSize.width,
-                                height: _getSize.height * 0.38,
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      SpinKitRing(
-                                        size: 30,
-                                        color: Pallete.primaryColor,
-                                        lineWidth: 2.0,
-                                      ),
-                                      Text(
-                                        "Looking for your request Listing",
-                                        style: AppFonts.body1,
-                                      ),
-                                    ],
+                  Consumer<RequestProvider>(
+                      builder: (context, requestProvider, child) {
+                    var requestData = requestProvider.request;
+
+                    var pendingRq = filterRequest(requestData, false);
+                    var acceptedRq = filterRequest(requestData, true);
+                    return DefaultTabController(
+                      length: 2,
+                      child: Column(
+                        children: [
+                          TabNavBar(
+                            tabIndex: _tabIndex,
+                            tabTextList: [
+                              'Pending (${pendingRq.length})',
+                              'Accepted (${acceptedRq.length})',
+                            ],
+                            onTap: (index) {
+                              setState(() {
+                                _tabIndex = index;
+                              });
+                            },
+                          ),
+                          !loaded
+                              ? Container(
+                                  margin: EdgeInsets.only(bottom: 8),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFFF6F9F5),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  width: _getSize.width,
+                                  height: _getSize.height * 0.38,
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SpinKitRing(
+                                          size: 30,
+                                          color: Pallete.primaryColor,
+                                          lineWidth: 2.0,
+                                        ),
+                                        Text(
+                                          "Looking for your request Listing",
+                                          style: AppFonts.body1,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              )
-                            : Column(
-                                children: [
-                                  request.isEmpty
-                                      ? Container(
-                                          margin: EdgeInsets.only(bottom: 8),
-                                          decoration: BoxDecoration(
-                                              color: Color(0xFFF6F9F5),
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          width: _getSize.width,
-                                          height: _getSize.height * 0.38,
-                                          child: Center(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Image.asset(
-                                                  AppImages.no_prop,
-                                                  width: _getSize.width * 0.6,
+                                )
+                              : Column(
+                                  children: [
+                                    requestData.isEmpty
+                                        ? Container(
+                                            margin: EdgeInsets.only(bottom: 8),
+                                            decoration: BoxDecoration(
+                                                color: Color(0xFFF6F9F5),
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            width: _getSize.width,
+                                            height: _getSize.height * 0.38,
+                                            child: Center(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  Image.asset(
+                                                    AppImages.no_prop,
+                                                    width: _getSize.width * 0.6,
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        "You currently have no accepted/pending request",
+                                                        style: AppFonts.body1,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height:
+                                                        _getSize.height * 0.01,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ) // Widget to show when many is 0
+                                        : SizedBox(
+                                            height: _getSize.height * 0.6795,
+                                            child: TabBarView(
+                                              // physics: const NeverScrollableScrollPhysics(),
+                                              children: <Widget>[
+                                                tabContent(
+                                                  requestData: pendingRq,
+                                                  getSize: _getSize,
+                                                  items: pendingRq.length,
                                                 ),
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "You currently have no accepted/pending request",
-                                                      style: AppFonts.body1,
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height:
-                                                      _getSize.height * 0.01,
+                                                tabAcceptedContent(
+                                                  requestData: acceptedRq,
+                                                  getSize: _getSize,
+                                                  items: acceptedRq.length,
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        ) // Widget to show when many is 0
-                                      : SizedBox(
-                                          height: _getSize.height * 0.6795,
-                                          child: TabBarView(
-                                            // physics: const NeverScrollableScrollPhysics(),
-                                            children: <Widget>[
-                                              tabContent(
-                                                requestData: request,
-                                                getSize: _getSize,
-                                                items: 5,
-                                              ),
-                                              tabContent(
-                                                requestData: request,
-                                                getSize: _getSize,
-                                                items: 2,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                ],
-                              )
-                      ],
-                    ),
-                  ),
+                                  ],
+                                )
+                        ],
+                      ),
+                    );
+                  }),
                   Positioned(
                     bottom: 60,
                     child: ButtonWithFuction(
                         text: 'Make A Request',
                         onPressed: () {
                           Navigator.of(context)
-                           .pushNamed(AppRoutes.createRequest);
+                              .pushNamed(AppRoutes.createRequest);
                         }),
                   ),
                 ]),
@@ -233,6 +254,114 @@ class tabContent extends StatelessWidget {
   final int items;
   List requestData;
 
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height: _getSize.height * 0.25,
+        child: ListView.builder(
+            itemCount: requestData.length,
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              DateTime dateTime = DateTime.parse(requestData[index]['time']);
+              String formattedTimeDifference = formatTimeDifference(dateTime);
+
+              return Padding(
+                padding: const EdgeInsets.only(
+                    top: 8.0, bottom: 8, right: 8, left: 4),
+                child: Container(
+                  height: _getSize.height * 0.07,
+                  width: _getSize.width,
+                  decoration: BoxDecoration(
+                      color: getIconAssetColor(requestData[index]['agent']),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromARGB(44, 85, 80, 80),
+                          blurRadius: 11,
+                          spreadRadius: 1,
+                          offset: Offset(0, 5),
+                        )
+                      ],
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 2.0, horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          getIconAssetName(requestData[index]['agent']),
+                          width: _getSize.width * 0.065,
+                        ),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: _getSize.width * 0.71,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Text(
+                                    requestData[index]['agent'],
+                                    style: AppFonts.body1.copyWith(
+                                        color: Pallete.text,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Text(
+                                    formattedTimeDifference,
+                                    style: AppFonts.body1.copyWith(
+                                        color: Pallete.primaryColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: _getSize.height * 0.007,
+                            ),
+                            SizedBox(
+                              width: _getSize.width * 0.6,
+                              child: Text(
+                                requestData[index]['description'],
+                                style: AppFonts.body1.copyWith(
+                                    color: Pallete.fade,
+                                    fontSize: 12,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }));
+  }
+}
+
+class tabAcceptedContent extends StatelessWidget {
+  tabAcceptedContent(
+      {super.key,
+      required Size getSize,
+      required this.items,
+      required this.requestData})
+      : _getSize = getSize;
+
+  final Size _getSize;
+  final int items;
+  List requestData;
+
   /**
    *     PersistentNavBarNavigator.pushNewScreen(
         context,
@@ -241,185 +370,141 @@ class tabContent extends StatelessWidget {
         pageTransitionAnimation: PageTransitionAnimation.cupertino,
     );
    */
+
+  var photo = 'https://picsum.photos/200';
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         height: _getSize.height * 0.25,
         child: ListView.builder(
-            itemCount: requestData.length + 1,
-            physics: BouncingScrollPhysics(),
+            itemCount: requestData.length,
+            physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) => (index != requestData.length)
-                ? GestureDetector(
-                    onTap: () => Navigator.of(context).pushNamed(
-                      AppRoutes.propDetails,
-                      arguments: {
-                        'data': requestData[index]['requestID'],
-                      },
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            children: [
-                              Image.network(
-                                requestData[index]['photo'],
-                                fit: BoxFit.cover,
-                                width: _getSize.width * 0.45,
-                                height: _getSize.width * 0.35,
-                              ),
-                              Positioned(
-                                left: _getSize.width * 0.03,
-                                bottom: _getSize.height * 0.105,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Color.fromARGB(137, 246, 249, 245),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Color.fromARGB(
-                                              104, 246, 249, 245),
-                                          blurRadius: 11,
-                                          spreadRadius: 1,
-                                          offset: Offset(0, 5),
-                                        )
-                                      ],
-                                      border: Border.all(
-                                          width: 0.3, color: Pallete.fade),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(3))),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4.0, horizontal: 14),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          requestData[index]['unitData']
-                                              .length
-                                              .toString(),
-                                          style: AppFonts.body1.copyWith(
-                                            color: Pallete.primaryColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: _getSize.height * 0.017,
-                                          ),
-                                        ),
-                                        SizedBox(width: _getSize.width * 0.01),
-                                        Text("Unit",
-                                            style: AppFonts.body1.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: Pallete.primaryColor,
-                                              fontSize: _getSize.height * 0.017,
-                                            ))
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(
+                    top: 8.0, bottom: 8, right: 8, left: 4),
+                child: Container(
+                  height: _getSize.height * 0.088,
+                  width: _getSize.width,
+                  decoration: BoxDecoration(
+                      color: getIconAssetColor(requestData[index]['agent']),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromARGB(44, 85, 80, 80),
+                          blurRadius: 11,
+                          spreadRadius: 1,
+                          offset: Offset(0, 5),
+                        )
+                      ],
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 2.0, horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ClipOval(
+                          child: Image.network(
+                            photo,
+                            fit: BoxFit.cover,
+                            width: 52,
+                            height: 52,
                           ),
-                          SizedBox(
-                            width: _getSize.width * 0.03,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                        ),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        SizedBox(
+                          width: _getSize.width * 0.67,
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  SizedBox(
+                                    height: _getSize.height * 0.005,
+                                  ),
                                   Text(
-                                    requestData[index]['name'],
-                                    style: AppFonts.boldText.copyWith(
-                                        fontSize: _getSize.height * 0.017,
-                                        fontWeight: FontWeight.w900,
-                                        color: Color.fromARGB(255, 12, 12, 12)),
+                                    requestData[index]['agentName'] ??
+                                        "Bryan Umar",
+                                    style: AppFonts.body1.copyWith(
+                                        color: Pallete.text,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600),
                                   ),
                                   SizedBox(
                                     height: _getSize.height * 0.005,
                                   ),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Image.asset(
-                                        AppImages.estate,
-                                        width: _getSize.width * 0.04,
+                                        getIconAssetName(
+                                            requestData[index]['agent']),
+                                        width: _getSize.width * 0.045,
                                       ),
                                       SizedBox(
-                                        width: _getSize.width * 0.008,
+                                        width: 12,
                                       ),
                                       Text(
-                                        requestData[index]['type'],
+                                        requestData[index]['agent'],
                                         style: AppFonts.body1.copyWith(
                                             color: Pallete.fade,
-                                            fontSize: _getSize.height * 0.015),
-                                      )
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500),
+                                      ),
                                     ],
+                                  ),
+                                  SizedBox(
+                                    height: _getSize.height * 0.005,
+                                  ),
+                                  SizedBox(
+                                    width: _getSize.width * 0.4,
+                                    child: Text(
+                                      requestData[index]['description'],
+                                      style: AppFonts.body1.copyWith(
+                                          color: Pallete.fade,
+                                          fontSize: 12,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontWeight: FontWeight.w500),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: _getSize.height * 0.01,
                                   ),
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                        AppImages.location,
-                                        width: _getSize.width * 0.04,
-                                        color: Pallete.primaryColor,
-                                      ),
-                                      SizedBox(
-                                        width: _getSize.width * 0.008,
-                                      ),
-                                      SizedBox(
-                                        width: _getSize.width * 0.38,
-                                        child: Text(
-                                          requestData[index]['location'],
-                                          overflow: TextOverflow.ellipsis,
-                                          style: AppFonts.body1.copyWith(
-                                              color: Pallete.fade,
-                                              fontSize:
-                                                  _getSize.height * 0.015),
-                                        ),
-                                      )
-                                    ],
-                                  )
                                 ],
                               ),
-                              SizedBox(
-                                height: _getSize.height * 0.01,
-                              ),
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Description",
-                                      style: AppFonts.boldText.copyWith(
-                                          fontSize: _getSize.height * 0.017,
-                                          fontWeight: FontWeight.w900,
-                                          color: Color(0xFF333436))),
                                   SizedBox(
-                                    height: _getSize.height * 0.0025,
+                                    height: _getSize.height * 0.01,
                                   ),
-                                  SizedBox(
-                                    width: _getSize.width * 0.38,
-                                    child: Text(
-                                      requestData[index]['description'],
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: AppFonts.body1.copyWith(
-                                          fontSize: _getSize.height * 0.015),
+                                  Text(
+                                    requestData[index]['time'],
+                                    style: AppFonts.body1.copyWith(
+                                      color: Pallete.primaryColor,
+                                      fontSize: 11,
                                     ),
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: _getSize.height * 0.007,
+                        ),
+                      ],
                     ),
-                  )
-                : SizedBox(
-                    height: _getSize.height * 0.15,
-                  )));
+                  ),
+                ),
+              );
+            }));
   }
 }
 
@@ -495,5 +580,28 @@ class TabBarItem extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+filterRequest(data, isApprove) {
+  List<Map<String, dynamic>> filteredData =
+      data.where((obj) => obj['isLandlordApproved'] == isApprove).toList();
+  return filteredData;
+}
+
+String formatTimeDifference(DateTime dateTime) {
+  final now = DateTime.now();
+  final difference = now.difference(dateTime);
+  print(difference.inHours);
+  if (difference.inDays > 0) {
+    return '${difference.inDays} ${difference.inDays == 1 ? 'day' : 'days'} ago';
+  } else if (difference.inHours > 0) {
+    return '${difference.inHours} ${difference.inHours == 1 ? 'hour' : 'hours'} ago';
+  } else if (difference.inMinutes > 0) {
+    return '${difference.inMinutes} ${difference.inMinutes == 1 ? 'minute' : 'minutes'} ago';
+  } else if (difference.inSeconds > 0) {
+    return '${difference.inSeconds} ${difference.inSeconds == 1 ? 'second' : 'seconds'} ago';
+  } else {
+    return 'Just now';
   }
 }

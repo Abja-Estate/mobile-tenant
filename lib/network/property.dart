@@ -142,4 +142,23 @@ class PropertyAPI {
     print(parsedResponse);
     return parsedResponse;
   }
+
+    static Future switchAccount(code,email) async {
+     print(code);
+    var response = await http.post(
+      Uri.parse('$BaseURL/service/tenant/switch_account'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': APIKEY
+      },
+      body: jsonEncode(<String, String>{
+        "unitID": code,
+        "email":email,
+      }),
+    );
+
+    var parsedResponse = jsonDecode(response.body);
+    print(parsedResponse);
+    return parsedResponse;
+  }
 }

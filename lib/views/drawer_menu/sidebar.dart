@@ -106,7 +106,7 @@ class SideBar extends StatelessWidget {
                         height: 16,
                       ),
                       items(
-                        route: AppRoutes.propDetails,
+                        route: AppRoutes.unitDetails,
                         text: "My Rented Property",
                         img: AppImages.estate,
                       ),

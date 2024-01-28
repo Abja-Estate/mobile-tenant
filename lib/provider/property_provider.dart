@@ -8,10 +8,16 @@ import '../network/property.dart';
 import '../utils/local_storage.dart';
 
 class PropertyProvider extends ChangeNotifier {
-  // final Map<String, dynamic> serverErrorResult = {
-  //   'status': false,
-  //   'message': 'Sorry, something went wrong. Contact the Admin',
-  // };
+  Map<String, dynamic> _property = {};
+  List _rent = [];
+
+  PropertyProvider() {
+    getPropertyItems();
+    getRentItems();
+  }
+
+  Map<String, dynamic> get property => _property;
+  List get rent => _rent;
 
   Future<Map<String, dynamic>> accessCode(code) async {
     dynamic data;
@@ -26,7 +32,7 @@ class PropertyProvider extends ChangeNotifier {
 
       if (responseData['statusCode'] == 200) {
         notifyListeners();
-        print(data);
+
         data;
       } else {
         data;
@@ -36,5 +42,59 @@ class PropertyProvider extends ChangeNotifier {
       data = {'error': e};
     }
     return data;
+  }
+
+  Future<Map<String, dynamic>> switchAccount(code, email) async {
+    dynamic data;
+    //dynamic dataz;
+    //List<dynamic> data;
+    notifyListeners();
+
+    try {
+      var responseData = await PropertyAPI.switchAccount(code, email);
+
+      data = responseData;
+
+      if (responseData['statusCode'] == 200) {
+        notifyListeners();
+
+        data;
+      } else {
+        data;
+      }
+    } catch (e) {
+      notifyListeners();
+      data = {'error': e};
+    }
+    return data;
+  }
+
+  Future<void> getPropertyItems() async {
+    notifyListeners();
+
+    var propertyString = await showPropertyData();
+    var getproperty = Map<String, dynamic>.from(jsonDecode(propertyString));
+
+    if (getproperty.isNotEmpty) {
+      _property = getproperty;
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> getRentItems() async {
+    notifyListeners();
+
+    var rentsString = await showRentItem();
+    print(rentsString);
+    var getRents = List.from(jsonDecode(rentsString));
+ 
+    if (getRents.isNotEmpty) {
+      _rent = getRents;
+    } else {
+      _rent = [];
+    }
+
+    notifyListeners();
   }
 }

@@ -21,6 +21,13 @@ savePropertyItem(cartItems) async {
   s_prefs.setString("propItem", jsonString);
 }
 
+saveRentHistory(cartItems) async {
+  print(cartItems);
+  s_prefs = await SharedPreferences.getInstance();
+  String jsonString = jsonEncode(cartItems);
+  s_prefs.setString("rentItem", jsonString);
+}
+
 saveName(name) async {
   s_prefs = await SharedPreferences.getInstance();
   s_prefs.setString("name", name);
@@ -66,7 +73,7 @@ saveEmail(email) async {
 
 saveToken(tk) async {
   s_prefs = await SharedPreferences.getInstance();
-  s_prefs.setString("token", tk);
+  s_prefs.setBool("token", tk);
 }
 
 saveCreatedAt(tm) async {
@@ -103,13 +110,7 @@ showCreated() async {
   return temp;
 }
 
-showRef() async {
-  s_prefs = await SharedPreferences.getInstance();
 
-  String? temp = s_prefs.getString("token");
-
-  return temp;
-}
 
 showAccessCode() async {
   s_prefs = await SharedPreferences.getInstance();
@@ -149,10 +150,19 @@ showPropertyItem() async {
 
   return temp;
 }
+
+
+showRentItem() async {
+  s_prefs = await SharedPreferences.getInstance();
+
+  String? temp = s_prefs.getString("rentItem");
+
+  return temp;
+}
 showToken() async {
   s_prefs = await SharedPreferences.getInstance();
 
-  String? temp = s_prefs.getString("token");
+ bool? temp = s_prefs.getBool("token");
 
   return temp;
 }

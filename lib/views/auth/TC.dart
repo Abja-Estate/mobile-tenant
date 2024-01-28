@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'package:abjatenant/views/auth/welcome/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,6 +8,7 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_fonts.dart';
 import '../../constants/app_images.dart';
 import '../../constants/app_routes.dart';
+import '../navbar/nav.dart';
 
 class TermsAndConditions extends StatefulWidget {
   const TermsAndConditions({Key? key}) : super(key: key);
@@ -217,8 +219,13 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                                 text: 'I agree',
                                 disabled: false,
                                 onPressed: () {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(AppRoutes.navbar);
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            NavBar(initialScreen: Welcome(),initialTab: 0,)),
+                                    (route) => false,
+                                  );
                                 }),
                           ],
                         ),

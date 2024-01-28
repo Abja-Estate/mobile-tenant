@@ -1,9 +1,11 @@
 import 'package:abjatenant/network/property.dart';
 import 'package:abjatenant/utils/property_util/access_code_utils.dart';
+import 'package:abjatenant/views/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../constants/app_routes.dart';
 import '../../provider/auth_provider.dart';
+import '../../views/navbar/nav.dart';
 import '../app_utils.dart';
 import '../local_storage.dart';
 
@@ -39,30 +41,36 @@ class LoginUtil {
           await savePhone(value['data']['phone']);
           await saveSurname(value['data']['surname']);
           await saveSelfie(value['data']['selfie']);
-          await saveToken(value['data']['accessToken']);
-          await saveAbout(value['data']['about']??"");
-           await saveCreatedAt(value['data']['created']);
-         
+          await saveAccessCode(value['data']['rentHistory'][0]['accessCode']);
+          await saveAbout(value['data']['about'] ?? "");
+          await saveCreatedAt(value['data']['created']);
+
           AppUtils.showLoginLoader(context);
 
-          var responseData = await PropertyAPI.accessCode(
-              value['data']['rentHistory'][0]['accessCode']);
-        
+          var responseData = await PropertyAPI.switchAccount(
+              value['data']['rentHistory'][0]['accessCode'],
+              loginData['email'].trim());
+
           if (responseData['statusCode'] == 200) {
-            await saveAccessCode(value['data']['rentHistory'][0]['accessCode']);
-           await saveUnitData(responseData['data']['data']);
-          await savePropertyData(responseData['data']);
-             await saveOnce(3);
+          
+            await saveRentHistory(value['data']['rentHistory']);
+            await saveUnitData(responseData['data']['data']);
+            await savePropertyData(responseData['data']);
+            await saveuuId(responseData['data']['data']['unitID']);
+            await saveOnce(3);
             Navigator.of(context).pop();
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRoutes.navbar, // The route name of the new screen
-              (Route<dynamic> route) =>
-                  false, // Predicate to remove all previous routes
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => NavBar(
+                        initialScreen: Dashboard(),
+                        initialTab: 0,
+                      )),
+              (route) => false,
             );
           } else {
-            
             if (responseData['statusCode'] == 404) {
-                Navigator.of(context).pop();
+              Navigator.of(context).pop();
               // ignore: use_build_context_synchronously
               AppUtils.showAlertDialog(
                   context,
@@ -106,15 +114,15 @@ class LoginUtil {
                     .pushNamed(AppRoutes.registerOTPScreen));
           }
 
-          if (value['statusCode'] == 403) {
+          if (value['statusCode'] == 401) {
             AppUtils.showAlertDialog(
                 context,
                 'Oops, something isn\'t right!',
                 value['error'],
-                'Contact Support',
+                'Verify',
                 'Close',
                 () =>
-                    Navigator.of(context).pushNamed(AppRoutes.registerScreen));
+                    Navigator.of(context).pushNamed(AppRoutes.forgotPassword));
           }
           if (value['statusCode'] == 500) {
             AppUtils.showAlertDialog(

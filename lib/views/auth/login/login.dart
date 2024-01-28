@@ -164,9 +164,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       children: [
                         CustomInput3(
-                          validator: Validators.nameValidator,
-                          label: 'Phone Number or Email',
-                          hint: 'Phone Number or Email',
+                          validator: Validators.emailValidator,
+                          label: 'Email',
+                          hint: 'Email',
                           onSaved: (value) {
                             _loginData['email'] = value;
                           },

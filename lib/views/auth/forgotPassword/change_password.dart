@@ -26,7 +26,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   bool isAboveEight = false;
 
   String password = "";
-    String cPassword = "";
+  String cPassword = "";
 
   void _checkPasswordStrength(String value) {
     dynamic password = value.trim();
@@ -144,10 +144,10 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       label: 'Password',
                       hint: 'New Password',
                       onChanged: (String? value) {
-                        confirmPassword = value!;
+                        password = value!;
                       },
                       onSaved: (value) {
-                      password = value!;
+                        password = value!;
                       },
                     ),
                     SizedBox(
@@ -174,13 +174,16 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                         if (value!.isEmpty) {
                           return 'Confirm password cannot be empty';
                         }
-                        if (value != confirmPassword) {
+                        if (value != password) {
                           return 'Password does not match';
                         }
                         return null;
                       },
                       label: 'Confirm Password',
                       hint: 'Confirm Password',
+                      onChanged: (p0) {
+                        cPassword = p0!;
+                      },
                       onSaved: (value) {
                         cPassword = value!;
                       },
@@ -204,9 +207,9 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   child: ButtonWithFuction(
                       text: 'Submit',
                       onPressed: () {
+                        print("$password $cPassword");
                         ResetPasswordUtil.resetPassword(
-                            _resetFormKey, context, password, cPassword);
-                        // Navigator.of(context).pushNamed(AppRoutes.loginScreen);
+                          _resetFormKey, context, password, cPassword);
                       }),
                 ),
               ],

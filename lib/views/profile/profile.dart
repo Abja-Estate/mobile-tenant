@@ -8,6 +8,8 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_images.dart';
 import '../../utils/local_storage.dart';
 import '../../utils/time_formatter.dart';
+import '../dashboard/dashboard.dart';
+import '../navbar/nav.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -74,8 +76,13 @@ class _ProfileState extends State<Profile> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              AppRoutes.navbar, (route) => false);
+                              Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            NavBar(initialScreen: Dashboard(),initialTab: 0)),
+                                    (route) => false,
+                                  );
                         },
                         child: Image.asset(
                           AppImages.back,

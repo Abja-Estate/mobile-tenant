@@ -13,10 +13,13 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+ bool isLoaded=false;
+
   @override
   Widget build(BuildContext context) {
     final _getSize = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Color(0xFFF6F9F5),
       body: SafeArea(
           child: SingleChildScrollView(
         child: SizedBox(
@@ -39,10 +42,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
               SizedBox(
                 height: _getSize.height * 0.9,
                 child: DefaultTabController(
-                  length: 4,
+                  length: 3,
                   child: Column(
                     children: <Widget>[
                       ButtonsTabBar(
+                       
                         height: _getSize.height * 0.03,
                         buttonMargin:
                             const EdgeInsets.symmetric(horizontal: 16),
@@ -71,7 +75,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               padding: const EdgeInsets.symmetric(
                                   vertical: 2.0, horizontal: 12),
                               child: Text(
-                                "Rented",
+                                "Rent",
                                 style: AppFonts.bodyText,
                               ),
                             ),
@@ -81,33 +85,30 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               padding: const EdgeInsets.symmetric(
                                   vertical: 2.0, horizontal: 12),
                               child: Text(
-                                "Service Task",
+                                "Request",
                                 style: AppFonts.bodyText,
                               ),
                             ),
                           ),
-                          Tab(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 2.0, horizontal: 12),
-                              child: Text(
-                                "Property",
-                                style: AppFonts.bodyText,
-                              ),
-                            ),
-                          ),
+                          
                         ],
                       ),
-                      Expanded(
+                    isLoaded ? Expanded(
                         child: TabBarView(
                           children: <Widget>[
                             bottom(getSize: _getSize),
                             bottom(getSize: _getSize),
                             bottom(getSize: _getSize),
-                            bottom(getSize: _getSize),
+                           
                           ],
                         ),
-                      ),
+                      ):Container(child: Center(child: Column(
+                        children: [
+                          SizedBox(height: _getSize.height*0.15,),
+                          Image.asset(AppImages.noNotification),
+                          Text("You currently have no Notification")
+                        ],
+                      ),),)
                     ],
                   ),
                 ),
@@ -142,7 +143,7 @@ class bottom extends StatelessWidget {
           },
         ]
       }, {
-        'icon': AppImages.funmigate,
+        'icon': AppImages.fumigator,
         'color': Color(0xFFEADAFF),
         'text': 'Rent Paid',
         'text2':
@@ -155,7 +156,7 @@ class bottom extends StatelessWidget {
             'text2': "Painting of Apartment 004"
           },
           {
-            'icon': AppImages.funmigate,
+            'icon': AppImages.fumigator,
             'color': Color(0xFFEADAFF),
             'text': 'Rent Paid',
             'text3':"Alert!",
@@ -163,7 +164,7 @@ class bottom extends StatelessWidget {
                 "Agent Emmanuel has received rent payment from Miss Susan for June 2023."
           },
           {
-            'icon': AppImages.funmigate,
+            'icon': AppImages.fumigator,
             'color': Color(0xFFFFE4E9),
             'text': 'Successfully',
             'text2':
@@ -174,7 +175,7 @@ class bottom extends StatelessWidget {
       },
      
       {
-        'icon': AppImages.funmigate,
+        'icon': AppImages.fumigator,
         'color': Color(0xFFEADAFF),
         'text': 'Rent Paid',
         'text2':
@@ -187,14 +188,14 @@ class bottom extends StatelessWidget {
             'text2': "Painting of Apartment 004"
           },
           {
-            'icon': AppImages.funmigate,
+            'icon': AppImages.fumigator,
             'color': Color(0xFFEADAFF),
             'text': 'Rent Paid',
             'text2':
                 "Agent Emmanuel has received rent payment from Miss Susan for June 2023."
           },
           {
-            'icon': AppImages.funmigate,
+            'icon': AppImages.fumigator,
             'color': Color(0xFFFFE4E9),
             'text': 'Front',
               'text3':"1st Floor",
@@ -211,7 +212,7 @@ class bottom extends StatelessWidget {
         ]
       },
       {
-        'icon': AppImages.funmigate,
+        'icon': AppImages.fumigator,
         'color': Color(0xFFFFE4E9),
         'text': 'Successfully',
         'text2':
@@ -224,7 +225,7 @@ class bottom extends StatelessWidget {
             'text2': "Painting of Apartment 004"
           },
           {
-            'icon': AppImages.funmigate,
+            'icon': AppImages.fumigator,
             'color': Color(0xFFEADAFF),
             'text': 'Rent Paid',
             'text3':"Alert!",
@@ -246,7 +247,7 @@ class bottom extends StatelessWidget {
             'text2': "Painting of Apartment 004"
           },
           {
-            'icon': AppImages.funmigate,
+            'icon': AppImages.fumigator,
             'color': Color(0xFFEADAFF),
             'text': 'Rent Paid',
             'text2':
@@ -342,7 +343,7 @@ Widget buildListItem(BuildContext context, List<Map<String, dynamic>> service,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(service[index]['icon']),
+              Image.asset(service[index]['icon'],width: getSizeWidth*0.06,),
               const SizedBox(width: 12),
               SizedBox(
                 width: getSizeWidth * 0.6,

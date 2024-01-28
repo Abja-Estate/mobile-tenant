@@ -9,6 +9,7 @@ import '../constants/app_fonts.dart';
 import 'package:uuid/uuid.dart';
 
 import '../constants/app_routes.dart';
+import '../views/property/details/ImagePop.dart';
 import 'loader.dart';
 
 class AppUtils {
@@ -39,7 +40,7 @@ class AppUtils {
               fontWeight: FontWeight.w600, color: Pallete.primaryColor),
         ),
         onPressed: () => Navigator.of(context).pushNamed(
-            arguments: {"data": urlGotten}, AppRoutes.webviewScreen));
+            arguments: {"data": urlGotten}, AppRoutes.dashboardScreen));
 
     // title
     Widget title = Center(
@@ -731,6 +732,13 @@ class AppUtils {
     showDialog(
       context: context,
       builder: (ctx) => const LoginLoader(),
+    );
+  }
+
+    static void showDocPhoto(context,img) {
+    showDialog(
+      context: context,
+      builder: (ctx) =>  ImagePopUp( img: img,),
     );
   }
 }

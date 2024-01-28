@@ -1,3 +1,4 @@
+import 'package:abjatenant/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -20,12 +21,13 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
   var photo = 'https://picsum.photos/200';
 
   bool loading = false;
-
+  bool isRegistered = false;
   initLandlord() async {
     loading = false;
     await Future.delayed(Duration(seconds: 1));
     landlord;
     loading = true;
+    isRegistered;
     setState(() {});
   }
 
@@ -46,6 +48,8 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
     final dataFromRoute = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     landlord = dataFromRoute["data"];
+    isRegistered = dataFromRoute["isRegistered"];
+    print(dataFromRoute);
     return Scaffold(
         backgroundColor: Pallete.onboardColor,
         body: SingleChildScrollView(
@@ -57,7 +61,9 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
                   Positioned(
                     left: _getSize.width * 0.1,
                     bottom: _getSize.height * 0.15,
-                    child: Column(
+                    child:
+                    
+                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -95,9 +101,11 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       loading
-                          ? Container(
+                          ? 
+                          
+                          Container(
                               width: _getSize.width * 0.8,
-                              height: _getSize.height * 0.08,
+                              height: _getSize.height * 0.1,
                               decoration: const BoxDecoration(
                                   color: Pallete.whiteColor,
                                   boxShadow: [
@@ -143,7 +151,7 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
                                           height: _getSize.height * 0.003,
                                         ),
                                         SizedBox(
-                                                   width: _getSize.width*0.45,
+                                          width: _getSize.width * 0.45,
                                           child: Text(landlord["fullName"],
                                               style: AppFonts.body1.copyWith(
                                                   color: Pallete.text,
@@ -164,14 +172,14 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
                                               width: 12,
                                             ),
                                             SizedBox(
-                                              width: _getSize.width*0.45,
+                                              width: _getSize.width * 0.45,
                                               child: Text(
                                                 landlord["location"],
                                                 overflow: TextOverflow.ellipsis,
                                                 style: AppFonts.body1.copyWith(
                                                     color: Pallete.text),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         )
                                       ],
@@ -217,8 +225,32 @@ class _ConfirmLandlordState extends State<ConfirmLandlord> {
                             child: ButtonWithFuction(
                                 text: "Proceed",
                                 onPressed: () {
-                                  Navigator.of(context)
-                                      .pushNamed(AppRoutes.registerScreen);
+                                  if (isRegistered) {
+                                    AppUtils.singleDialog(
+                                        context,
+                                        "Success",
+                                        "Login to your existing account to enter your unit",
+                                        "Login",
+                                        const Icon(Icons.check_circle_rounded),
+                                        SizedBox(),
+                                        () => Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                AppRoutes.loginScreen,
+                                                (route) => false));
+                                  } else {
+                                       AppUtils.singleDialog(
+                                        context,
+                                        "Success",
+                                        "Now create a tenant account to enter your unit",
+                                        "Create",
+                                        const Icon(Icons.check_circle_rounded),
+                                        SizedBox(),
+                                        () => Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                AppRoutes.registerScreen,
+                                                (route) => false));
+                                
+                                  }
                                 }),
                           ),
                         ],

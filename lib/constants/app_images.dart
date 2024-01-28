@@ -6,14 +6,15 @@ class AppImages {
   static const third = 'assets/images/onboarding/third.png';
 
 //IMAGES
-  static const drugs = 'assets/images/images/drugs.png';
+  static const processing = 'assets/images/processing.png';
   static const bg = 'assets/images/bg.png';
   static const place = 'assets/images/place.png';
   static const noRequest = 'assets/images/noRequest.png';
   static const tablets = 'assets/images/images/tablets.png';
   static const refer = 'assets/images/images/refer.png';
   static const referred = 'assets/images/images/referred.png';
-  static const sachet = 'assets/images/images/sachet.png';
+  static const noNotification = 'assets/images/no.png';
+    static const switchup = 'assets/icon/switch.png';
   static const no_prop = 'assets/images/no_prop.png';
   static const banner = 'assets/images/banner.png';
   static const logo = 'assets/icons/logo.png';
@@ -43,6 +44,11 @@ class AppImages {
   static const wifi = 'assets/icons/wifi.png';
   static const nepa = 'assets/icons/nepa.png';
   static const bedroom = 'assets/icons/bedroom.png';
+   static const store = 'assets/icons/store.png';
+      static const pdf = 'assets/icons/pdf.png';
+         static const png = 'assets/icons/png.png';
+            static const doc = 'assets/icons/doc.png';
+
   static const tenants = 'assets/images/tenants.png';
   static const help = 'assets/icons/help.png';
   static const logout = 'assets/icons/logout.png';
@@ -51,23 +57,30 @@ class AppImages {
   static const estatefilled = 'assets/icons/estatef.png';
   static const call = 'assets/images/icons/call.png';
   static const joined = 'assets/icons/join.png';
-  static const plumber = 'assets/icons/plumber.png';
+
   static const bags = 'assets/icons/bags.png';
-  static const agent = 'assets/icons/agent.png';
+  static const grnagent = 'assets/icons/request/agent.png';
   static const ham = 'assets/icons/ham.png';
   static const ham2 = 'assets/icons/ham2.png';
   static const success = 'assets/icons/success.png';
+  //REQUEST ICONS
+
+  static const agent = 'assets/icons/request/agent.png';
+  static const plumber = 'assets/icons/request/plumber.png';
+  static const fumigator = 'assets/icons/request/fumigator.png';
+  static const electrician = 'assets/icons/request/electrician.png';
+  static const gardener = 'assets/icons/request/gardener.png';
+  static const carpenter = 'assets/icons/request/carpenter.png';
+  static const movers = 'assets/icons/request/movers.png';
+  static const cleaner = 'assets/icons/request/cleaners.png';
+  static const painter = 'assets/icons/request/painter.png';
+
+  //END
   static const cam = 'assets/icons/cam.png';
   static const chat = 'assets/icons/chat.png';
-  static const electrician = 'assets/icons/elect.png';
-    static const tag = 'assets/icons/tag.png';
-  static const funmigate = 'assets/icons/funmigate.png';
-  static const gardener = 'assets/icons/request/Gardener.png';
-  static const carpenter = 'assets/icons/request/Carpenter.png';
-  static const painter = 'assets/icons/request/Painter.png';
-  static const alert = 'assets/icons/request/alert.png';
-  static const movers = 'assets/icons/request/Movers.png';
-  static const cleaner = 'assets/icons/request/Cleaners.png';
+
+  static const tag = 'assets/icons/tag.png';
+
   static const money = 'assets/icons/money.png';
   static const bank = 'assets/icons/bank.png';
   static const dwn = 'assets/icons/dwn.png';

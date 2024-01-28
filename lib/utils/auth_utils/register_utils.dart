@@ -39,7 +39,7 @@ class RegisterUtil {
 
           saveOnce(1);
           await saveId(value['data']['_id'].toString());
-          await saveToken(value['data']['accessToken']);
+         //await saveToken(value['data']['accessToken']);
           await saveEmail(value['data']['email']);
           Navigator.of(context).pushNamed(AppRoutes.registerOTPScreen);
         } else {

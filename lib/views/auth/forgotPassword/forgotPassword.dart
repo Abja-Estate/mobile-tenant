@@ -25,7 +25,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
   final Map<String, dynamic> _resetPasswordData = {
     'email': '',
   };
-  final _resetPasswordFormKey = GlobalKey<FormState>();
+  final _emailFormKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -83,11 +83,11 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
               child: Column(
                 children: [
                   Form(
-                      key: _resetPasswordFormKey,
+                      key: _emailFormKey,
                     child: Column(
                       children: [
                         CustomInput3(
-                          validator: Validators.nameValidator,
+                          validator: Validators.emailValidator,
                           label: 'Email',
                           hint: 'Email',
                           onChanged: (value) {
@@ -121,7 +121,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                       text: 'Get OTP',
                       onPressed: () {
                         print(_resetPasswordData);
-                        ForgotPasswordUtil.forgotPassword(
+                        ForgotPasswordUtil.forgotPassword(_emailFormKey,
                             context, _resetPasswordData);
                         // Navigator.of(context).pushNamed(AppRoutes.resetOTPScreen);
                       }),

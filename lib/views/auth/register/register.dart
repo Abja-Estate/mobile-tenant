@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:abjatenant/models/tenanModel.dart';
 import 'package:abjatenant/utils/local_storage.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../components/buttons.dart';
@@ -84,6 +85,9 @@ class _SignUpState extends State<SignUp> {
     tentInfo = jsonData['tenantInfo'];
     await saveuuId(tentInfo['unitID']);
     print(tentInfo['email']);
+    setState(() {
+      
+    });
   }
 
   @override
@@ -174,6 +178,7 @@ class _SignUpState extends State<SignUp> {
                       child: Column(
                         children: [
                           CustomInput3(
+                         
                             label: 'Email',
                             hint: tentInfo['email'],
                             onSaved: (value) {
@@ -185,6 +190,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           CustomInput3(
                             label: 'First Name',
+                           
                             hint: tentInfo['name'],
                             enabled: false,
                             onSaved: (value) {
@@ -195,6 +201,7 @@ class _SignUpState extends State<SignUp> {
                             height: _getSize.height * 0.05,
                           ),
                           CustomInput3(
+                           
                             label: 'Last Name',
                             hint: tentInfo['surname'],
                             enabled: false,

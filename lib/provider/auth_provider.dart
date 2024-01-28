@@ -105,12 +105,12 @@ class AuthProvider extends ChangeNotifier {
     return data;
   }
 
-  Future<Map<String, dynamic>> changePassword(id,token,cpassword,password) async {
+  Future<Map<String, dynamic>> changePassword(id,cpassword,password) async {
     dynamic data;
     notifyListeners();
   
     try {
-      var response = await AuthAPI.resetPassword(id,token,password, password);
+      var response = await AuthAPI.resetPassword(id,password, cpassword);
   
       if (response!= null) {
         notifyListeners();

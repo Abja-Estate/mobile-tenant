@@ -5,9 +5,11 @@ import 'package:intl/intl.dart';
 import 'app_images.dart';
 
 const BaseURL = "https://casmara-app-api.onrender.com/api";
+
 String getCurrency() {
   return '₦'; // Unicode character for Naira symbol
 }
+
 String APIKEY = '4f1fe63a-5f8b-4e7f-ad38-e68445079351';
 const String policy = "";
 
@@ -31,54 +33,85 @@ String customFormatCurrency(int number) {
 
 
   List<Map> services = [
-      {'icon': AppImages.agent,'color2': Color(0xFF47893F), 'color': Color(0xFFDAE7D9), 'text': 'House Agent'},
+
       {
         'icon': AppImages.electrician,
         'color': Color(0xFFFCEADA),
         'color2': Color(0xFFEF9645),
         
-        'text': 'Electrician'
+        'text': 'Electrician',
+        'job':["Install lights","Install appliances"]
       },
       {
         'icon': AppImages.plumber,
         'color': Color(0xFFEADAFF),
-        'color2': Color(0xFF750790),
-        'text': 'Plumber'
+        'color2': Color(0xFFEADAFF),
+        'text': 'Plumber',
+        'job':["Fix broken tap","Fix leaking sink"]
       },
       {
-        'icon': AppImages.funmigate,
+        'icon': AppImages.fumigator,
         'color': Color(0xFFFFE4E9),
        'color2': Color(0xFFFF7892),
-        'text': 'Fumigator'
+        'text': 'Fumigator',
+          'job':["Fumigate house", "Fumigate compound"]
       },
       {
         'icon': AppImages.cleaner,
         'color2': Color(0xFFEA4335),
       'color': Color(0xFFFBD9D7),
-        'text': 'Cleaner'
+        'text': 'Cleaner',
+          'job':["Clean house"]
       },
       {
         'icon': AppImages.painter,
         'color2': const Color(0xFF22DBBA),
        'color': Color(0xFFD3F8F1),
-        'text': 'Painter'
+        'text': 'Painter',
+        'job':['Painting']
       },
       {
         'icon': AppImages.gardener,
         'color2': Color(0xFFFF5F00),
      'color': Color(0xFFFFDFCC),
-        'text': 'Gardener'
+        'text': 'Gardener',
+        'job':["Cut grass","Hedge Trimming"]
       },{
         'icon': AppImages.movers,
         'color2': Color(0xFF750790),
-      'color': Color(0xFFDAE7D9),
-        'text': 'Mover'
+      'color': Color(0xFFE3CDE9),
+        'text': 'Mover',
+        'job':["Request mover"]
       },{
         'icon': AppImages.carpenter,
         'color2': Color(0xFF5DADEC),
-        'color': Color(0xFFDAE7D9),
+        'color': Color(0xFFDFEFFB),
        
-        'text': 'Carpenter'
+        'text': 'Carpenter',
+        'job':['Carpentry works']
       },
     ];
    
+
+     List<Map<String, dynamic>> priority = [
+    {
+      "type": "High Priority",
+      'color': Color(0xFFEB5757),
+      'color2': Color(0xFFFCE6E6)
+    },
+    {
+      "type": "Medium Priority",
+      'color': Color(0xFFF2994A),
+      'color2': Color.fromARGB(255, 255, 242, 231),
+    },
+    {
+      "type": "Low Priority",
+      'color': Color(0xFFF2C94C),
+      'color2': Color.fromARGB(255, 255, 247, 222),
+    },
+    {
+      "type": "None",
+      'color': Color(0xFF2D9CDB),
+      'color2': Color.fromARGB(255, 228, 245, 255),
+    },
+  ];

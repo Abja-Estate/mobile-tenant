@@ -19,12 +19,12 @@ class AccessCodeUtil {
       Provider.of<PropertyProvider>(context, listen: false)
           .accessCode(code)
           .then((value) async {
-        print(value);
+       
         Navigator.of(context).pop();
 
         if (value['statusCode'] == 200) {
-          // formkey.currentState!.reset();
-          print(value['data']);
+           formkey.currentState!.reset();
+       
           await saveAccessCode(code);
           await saveUnitData(value['data']['data']);
           await savePropertyData(value['data']);
@@ -32,16 +32,16 @@ class AccessCodeUtil {
           // await setSecured(value['data']['status']);
           Navigator.of(context).pushNamed(
             AppRoutes.confirmLandlordScreen,
-            arguments: {'data': value['data']},
+            arguments: {'data': value['data'],'isRegistered':value['data']['isRegistered']},
           );
           // Navigator.of(context)
           // .popAndPushNamed(AppRoutes.confirmLandlordScreen);
         } else {
           AppUtils.showAlertDialog(
               context,
-              'Oops, something isn\'t right!',
-              value['error'],
-              'Contact Support',
+            value['error'],
+              'Another tenant has already loaded into this unit.',
+              'Contact Landlord',
               'Close',
               () => Navigator.of(context).pop());
         }

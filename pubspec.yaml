@@ -59,6 +59,7 @@ dependencies:
   image_stack: ^2.1.1
   image_picker: ^1.0.4
   web_socket_channel: ^2.4.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -106,6 +107,7 @@ flutter:
       - assets/images/
       - assets/icons/
       - assets/icons/request/
+      - assets/icons/request/clean/
       - assets/icons/tenant/
       - assets/images/onboarding/
 

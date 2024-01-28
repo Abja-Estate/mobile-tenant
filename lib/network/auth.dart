@@ -78,7 +78,8 @@ class AuthAPI {
     return parsedResponse;
   }
 
-  static Future resetPassword(id, token, cpassword, password) async {
+  static Future resetPassword(id, cpassword, password) async {
+    print('$id $password $cpassword');
     var response = await http.post(
       Uri.parse('$BaseURL/auth/tenant/reset_password'),
       headers: <String, String>{
@@ -87,7 +88,6 @@ class AuthAPI {
       },
       body: jsonEncode(<String, String>{
         "id": id,
-        "token": token,
         "password": password,
         "confirmPassword": cpassword
       }),
@@ -133,7 +133,7 @@ class AuthAPI {
   }
 
   static Future updateData(email, phone, password, confirmPassword, name,
-      surname, about,selfie) async {
+      surname, about, selfie) async {
     var response = await http.put(
       Uri.parse('$BaseURL/auth/tenant/update_tenant'),
       headers: <String, String>{
@@ -148,7 +148,7 @@ class AuthAPI {
         "name": name,
         "surname": surname,
         "about": about,
-        "selfie":selfie
+        "selfie": selfie
       }),
     );
 

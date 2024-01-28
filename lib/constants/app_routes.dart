@@ -8,8 +8,6 @@ import 'package:abjatenant/views/profile/edit_profile.dart';
 import 'package:abjatenant/views/profile/profile.dart';
 import 'package:abjatenant/views/request/create_request/create_request.dart';
 import 'package:abjatenant/views/request/create_request/request_details.dart';
-import 'package:abjatenant/views/task/success.dart';
-import 'package:abjatenant/views/task/task.dart';
 import 'package:flutter/widgets.dart';
 
 import '../views/auth/forgotPassword/change_password.dart';
@@ -21,13 +19,12 @@ import '../views/auth/TC.dart';
 import '../views/auth/register/register.dart';
 import '../views/auth/register/register_otp.dart';
 import '../views/dashboard/dashboard.dart';
-import '../views/navbar/nav.dart';
 import '../views/onboarding/onboarding.dart';
 import '../views/property/details/property-details.dart';
 
 class AppRoutes {
   static const dashboardScreen = '/dashboardScreen';
-  static const propDetails = '/propDetails';
+  static const unitDetails = '/unitDetails';
   static const welcomeScreen = '/welcomeScreen';
   static const getCodeScreen = '/getCodeScreen';
   static const getCodeResScreen = '/getCodeResScreen';
@@ -40,12 +37,7 @@ class AppRoutes {
   static const createRequest = './createRequest';
   static const bookATest = './bookATest';
   static const randomSearch = '/randomSearchScreen';
-  static const testScreen = '/testScreen';
-  static const viewAllCart = '/viewAllCart';
-  static const drugItemScreen = '/drugItem';
-  static const webviewScreen = '/webview';
-  static const checkOut = '/checkOut';
-  static const seeAllCart = '/seeAllCart';
+
   static const refer = '/refer';
   static const loginScreen = '/loginScreen';
   static const forgotPassword = '/forgotPassword';
@@ -54,12 +46,11 @@ class AppRoutes {
   static const drugOrdersScreen = '/drugOrdersScreen';
   static const diag = '/diag';
   static const package = '/package';
-  static const navbar = '/navbar';
   static const loadHome = '/loadHome';
   static const privacy = '/privacy';
   static const terms = '/terms';
   static const taskScreen = '/taskScreen';
-  static const success = '/success';
+
   static const notification = '/notification';
   static const emergencyContact = '/emergencyContact';
   static const registerOTPScreen = '/registerOTPScreen';
@@ -68,16 +59,19 @@ class AppRoutes {
   static const onboarding = '/onboarding';
   static const resetOTPScreen = '/resetOTPScreen';
   static const confirmLandlordScreen = '/confirmLandlordScreen';
+
+
+  
   static Map<String, WidgetBuilder> routes() {
     return <String, WidgetBuilder>{
       AppRoutes.forgotPassword: ((context) => PasswordResetScreen()),
       AppRoutes.onboarding: (context) => OnboardingScreen(),
       AppRoutes.profile: ((context) => Profile()),
       AppRoutes.editProfile: ((context) => EditProfile()),
-      AppRoutes.taskScreen: ((context) => Task()),
+   
       AppRoutes.profile: ((context) => Profile()),
       AppRoutes.emergencyContact: ((context) => EmergencyContact()),
-      AppRoutes.success: ((context) => Success()),
+ 
       AppRoutes.getCodeScreen: ((context) => const GetCode()),
       AppRoutes.welcomeScreen: ((context) => const Welcome()),
       AppRoutes.getCodeResScreen: ((context) => const GetCodeResponse()),
@@ -93,8 +87,8 @@ class AppRoutes {
         AppRoutes.requestDetails: (context) => RequestDetails(),
       AppRoutes.dashboardScreen: (context) => Dashboard(),
       AppRoutes.confirmLandlordScreen: (context) => ConfirmLandlord(),
-      AppRoutes.navbar: (context) => NavBar(),
-      AppRoutes.propDetails: (context) => PropertyDetails(),
+
+      AppRoutes.unitDetails: (context) => PropertyDetails(),
     };
   }
 }
