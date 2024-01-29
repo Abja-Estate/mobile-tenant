@@ -14,7 +14,7 @@ class AppImages {
   static const refer = 'assets/images/images/refer.png';
   static const referred = 'assets/images/images/referred.png';
   static const noNotification = 'assets/images/no.png';
-    static const switchup = 'assets/icon/switch.png';
+  static const switchup = 'assets/icon/switch.png';
   static const no_prop = 'assets/images/no_prop.png';
   static const banner = 'assets/images/banner.png';
   static const logo = 'assets/icons/logo.png';
@@ -44,10 +44,10 @@ class AppImages {
   static const wifi = 'assets/icons/wifi.png';
   static const nepa = 'assets/icons/nepa.png';
   static const bedroom = 'assets/icons/bedroom.png';
-   static const store = 'assets/icons/store.png';
-      static const pdf = 'assets/icons/pdf.png';
-         static const png = 'assets/icons/png.png';
-            static const doc = 'assets/icons/doc.png';
+  static const store = 'assets/icons/store.png';
+  static const pdf = 'assets/icons/pdf.png';
+  static const png = 'assets/icons/png.png';
+  static const doc = 'assets/icons/doc.png';
 
   static const tenants = 'assets/images/tenants.png';
   static const help = 'assets/icons/help.png';
@@ -103,9 +103,4 @@ class AppImages {
   static const location = 'assets/icons/locate.png';
   static const eyesOn = 'assets/images/icons/eyes_on.png';
   static const eyesOff = 'assets/images/icons/eyes_off.png';
-
-  //holder images to be deleted upon API integration
-  static const condo1 = 'assets/images/condo.png';
-  static const condo2 = 'assets/images/condo2.png';
-  static const boy = 'assets/images/boy.png';
 }

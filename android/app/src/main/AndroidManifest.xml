@@ -2,7 +2,7 @@
     package="com.abja.tenant">
         <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="AbjaTenant"
+        android:label="Abja Tenant"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
