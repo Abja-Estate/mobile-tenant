@@ -1,3 +1,4 @@
+import 'package:abjatenant/constants/app_routes.dart';
 import 'package:abjatenant/utils/property_util/switch_account_utils.dart';
 import 'package:abjatenant/views/auth/welcome/welcome.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class AccountsBottomSheet extends StatelessWidget {
       child: Consumer<PropertyProvider>(
           builder: (context, propertyProvider, child) {
         var unit = propertyProvider.rent;
-        print(propertyProvider.rent);
+
         if (unit != null) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),

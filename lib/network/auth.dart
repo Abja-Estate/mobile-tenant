@@ -132,8 +132,8 @@ class AuthAPI {
     return parsedResponse;
   }
 
-  static Future updateData(email, phone, password, confirmPassword, name,
-      surname, about, selfie) async {
+  static Future updateData(phone, name, surname, about, selfie) async {
+    var id = await showId();
     var response = await http.put(
       Uri.parse('$BaseURL/auth/tenant/update_tenant'),
       headers: <String, String>{
@@ -141,10 +141,8 @@ class AuthAPI {
         'authorization': APIKEY
       },
       body: jsonEncode(<String, String>{
-        "email": email,
+        "id": id,
         "phone": phone,
-        "password": password,
-        "confirmPassword": confirmPassword,
         "name": name,
         "surname": surname,
         "about": about,

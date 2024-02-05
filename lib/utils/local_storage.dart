@@ -9,6 +9,11 @@ saveAbout(about) async {
   s_prefs.setString("about", about);
 }
 
+saveLandlordID(about) async {
+  s_prefs = await SharedPreferences.getInstance();
+  s_prefs.setString("lid", about);
+}
+
 saveAccessCode(code) async {
   s_prefs = await SharedPreferences.getInstance();
   s_prefs.setString("code", code);
@@ -57,6 +62,14 @@ showSelfie() async {
   s_prefs = await SharedPreferences.getInstance();
 
   String? temp = s_prefs.getString("selfie");
+
+  return temp;
+}
+
+showLandlordID() async {
+  s_prefs = await SharedPreferences.getInstance();
+
+  String? temp = s_prefs.getString("lid");
 
   return temp;
 }

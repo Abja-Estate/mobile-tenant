@@ -1,3 +1,4 @@
+import 'package:abjatenant/views/auth/switching_loading.dart';
 import 'package:abjatenant/views/auth/welcome/confirm.dart';
 import 'package:abjatenant/views/auth/welcome/get_code.dart';
 import 'package:abjatenant/views/auth/welcome/get_code_res.dart';
@@ -8,6 +9,7 @@ import 'package:abjatenant/views/profile/edit_profile.dart';
 import 'package:abjatenant/views/profile/profile.dart';
 import 'package:abjatenant/views/request/create_request/create_request.dart';
 import 'package:abjatenant/views/request/create_request/request_details.dart';
+import 'package:abjatenant/views/request/view_request/view_request.dart';
 import 'package:flutter/widgets.dart';
 
 import '../views/auth/forgotPassword/change_password.dart';
@@ -47,10 +49,11 @@ class AppRoutes {
   static const diag = '/diag';
   static const package = '/package';
   static const loadHome = '/loadHome';
+   static const loadAccount = '/loadAccount';
   static const privacy = '/privacy';
   static const terms = '/terms';
   static const taskScreen = '/taskScreen';
-
+  static const viewRequest = '/viewRequest';
   static const notification = '/notification';
   static const emergencyContact = '/emergencyContact';
   static const registerOTPScreen = '/registerOTPScreen';
@@ -71,7 +74,7 @@ class AppRoutes {
    
       AppRoutes.profile: ((context) => Profile()),
       AppRoutes.emergencyContact: ((context) => EmergencyContact()),
- 
+   AppRoutes.viewRequest: ((context) => ViewRequest()),
       AppRoutes.getCodeScreen: ((context) => const GetCode()),
       AppRoutes.welcomeScreen: ((context) => const Welcome()),
       AppRoutes.getCodeResScreen: ((context) => const GetCodeResponse()),
@@ -82,6 +85,7 @@ class AppRoutes {
       AppRoutes.loginScreen: (context) => LoginScreen(),
       AppRoutes.registerScreen: (context) => SignUp(),
       AppRoutes.loadHome: (context) => LoadingHomeScreen(),
+            AppRoutes.loadAccount: (context) => LoadingAccount(),
       AppRoutes.package: (context) => TermsAndConditions(),
       AppRoutes.createRequest: (context) => CreateRequest(),
         AppRoutes.requestDetails: (context) => RequestDetails(),

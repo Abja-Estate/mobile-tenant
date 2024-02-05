@@ -22,10 +22,9 @@ class UpdateUtil {
       AppUtils.showLoader(context);
       Provider.of<AuthProvider>(context, listen: false)
           .update(
-              updateData['email'],
+           
               updateData['phone'],
-              updateData['password'],
-              updateData['confirmPassword'],
+            
               updateData['name'],
               updateData['surname'],
               updateData['about'],  updateData['selfie']

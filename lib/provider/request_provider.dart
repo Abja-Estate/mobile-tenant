@@ -16,14 +16,14 @@ class RequestProvider extends ChangeNotifier {
   Future<void> getAllRequest() async {
     notifyListeners();
     var uid = await showuuId();
-
+    var lid = await showLandlordID();
     try {
       var responseData =
-          await RequestAPI.getAllRequest(uid, "65aa32ab66281188b471fccc");
+          await RequestAPI.getAllRequest(uid, lid);
       print(responseData);
       if (responseData['statusCode'] == 200) {
         _request = List<Map<String, dynamic>>.from(responseData['data']);
-        print(_request);
+    
         notifyListeners();
       } else {
         print(
@@ -31,7 +31,7 @@ class RequestProvider extends ChangeNotifier {
         // Additional error handling or logging can be added here
       }
     } catch (e) {
-      print({'error': e.toString()});
+    
       _request = [];
       // Additional error handling or logging can be added here
     }

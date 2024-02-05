@@ -20,41 +20,33 @@ class SwitchAccountUtil {
     var result;
     var email = await showEmail();
 
+    AppUtils.showLoader(context);
+    Provider.of<PropertyProvider>(context, listen: false)
+        .switchAccount(
+      accessCode,
+      email,
+    )
+        .then((value) async {
+      print(value);
+      Navigator.of(context).pop();
 
-      AppUtils.showLoader(context);
-      Provider.of<PropertyProvider>(context, listen: false)
-          .switchAccount(
-        accessCode,
-        email,
-      )
-          .then((value) async {
-        print(value);
+      if (value['statusCode'] == 200) {
+        AppUtils.showLoginLoader(context);
+
+        await saveOnce(3);
+        var responseData = value;
+        await saveAccessCode(responseData['data']['data']['unitID']);
+        await saveUnitData(responseData['data']['data']);
+        await savePropertyData(responseData['data']);
+        await saveuuId(responseData['data']['data']['unitID']);
+        await saveOnce(3);
+        Provider.of<PropertyProvider>(context, listen: false)
+            .getPropertyItems();
         Navigator.of(context).pop();
-
-        if (value['statusCode'] == 200) {
-         
-
-          AppUtils.showLoginLoader(context);
-
-          var responseData = value;
-          await saveAccessCode(responseData['data']['data']['unitID']);
-          await saveUnitData(responseData['data']['data']);
-          await savePropertyData(responseData['data']);
-          await saveuuId(responseData['data']['data']['unitID']);
-          await saveOnce(3);
-          Navigator.of(context).pop();
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (context) => NavBar(
-                      initialScreen: Dashboard(),
-                      initialTab: 0,
-                    )),
-            (route) => false,
-          );
-        } else {}
-      });
-    
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(AppRoutes.loadAccount, (route) => false);
+      } else {}
+    });
 
     return result;
   }

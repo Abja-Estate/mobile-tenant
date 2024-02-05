@@ -1,3 +1,4 @@
+import 'package:abjatenant/views/inbox/inbox.dart';
 import 'package:abjatenant/views/notification/notification.dart';
 import 'package:abjatenant/views/request/request.dart';
 import 'package:flutter/material.dart';
@@ -157,11 +158,13 @@ class _NavBarState extends State<NavBar> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Icon(Icons.speaker_phone_rounded, color: currentTab == 2
-                        //        ? Colors.white
-                        //       : Color(0xFF848586),
-                        //   size: 20,
-                        //   ),
+                     currentTab == 2
+                            ? Image.asset(
+                                AppImages.notificationfilled,
+                             
+                                width: 25,
+                                height: 25,
+                              ):
                         Image.asset(
                           AppImages.notification,
                           color: currentTab == 2
@@ -188,18 +191,23 @@ class _NavBarState extends State<NavBar> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Dashboard();
+                        currentScreen = Inbox();
                         currentTab = 4;
                       });
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(
+                     currentTab == 4  ? Image.asset(
+                                AppImages.inboxFilled,
+                                
+                                width: 25,
+                                height: 25,
+                              )
+                            : Image.asset(
                           AppImages.inbox,
-                          color: currentTab == 4
-                              ? Color(0xC7171A1C)
-                              : Pallete.fade,
+                          color: 
+                               Pallete.fade,
                           width: 20,
                           height: 20,
                         ),

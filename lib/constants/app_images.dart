@@ -55,9 +55,15 @@ class AppImages {
   static const greenMark = 'assets/images/icons/green_mark.png';
   static const estate = 'assets/icons/estate.png';
   static const estatefilled = 'assets/icons/estatef.png';
-  static const call = 'assets/images/icons/call.png';
+  static const notificationfilled = 'assets/icons/notification-filled.png';
+  static const call = 'assets/icons/call.png';
   static const joined = 'assets/icons/join.png';
-
+  static const pending = 'assets/icons/req-pending.png';
+  static const approved = 'assets/icons/req-approved.png';
+  static const clock = 'assets/icons/clock.png';
+  static const money = 'assets/icons/money.png';
+  static const inboxFilled = 'assets/icons/inbox-filled.png';
+  static const calender = 'assets/icons/calendar.png';
   static const bags = 'assets/icons/bags.png';
   static const grnagent = 'assets/icons/request/agent.png';
   static const ham = 'assets/icons/ham.png';
@@ -80,8 +86,6 @@ class AppImages {
   static const chat = 'assets/icons/chat.png';
 
   static const tag = 'assets/icons/tag.png';
-
-  static const money = 'assets/icons/money.png';
   static const bank = 'assets/icons/bank.png';
   static const dwn = 'assets/icons/dwn.png';
   static const notifyfilled = 'assets/icons/notif-f.png';

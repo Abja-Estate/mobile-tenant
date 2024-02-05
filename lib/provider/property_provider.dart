@@ -76,7 +76,9 @@ class PropertyProvider extends ChangeNotifier {
     var getproperty = Map<String, dynamic>.from(jsonDecode(propertyString));
 
     if (getproperty.isNotEmpty) {
+      print(getproperty);
       _property = getproperty;
+      await saveLandlordID(getproperty['data']['landlordID']);
     }
 
     notifyListeners();
@@ -86,11 +88,12 @@ class PropertyProvider extends ChangeNotifier {
     notifyListeners();
 
     var rentsString = await showRentItem();
-    print(rentsString);
+
     var getRents = List.from(jsonDecode(rentsString));
- 
+
     if (getRents.isNotEmpty) {
       _rent = getRents;
+      print(_rent);
     } else {
       _rent = [];
     }

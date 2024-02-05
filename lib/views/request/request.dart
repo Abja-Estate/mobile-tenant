@@ -32,7 +32,7 @@ class _RequestScreenState extends State<RequestScreen> {
     loaded = true;
     request;
 
-  //requestProvider = Provider.of<RequestProvider>(context, listen: false);
+    Provider.of<RequestProvider>(context, listen: false).getAllRequest();
     super.initState();
   }
 
@@ -40,7 +40,7 @@ class _RequestScreenState extends State<RequestScreen> {
   @override
   Widget build(BuildContext context) {
     final _getSize = MediaQuery.of(context).size;
-       Provider.of<RequestProvider>(context).getAllRequest();
+
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -266,82 +266,89 @@ class tabContent extends StatelessWidget {
               DateTime dateTime = DateTime.parse(requestData[index]['time']);
               String formattedTimeDifference = formatTimeDifference(dateTime);
 
-              return Padding(
-                padding: const EdgeInsets.only(
-                    top: 8.0, bottom: 8, right: 8, left: 4),
-                child: Container(
-                  height: _getSize.height * 0.07,
-                  width: _getSize.width,
-                  decoration: BoxDecoration(
-                      color: getIconAssetColor(requestData[index]['agent']),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromARGB(44, 85, 80, 80),
-                          blurRadius: 11,
-                          spreadRadius: 1,
-                          offset: Offset(0, 5),
-                        )
-                      ],
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 2.0, horizontal: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          getIconAssetName(requestData[index]['agent']),
-                          width: _getSize.width * 0.065,
-                        ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: _getSize.width * 0.71,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Text(
-                                    requestData[index]['agent'],
-                                    style: AppFonts.body1.copyWith(
-                                        color: Pallete.text,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  Text(
-                                    formattedTimeDifference,
-                                    style: AppFonts.body1.copyWith(
-                                        color: Pallete.primaryColor,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
+              return GestureDetector(
+                onTap: (){
+                     Navigator.of(context).pushNamed(AppRoutes.viewRequest,
+                      arguments: {"data": requestData[index]});
+                },
+                child:
+                 Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8.0, bottom: 8, right: 8, left: 4),
+                  child: Container(
+                    height: _getSize.height * 0.07,
+                    width: _getSize.width,
+                    decoration: BoxDecoration(
+                        color: getIconAssetColor(requestData[index]['agent']),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(44, 85, 80, 80),
+                            blurRadius: 11,
+                            spreadRadius: 1,
+                            offset: Offset(0, 5),
+                          )
+                        ],
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2.0, horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            getIconAssetName(requestData[index]['agent']),
+                            width: _getSize.width * 0.065,
+                          ),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: _getSize.width * 0.71,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text(
+                                      requestData[index]['agent'],
+                                      style: AppFonts.body1.copyWith(
+                                          color: Pallete.text,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      formattedTimeDifference,
+                                      style: AppFonts.body1.copyWith(
+                                          color: Pallete.primaryColor,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: _getSize.height * 0.007,
-                            ),
-                            SizedBox(
-                              width: _getSize.width * 0.6,
-                              child: Text(
-                                requestData[index]['description'],
-                                style: AppFonts.body1.copyWith(
-                                    color: Pallete.fade,
-                                    fontSize: 12,
-                                    overflow: TextOverflow.ellipsis,
-                                    fontWeight: FontWeight.w500),
+                              SizedBox(
+                                height: _getSize.height * 0.007,
                               ),
-                            ),
-                          ],
-                        )
-                      ],
+                              SizedBox(
+                                width: _getSize.width * 0.6,
+                                child: Text(
+                                  requestData[index]['description'],
+                                  style: AppFonts.body1.copyWith(
+                                      color: Pallete.fade,
+                                      fontSize: 12,
+                                      overflow: TextOverflow.ellipsis,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -381,125 +388,134 @@ class tabAcceptedContent extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(
-                    top: 8.0, bottom: 8, right: 8, left: 4),
-                child: Container(
-                  height: _getSize.height * 0.088,
-                  width: _getSize.width,
-                  decoration: BoxDecoration(
-                      color: getIconAssetColor(requestData[index]['agent']),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromARGB(44, 85, 80, 80),
-                          blurRadius: 11,
-                          spreadRadius: 1,
-                          offset: Offset(0, 5),
-                        )
-                      ],
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 2.0, horizontal: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipOval(
-                          child: Image.network(
-                            photo,
-                            fit: BoxFit.cover,
-                            width: 52,
-                            height: 52,
+              DateTime dateTime = DateTime.parse(requestData[index]['time']);
+              String formattedTimeDifference = formatTimeDifference(dateTime);
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed(AppRoutes.viewRequest,
+                      arguments: {"data": requestData[index]});
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8.0, bottom: 8, right: 8, left: 4),
+                  child: Container(
+                    height: _getSize.height * 0.088,
+                    width: _getSize.width,
+                    decoration: BoxDecoration(
+                        color: getIconAssetColor(requestData[index]['agent']),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(44, 85, 80, 80),
+                            blurRadius: 11,
+                            spreadRadius: 1,
+                            offset: Offset(0, 5),
+                          )
+                        ],
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2.0, horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ClipOval(
+                            child: Image.network(
+                              photo,
+                              fit: BoxFit.cover,
+                              width: 52,
+                              height: 52,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        SizedBox(
-                          width: _getSize.width * 0.67,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: _getSize.height * 0.005,
-                                  ),
-                                  Text(
-                                    requestData[index]['agentName'] ??
-                                        "Bryan Umar",
-                                    style: AppFonts.body1.copyWith(
-                                        color: Pallete.text,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  SizedBox(
-                                    height: _getSize.height * 0.005,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Image.asset(
-                                        getIconAssetName(
-                                            requestData[index]['agent']),
-                                        width: _getSize.width * 0.045,
-                                      ),
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      Text(
-                                        requestData[index]['agent'],
+                          SizedBox(
+                            width: 12,
+                          ),
+                          SizedBox(
+                            width: _getSize.width * 0.67,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: _getSize.height * 0.005,
+                                    ),
+                                    Text(
+                                      requestData[index]['agentName'] ??
+                                          "-- --",
+                                      style: AppFonts.body1.copyWith(
+                                          color: Pallete.text,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    SizedBox(
+                                      height: _getSize.height * 0.005,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Image.asset(
+                                          getIconAssetName(
+                                              requestData[index]['agent']),
+                                          width: _getSize.width * 0.045,
+                                        ),
+                                        SizedBox(
+                                          width: 12,
+                                        ),
+                                        Text(
+                                          requestData[index]['agent'],
+                                          style: AppFonts.body1.copyWith(
+                                              color: Pallete.fade,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: _getSize.height * 0.005,
+                                    ),
+                                    SizedBox(
+                                      width: _getSize.width * 0.4,
+                                      child: Text(
+                                        requestData[index]['description'],
                                         style: AppFonts.body1.copyWith(
                                             color: Pallete.fade,
                                             fontSize: 12,
+                                            overflow: TextOverflow.ellipsis,
                                             fontWeight: FontWeight.w500),
                                       ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: _getSize.height * 0.005,
-                                  ),
-                                  SizedBox(
-                                    width: _getSize.width * 0.4,
-                                    child: Text(
-                                      requestData[index]['description'],
+                                    ),
+                                    SizedBox(
+                                      height: _getSize.height * 0.01,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    SizedBox(
+                                      height: _getSize.height * 0.01,
+                                    ),
+                                    Text(
+                                      formattedTimeDifference,
                                       style: AppFonts.body1.copyWith(
-                                          color: Pallete.fade,
-                                          fontSize: 12,
-                                          overflow: TextOverflow.ellipsis,
-                                          fontWeight: FontWeight.w500),
+                                        color: Pallete.primaryColor,
+                                        fontSize: 11,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: _getSize.height * 0.01,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  SizedBox(
-                                    height: _getSize.height * 0.01,
-                                  ),
-                                  Text(
-                                    requestData[index]['time'],
-                                    style: AppFonts.body1.copyWith(
-                                      color: Pallete.primaryColor,
-                                      fontSize: 11,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: _getSize.height * 0.007,
-                        ),
-                      ],
+                          SizedBox(
+                            height: _getSize.height * 0.007,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

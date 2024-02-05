@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import '../provider/auth_provider.dart';
 import '../provider/property_provider.dart';
+import '../provider/user_provider.dart';
 import '../provider/websocket_provider.dart';
 
 
@@ -18,6 +19,8 @@ class AppProviders {
     ),ChangeNotifierProvider<RequestProvider>(
       create: (ctx) => RequestProvider(),
     ),
-   
+   ChangeNotifierProvider<UserProvider>(
+      create: (ctx) => UserProvider(),
+    ),
   ];
 }

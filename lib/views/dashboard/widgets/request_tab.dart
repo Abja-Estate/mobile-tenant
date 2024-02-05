@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -58,16 +55,15 @@ class DashboardRequestMenu extends StatelessWidget {
               ),
             );
           } else {
-            return 
-            
-            
-            ListView.builder(
+            return ListView.builder(
                 itemCount: requestData.length,
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
-                   DateTime dateTime = DateTime.parse(requestData[index]['time']);
-              String formattedTimeDifference = formatTimeDifference(dateTime);
+                  DateTime dateTime =
+                      DateTime.parse(requestData[index]['time']);
+                  String formattedTimeDifference =
+                      formatTimeDifference(dateTime);
                   return Padding(
                     padding: const EdgeInsets.only(
                         top: 8.0, bottom: 8, right: 8, left: 4),
@@ -93,8 +89,9 @@ class DashboardRequestMenu extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
-                              
-                                getIconAssetName(requestData[index]['agent']),width: getSizeWidth*0.065,),
+                              getIconAssetName(requestData[index]['agent']),
+                              width: getSizeWidth * 0.065,
+                            ),
                             SizedBox(
                               width: 12,
                             ),
@@ -117,7 +114,7 @@ class DashboardRequestMenu extends StatelessWidget {
                                             fontWeight: FontWeight.w600),
                                       ),
                                       Text(
-                                       formattedTimeDifference,
+                                        formattedTimeDifference,
                                         style: AppFonts.body1.copyWith(
                                             color: Pallete.primaryColor,
                                             fontSize: 12,
@@ -174,6 +171,14 @@ String getIconAssetName(String iconKey) {
       return AppImages.carpenter;
     case 'Electrician':
       return AppImages.electrician;
+ case 'Paid':
+      return AppImages.money;
+       case 'Pending':
+      return AppImages.pending;
+    case 'Reminder':
+      return AppImages.clock;
+    case 'Approved':
+      return AppImages.approved;
 
     default:
       return AppImages.electrician;

@@ -173,17 +173,7 @@ class _EditProfileState extends State<EditProfile> {
                       SizedBox(
                         height: _getSize.height * 0.04,
                       ),
-                      CustomInput3(
-                        validator: Validators.nameValidator,
-                        label: 'Email',
-                        hint: 'Email',
-                        onSaved: (value) {
-                          _updateData['email'] = value;
-                        },
-                      ),
-                      SizedBox(
-                        height: _getSize.height * 0.04,
-                      ),
+                      
                       CustomInput3(
                         validator: Validators.nameValidator,
                         label: 'Phone',
@@ -206,25 +196,7 @@ class _EditProfileState extends State<EditProfile> {
                       SizedBox(
                         height: _getSize.height * 0.04,
                       ),
-                      CustomInput3(
-                        validator: Validators.nameValidator,
-                        label: 'password',
-                        hint: 'Password',
-                        onSaved: (value) {
-                          _updateData['password'] = value;
-                        },
-                      ),
-                      SizedBox(
-                        height: _getSize.height * 0.04,
-                      ),
-                      CustomInput3(
-                        validator: Validators.nameValidator,
-                        label: 'password',
-                        hint: 'Confirm Password',
-                        onSaved: (value) {
-                          _updateData['confirmPassword'] = value;
-                        },
-                      ),
+                     
                     ],
                   ),
                 ),

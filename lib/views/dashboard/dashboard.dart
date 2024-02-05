@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:abjatenant/network/request.dart';
 import 'package:abjatenant/provider/property_provider.dart';
 import 'package:abjatenant/provider/request_provider.dart';
+import 'package:abjatenant/provider/user_provider.dart';
 import 'package:abjatenant/views/dashboard/widgets/service_agents_row.dart';
+import 'package:abjatenant/views/request/request.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +27,7 @@ import '../../utils/app_utils.dart';
 import '../../utils/local_storage.dart';
 import '../../utils/location.dart';
 import '../../utils/permissions.dart';
+import '../navbar/nav.dart';
 import 'widgets/bottomsheet.dart';
 import 'widgets/request_tab.dart';
 import 'widgets/unit_content.dart';
@@ -39,38 +42,15 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   late WebSocketProvider webSocketProvider;
   late RequestProvider requestProvider;
+  late UserProvider userProvider;
 
-  // final Size = MediaQuery.of(context).size;
   var photo = 'https://picsum.photos/200';
-  bool loaded = false;
-  var _serviceEnabled;
+
   String searchItem = '';
-  var fullname = "";
+
   var name = "";
-  var surname = "";
-  var email = "";
-  var _permissionGranted;
   var fullAddress = 'fetching your location ...';
   var code = '';
-
-  getData() async {
-    email = await showEmail();
-    name = await showName();
-    surname = await showSurname();
-    photo = await showSelfie();
-    code = await showAccessCode();
-    var mlocate =
-        await getAddress(getUserLocation(_serviceEnabled, _permissionGranted));
-    print(mlocate['fullAddress'].toString());
-    fullAddress = mlocate['fullAddress'].toString();
-    await saveUserState(mlocate['state']);
-    await saveCity(mlocate['city']);
-    setState(() {
-      email;
-      fullAddress;
-      fullname = "$name $surname";
-    });
-  }
 
   _runFilter(value) {
     setState(() {
@@ -81,16 +61,12 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     webSocketProvider = Provider.of<WebSocketProvider>(context, listen: false);
-    requestProvider = Provider.of<RequestProvider>(context, listen: false);
-    getData();
+ Provider.of<RequestProvider>(context, listen: false).getAllRequest();
+    Provider.of<UserProvider>(context, listen: false).getItems();
+    Provider.of<UserProvider>(context, listen: false).unitDeleted();
     super.initState();
   }
-
-  // getPropertiesData() async {
-  //   var res = await PropertyAPI.accessCode(code);
-  //   var codeInfo = res['statusCode'];
-  //   if (codeInfo != 200) {}
-  // }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +77,6 @@ class _DashboardState extends State<Dashboard> {
 
     final _getSize = MediaQuery.of(context).size;
 
-    // webSocketProvider = Provider.of<WebSocketProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Pallete.backgroundColor,
       body: SafeArea(
@@ -117,115 +92,106 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Hello ',
-                                              style: AppFonts.bodyText.copyWith(
-                                                  color: Pallete.primaryColor,
-                                                  fontSize: 18),
-                                            ),
-                                            Text(
-                                              name,
-                                              style: AppFonts.bodyText.copyWith(
-                                                  color: Pallete.primaryColor,
-                                                  fontSize: 18),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.location,
-                                              height: 10,
-                                            ),
-                                            const SizedBox(
-                                              width: 4,
-                                            ),
-                                            Text(
-                                              fullAddress,
-                                              style: AppFonts.bodyThinColoured
-                                                  .copyWith(
-                                                      fontSize: 10,
-                                                      color: Pallete.black),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                          Consumer<UserProvider>(
+                              builder: (context, userProvider, child) {
+                            name = userProvider.name;
+                            photo = userProvider.photo;
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Hello ',
+                                                style: AppFonts.bodyText
+                                                    .copyWith(
+                                                        color: Pallete
+                                                            .primaryColor,
+                                                        fontSize: 18),
+                                              ),
+                                              Text(
+                                                name,
+                                                style: AppFonts.bodyText
+                                                    .copyWith(
+                                                        color: Pallete
+                                                            .primaryColor,
+                                                        fontSize: 18),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  GestureDetector(
-                                      onTap: () async {
-                                        Navigator.of(context)
-                                            .pushNamed(AppRoutes.profile);
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: ClipOval(
-                                          child: Image.network(
-                                            photo,
-                                            fit: BoxFit.cover,
-                                            width: 56,
-                                            height: 56,
-                                          ),
-                                        ),
-                                      )),
-                                  SizedBox(
-                                    width: _getSize.width * 0.005,
-                                  ),
-                                  GestureDetector(
-                                      onTap: () async {
-                                        showModalBottomSheet(
-                                          backgroundColor:
-                                              Pallete.backgroundColor,
-                                          context: context,
-                                          elevation: 10,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ),
-                                          builder: (BuildContext context) {
-                                            return AccountsBottomSheet();
-                                          },
-                                        );
-                                      },
-                                      child: ClipOval(
-                                        child: Container(
-                                          color: Pallete.hintColor,
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Image.asset(
-                                              "assets/icons/switch.png",
-                                              width: 15,
-                                              height: 15,
+                                  ],
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    GestureDetector(
+                                        onTap: () async {
+                                          Navigator.of(context)
+                                              .pushNamed(AppRoutes.profile);
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: ClipOval(
+                                            child: Image.network(
+                                              photo,
+                                              fit: BoxFit.cover,
+                                              width: 56,
+                                              height: 56,
                                             ),
                                           ),
-                                        ),
-                                      )),
-                                ],
-                              )
-                            ],
-                          ),
+                                        )),
+                                    SizedBox(
+                                      width: _getSize.width * 0.005,
+                                    ),
+                                    GestureDetector(
+                                        onTap: () async {
+                                          showModalBottomSheet(
+                                            backgroundColor:
+                                                Pallete.backgroundColor,
+                                            context: context,
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                            ),
+                                            builder: (BuildContext context) {
+                                              return AccountsBottomSheet();
+                                            },
+                                          );
+                                        },
+                                        child: ClipOval(
+                                          child: Container(
+                                            color: Pallete.hintColor,
+                                            child: Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Image.asset(
+                                                "assets/icons/switch.png",
+                                                width: 15,
+                                                height: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        )),
+                                  ],
+                                )
+                              ],
+                            );
+                          }),
                           SizedBox(
                             height: _getSize.height * 0.003,
                           ),
@@ -332,12 +298,25 @@ class _DashboardState extends State<Dashboard> {
                                 fontWeight: FontWeight.w300,
                                 color: Pallete.text),
                           ),
-                          Text(
-                            'View All',
-                            style: AppFonts.boldText.copyWith(
-                                fontSize: _getSize.height * 0.015,
-                                fontWeight: FontWeight.w300,
-                                color: Pallete.text),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NavBar(
+                                          initialScreen: RequestScreen(),
+                                          initialTab: 1,
+                                        )),
+                                (route) => false,
+                              );
+                            },
+                            child: Text(
+                              'View All',
+                              style: AppFonts.boldText.copyWith(
+                                  fontSize: _getSize.height * 0.015,
+                                  fontWeight: FontWeight.w300,
+                                  color: Pallete.text),
+                            ),
                           ),
                         ],
                       ),

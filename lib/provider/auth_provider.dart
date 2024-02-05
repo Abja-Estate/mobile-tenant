@@ -124,7 +124,7 @@ class AuthProvider extends ChangeNotifier {
     return data;
   }
 
-  Future<Map<String, dynamic>> update(email, phone, password, confirmPassword,
+  Future<Map<String, dynamic>> update(phone,
       name, surname, about,selfie) async {
     dynamic data;
     //dynamic dataz;
@@ -132,8 +132,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      var responseData = await AuthAPI.updateData(email, phone, password,
-          confirmPassword, name, surname, about,selfie);
+      var responseData = await AuthAPI.updateData(phone, name, surname, about,selfie);
 
       data = responseData;
 
