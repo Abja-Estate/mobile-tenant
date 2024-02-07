@@ -90,7 +90,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Text("My Profile"),
-                      Text("")
+                      SizedBox(width: 24,)
                     ],
                   ),
                 ),
