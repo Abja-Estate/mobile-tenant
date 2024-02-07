@@ -57,7 +57,7 @@ class _ViewRequestState extends State<ViewRequest> {
                         ),
                       ),
                       Text("Request Details"),
-                      Text("")
+                   SizedBox(width: 24,)
                     ],
                   ),
                 ),
@@ -151,7 +151,7 @@ class _ViewRequestState extends State<ViewRequest> {
                   children: [
                     Text(
                       "Service needed:",
-                      style: AppFonts.boldText.copyWith(
+                     style: AppFonts.bodyText.copyWith(
                           color: Pallete.text,
                           fontSize: 14,
                           fontWeight: FontWeight.w600),
@@ -184,10 +184,10 @@ class _ViewRequestState extends State<ViewRequest> {
                   children: [
                     Text(
                       "Request:",
-                      style: AppFonts.boldText.copyWith(
+                     style: AppFonts.bodyText.copyWith(
                           color: Pallete.text,
                           fontSize: 14,
-                          fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.w600),
                     ),
                     SizedBox(
                       height: _getSize.height * 0.008,
@@ -225,10 +225,10 @@ class _ViewRequestState extends State<ViewRequest> {
                   children: [
                     Text(
                       "Request Description",
-                      style: AppFonts.boldText.copyWith(
+                      style: AppFonts.bodyText.copyWith(
                           color: Pallete.text,
                           fontSize: 14,
-                          fontWeight: FontWeight.bold),
+                                     fontWeight: FontWeight.w600),
                     ),
                     SizedBox(
                       height: _getSize.height * 0.005,
@@ -250,10 +250,10 @@ class _ViewRequestState extends State<ViewRequest> {
                   children: [
                     Text(
                       "Timeline:",
-                      style: AppFonts.boldText.copyWith(
+                     style: AppFonts.bodyText.copyWith(
                           color: Pallete.text,
                           fontSize: 14,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.w600),
                     ),
                     SizedBox(
                       height: _getSize.height * 0.005,
@@ -283,20 +283,29 @@ class _ViewRequestState extends State<ViewRequest> {
                           SizedBox(
                             height: _getSize.height * 0.015,
                           ),
-                          Row(
-                            children: [
-                              Image.asset(
-                                AppImages.clock,
-                                color: Pallete.primaryColor,
-                                width: 30,
+                          SizedBox(
+                              width: _getSize.width * 0.6,
+                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                 
+                       
+                                  children: [
+                                    Icon(Icons.alarm),
+                                     SizedBox(
+                                width: 4,
                               ),
-                              Text(
-                                requestData['period'],
-                                style: AppFonts.body1.copyWith(
-                                  color: Pallete.text,
-                                ),
-                              ),
-                            ],
+                                    Text(
+                                      requestData['period'],
+                                      style: AppFonts.body1.copyWith(
+                                        color: Pallete.text,
+                                      ),
+                                    ),
+                                  ],
+                                )
+,                             
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -312,10 +321,10 @@ class _ViewRequestState extends State<ViewRequest> {
                   children: [
                     Text(
                       "Contact:",
-                      style: AppFonts.boldText.copyWith(
+                      style: AppFonts.bodyText.copyWith(
                           color: Pallete.text,
                           fontSize: 14,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.w600),
                     ),
                     SizedBox(
                       height: _getSize.height * 0.005,
@@ -354,10 +363,14 @@ class _ViewRequestState extends State<ViewRequest> {
                               SizedBox(
                                 width: 4,
                               ),
-                              Text(
-                                requestData['email'],
-                                style: AppFonts.body1.copyWith(
-                                  color: Pallete.text,
+                              SizedBox(
+                                width: _getSize.width * 0.35,
+                                child: Text(
+                               requestData['email'],
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AppFonts.body1.copyWith(
+                                    color: Pallete.text,
+                                  ),
                                 ),
                               ),
                             ],
