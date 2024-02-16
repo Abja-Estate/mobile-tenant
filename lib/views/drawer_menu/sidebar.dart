@@ -1,12 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../../../constants/app_colors.dart';
 import '../../../../constants/app_fonts.dart';
 import '../../../../constants/app_images.dart';
 import '../../../../constants/app_routes.dart';
-import '../../../../utils/app_utils.dart';
 import '../../utils/local_storage.dart';
 
 class SideBar extends StatelessWidget {

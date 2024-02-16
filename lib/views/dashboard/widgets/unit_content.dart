@@ -27,6 +27,7 @@ class DashboardUnitContent extends StatelessWidget {
             builder: (context, propertyProvider, child) {
           var unit = propertyProvider.property;
 
+          print(unit);
           if (unit["data"] != null) {
             return GestureDetector(
               onTap: () {

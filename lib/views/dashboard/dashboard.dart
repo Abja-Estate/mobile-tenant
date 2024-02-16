@@ -3,14 +3,15 @@ import 'package:abjatenant/network/request.dart';
 import 'package:abjatenant/provider/property_provider.dart';
 import 'package:abjatenant/provider/request_provider.dart';
 import 'package:abjatenant/provider/user_provider.dart';
+import 'package:abjatenant/utils/property_util/access_code_utils.dart';
 import 'package:abjatenant/views/dashboard/widgets/service_agents_row.dart';
 import 'package:abjatenant/views/request/request.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:location/location.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -60,13 +61,16 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    webSocketProvider = Provider.of<WebSocketProvider>(context, listen: false);
- Provider.of<RequestProvider>(context, listen: false).getAllRequest();
-    Provider.of<UserProvider>(context, listen: false).getItems();
-    Provider.of<UserProvider>(context, listen: false).unitDeleted();
     super.initState();
-  }
+    
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+          AccessCodeUtil.isDeleted(context);
+      Provider.of<RequestProvider>(context, listen: false).getAllRequest();
+      Provider.of<UserProvider>(context, listen: false).getItems();
   
+      Provider.of<WebSocketProvider>(context, listen: false).init();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

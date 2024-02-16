@@ -1,8 +1,11 @@
 import 'package:abjatenant/components/buttons.dart';
 import 'package:abjatenant/constants/app_fonts.dart';
 import 'package:abjatenant/constants/app_routes.dart';
+import 'package:abjatenant/provider/property_provider.dart';
+import 'package:abjatenant/provider/request_provider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_images.dart';
@@ -76,13 +79,13 @@ class _ProfileState extends State<Profile> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                              Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            NavBar(initialScreen: Dashboard(),initialTab: 0)),
-                                    (route) => false,
-                                  );
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NavBar(
+                                    initialScreen: Dashboard(), initialTab: 0)),
+                            (route) => false,
+                          );
                         },
                         child: Image.asset(
                           AppImages.back,
@@ -90,7 +93,9 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Text("My Profile"),
-                      SizedBox(width: 24,)
+                      SizedBox(
+                        width: 24,
+                      )
                     ],
                   ),
                 ),
@@ -116,14 +121,13 @@ class _ProfileState extends State<Profile> {
                             child: ClipOval(
                               child: Image.network(
                                 photo,
-                            fit: BoxFit.cover,
-                            width: _getSize.width * 0.22,
-                            height: _getSize.height * 0.10,
+                                fit: BoxFit.cover,
+                                width: _getSize.width * 0.22,
+                                height: _getSize.height * 0.10,
                               ),
                             ),
                           ),
                         ),
-                    
                       ],
                     ),
                     Container(
@@ -235,10 +239,12 @@ class _ProfileState extends State<Profile> {
                   padding: EdgeInsets.symmetric(horizontal: 124),
                   child: ButtonWithFuction(
                       text: 'Log out',
-                      onPressed: () {
-                        clear();
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            AppRoutes.welcomeScreen, (route) => false);
+                      onPressed: () async {
+                        await clear();
+                        Future.delayed(Duration(milliseconds: 500), () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              AppRoutes.loginScreen, (route) => false);
+                        });
                       }),
                 )
               ],
@@ -260,144 +266,153 @@ class middle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          height: _getSize.height * 0.075,
-          width: _getSize.width * 0.28,
-          decoration: BoxDecoration(
-              color: Color(0xFFBBCDD1),
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromARGB(68, 85, 80, 80),
-                  blurRadius: 11,
-                  spreadRadius: 1,
-                  offset: Offset(0, 5),
-                )
-              ],
-              borderRadius: BorderRadius.all(Radius.circular(12))),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("05",
-                        style: AppFonts.boldText.copyWith(
-                          fontSize: _getSize.height * 0.02,
-                          color: Color(0xFF1D5A67),
-                        )),
-                    Image.asset(
-                      AppImages.estate,
-                      height: _getSize.height * 0.02,
-                      color: Color(0xFF1D5A67),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: _getSize.width * 0.04,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Active",
-                      style: AppFonts.body1.copyWith(
-                          color: Color(0xFF1D5A67),
-                          fontSize: _getSize.height * 0.017,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      "Rent",
-                      style: AppFonts.body1.copyWith(
-                          color: Color(
-                            0xFF1D5A67,
-                          ),
-                          fontSize: _getSize.height * 0.017,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                )
-              ],
+    return Consumer2<RequestProvider, PropertyProvider>(
+        builder: (context, requestProvider, propertyProvider, child) {
+      int totalProperty = propertyProvider.activeRents;
+      int totalRequest = requestProvider.request.length;
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: _getSize.height * 0.075,
+            width: totalProperty < 99
+                ? _getSize.width * 0.28
+                : _getSize.width * 0.32,
+            decoration: BoxDecoration(
+                color: Color(0xFFBBCDD1),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(68, 85, 80, 80),
+                    blurRadius: 11,
+                    spreadRadius: 1,
+                    offset: Offset(0, 5),
+                  )
+                ],
+                borderRadius: BorderRadius.all(Radius.circular(12))),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(totalProperty.toString(),
+                          style: AppFonts.boldText.copyWith(
+                            fontSize: _getSize.height * 0.02,
+                            color: Color(0xFF1D5A67),
+                          )),
+                      Image.asset(
+                        AppImages.estate,
+                        height: _getSize.height * 0.02,
+                        color: Color(0xFF1D5A67),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: _getSize.width * 0.04,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Active",
+                        style: AppFonts.body1.copyWith(
+                            color: Color(0xFF1D5A67),
+                            fontSize: _getSize.height * 0.017,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        "Rent",
+                        style: AppFonts.body1.copyWith(
+                            color: Color(
+                              0xFF1D5A67,
+                            ),
+                            fontSize: _getSize.height * 0.017,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          width: _getSize.width * 0.04,
-        ),
-        Container(
-          height: _getSize.height * 0.075,
-          width: _getSize.width * 0.28,
-          decoration: BoxDecoration(
-              color: Color(0xFFFDE7CD),
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromARGB(68, 85, 80, 80),
-                  blurRadius: 11,
-                  spreadRadius: 1,
-                  offset: Offset(0, 5),
-                )
-              ],
-              borderRadius: BorderRadius.all(Radius.circular(12))),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("02",
-                        style: AppFonts.boldText.copyWith(
-                          fontSize: _getSize.height * 0.02,
-                          color: Color(0xFFF58807),
-                        )),
-                    Image.asset(
-                      AppImages.request,
-                      width: 18,
-                      color: Color(0xFFF58807),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: _getSize.width * 0.04,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Service",
-                      style: AppFonts.body1.copyWith(
-                          color: Color(0xFFF58807),
-                          fontSize: _getSize.height * 0.017,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      "Request",
-                      style: AppFonts.body1.copyWith(
-                          color: Color(
-                            0xFFF58807,
-                          ),
-                          fontSize: _getSize.height * 0.017,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                )
-              ],
+          SizedBox(
+            width: _getSize.width * 0.04,
+          ),
+          Container(
+            height: _getSize.height * 0.075,
+            width: totalRequest < 99
+                ? _getSize.width * 0.28
+                : _getSize.width * 0.32,
+            decoration: BoxDecoration(
+                color: Color(0xFFFDE7CD),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(68, 85, 80, 80),
+                    blurRadius: 11,
+                    spreadRadius: 1,
+                    offset: Offset(0, 5),
+                  )
+                ],
+                borderRadius: BorderRadius.all(Radius.circular(12))),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(totalRequest.toString(),
+                          style: AppFonts.boldText.copyWith(
+                            fontSize: _getSize.height * 0.02,
+                            color: Color(0xFFF58807),
+                          )),
+                      Image.asset(
+                        AppImages.request,
+                        width: 18,
+                        color: Color(0xFFF58807),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: _getSize.width * 0.04,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Total",
+                        style: AppFonts.body1.copyWith(
+                            color: Color(0xFFF58807),
+                            fontSize: _getSize.height * 0.017,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        "Request",
+                        style: AppFonts.body1.copyWith(
+                            color: Color(
+                              0xFFF58807,
+                            ),
+                            fontSize: _getSize.height * 0.017,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 }
 

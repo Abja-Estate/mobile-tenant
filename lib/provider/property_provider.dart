@@ -10,6 +10,7 @@ import '../utils/local_storage.dart';
 class PropertyProvider extends ChangeNotifier {
   Map<String, dynamic> _property = {};
   List _rent = [];
+  int _activeRents = 0;
 
   PropertyProvider() {
     getPropertyItems();
@@ -18,6 +19,7 @@ class PropertyProvider extends ChangeNotifier {
 
   Map<String, dynamic> get property => _property;
   List get rent => _rent;
+  int get activeRents => _activeRents;
 
   Future<Map<String, dynamic>> accessCode(code) async {
     dynamic data;
@@ -94,6 +96,10 @@ class PropertyProvider extends ChangeNotifier {
     if (getRents.isNotEmpty) {
       _rent = getRents;
       print(_rent);
+      List<dynamic> filteredRents =
+          getRents.where((rent) => rent['duration'] > 0).toList();
+      _activeRents = filteredRents.length;
+      print(filteredRents);
     } else {
       _rent = [];
     }

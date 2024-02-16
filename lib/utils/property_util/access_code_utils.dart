@@ -19,12 +19,11 @@ class AccessCodeUtil {
       Provider.of<PropertyProvider>(context, listen: false)
           .accessCode(code)
           .then((value) async {
-       
         Navigator.of(context).pop();
 
         if (value['statusCode'] == 200) {
-           formkey.currentState!.reset();
-       
+          formkey.currentState!.reset();
+
           await saveAccessCode(code);
           await saveUnitData(value['data']['data']);
           await savePropertyData(value['data']);
@@ -32,14 +31,17 @@ class AccessCodeUtil {
           // await setSecured(value['data']['status']);
           Navigator.of(context).pushNamed(
             AppRoutes.confirmLandlordScreen,
-            arguments: {'data': value['data'],'isRegistered':value['data']['isRegistered']},
+            arguments: {
+              'data': value['data'],
+              'isRegistered': value['data']['isRegistered']
+            },
           );
           // Navigator.of(context)
           // .popAndPushNamed(AppRoutes.confirmLandlordScreen);
         } else {
           AppUtils.showAlertDialog(
               context,
-            value['error'],
+              value['error'],
               'Another tenant has already loaded into this unit.',
               'Contact Landlord',
               'Close',
@@ -47,6 +49,44 @@ class AccessCodeUtil {
         }
       });
     }
+
+    return result;
+  }
+
+  static Future<String> isDeleted(BuildContext context) async {
+    // print(code);
+
+    var result;
+
+    var code = await showuuId();
+
+    print(code);
+
+  
+    Provider.of<PropertyProvider>(context, listen: false)
+        .accessCode(code)
+        .then((value) async {
+
+
+      if (value['statusCode'] == 200 || value['statusCode'] == 202) {
+        print("heere");
+      } else {
+        AppUtils.showAlertDialog(
+            context,
+            value['error'],
+            'This unit no longer exist',
+            'Contact Landlord',
+            'Close',
+            () => Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRoutes.loginScreen, (route) => false));
+
+        Future.delayed(Duration(seconds: 2), () async {
+          await clear();
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(AppRoutes.loginScreen, (route) => false);
+        });
+      }
+    });
 
     return result;
   }

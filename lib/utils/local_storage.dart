@@ -238,6 +238,7 @@ isSecured() async {
 clear() async {
   s_prefs = await SharedPreferences.getInstance();
   s_prefs.clear();
+
 }
 
 //end BNB wallet

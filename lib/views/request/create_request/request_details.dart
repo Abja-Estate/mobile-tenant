@@ -115,7 +115,6 @@ class _RequestDetailsState extends State<RequestDetails> {
       "4:30 PM",
       "5:00 PM"
     ];
-     
   }
 
   bool isDataEmpty(Map<String, dynamic> data) {
@@ -141,7 +140,7 @@ class _RequestDetailsState extends State<RequestDetails> {
         <String, dynamic>{}) as Map;
     agent = dataFromRoute["agent"];
     issues = dataFromRoute["job"];
-   
+
     return Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(
@@ -749,20 +748,18 @@ class _RequestDetailsState extends State<RequestDetails> {
                           "sender_id": unitID
                         };
                         print(data);
-
-// Example usage:
                         if (isDataEmpty(requestData)) {
-                       AppUtils.ErrorDialog(
-                              context,
-                              'Some fields are empty',
-                              "You need to fill all the fields",
-                              'Try Again',
-                              Icon(
-                                Icons.error_rounded,
-                                color: Color.fromARGB(255, 213, 10, 10),
-                                size: 30,
-                              ),
-                            );
+                          AppUtils.ErrorDialog(
+                            context,
+                            'Some fields are empty',
+                            "You need to fill all the fields",
+                            'Try Again',
+                            Icon(
+                              Icons.error_rounded,
+                              color: Color.fromARGB(255, 213, 10, 10),
+                              size: 30,
+                            ),
+                          );
                         } else {
                           AppUtils.showLoader(context);
                           webSocketProvider.sendMessage(jsonEncode(data));

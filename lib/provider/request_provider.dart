@@ -20,7 +20,7 @@ class RequestProvider extends ChangeNotifier {
     try {
       var responseData =
           await RequestAPI.getAllRequest(uid, lid);
-      print(responseData);
+
       if (responseData['statusCode'] == 200) {
         _request = List<Map<String, dynamic>>.from(responseData['data']);
     

@@ -6,7 +6,7 @@ A new Flutter project.
 ### To build APK
 
 ```shell
-flutter build apk --release --no-sound-null-safety --split-per-abi
+flutter build apk --release --split-per-abi
 ```
 
 ### To run debug mode
