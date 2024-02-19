@@ -178,7 +178,7 @@ class _SignUpState extends State<SignUp> {
                       child: Column(
                         children: [
                           CustomInput3(
-                         
+                            enabled: false,
                             label: 'Email',
                             hint: tentInfo['email'],
                             onSaved: (value) {
