@@ -67,7 +67,7 @@ class _ViewRequestState extends State<ViewRequest> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                   child: Container(
-                    height: _getSize.height * 0.07,
+                    height: _getSize.height * 0.075,
                     width: _getSize.width,
                     decoration: BoxDecoration(
                         color: getIconAssetColor(requestData['agent']),

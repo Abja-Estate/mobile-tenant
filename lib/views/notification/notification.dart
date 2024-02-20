@@ -438,6 +438,18 @@ filterNotifications(data, type) {
     });
   });
 
+  // Sort final result list by time frame
+  finalResult.sort((a, b) {
+    if (a['time'] == 'Today') {
+      return -1; // Move 'Today' to the beginning
+    } else if (b['time'] == 'Today') {
+      return 1;
+    } else {
+      // Compare other time frames
+      return a['time'].compareTo(b['time']);
+    }
+  });
+
   // Print the final result
   print(finalResult);
   return finalResult;
@@ -472,7 +484,17 @@ filterRentNotifications(data, type) {
       'data': data,
     });
   });
-
+  // Sort final result list by time frame
+  finalResult.sort((a, b) {
+    if (a['time'] == 'Today') {
+      return -1; // Move 'Today' to the beginning
+    } else if (b['time'] == 'Today') {
+      return 1;
+    } else {
+      // Compare other time frames
+      return a['time'].compareTo(b['time']);
+    }
+  });
   // Print the final result
   print(finalResult);
   return finalResult;

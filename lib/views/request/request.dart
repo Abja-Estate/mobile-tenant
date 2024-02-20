@@ -51,7 +51,7 @@ class _RequestScreenState extends State<RequestScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
-                  Text(""),
+                 SizedBox(),
                   Text("Request"),
                   Icon(Icons.filter_list)
                 ],
@@ -422,7 +422,7 @@ class tabAcceptedContent extends StatelessWidget {
                       padding: const EdgeInsets.only(
                           top: 8.0, bottom: 8, right: 8, left: 4),
                       child: Container(
-                        height: _getSize.height * 0.088,
+                        height: _getSize.height * 0.09,
                         width: _getSize.width,
                         decoration: BoxDecoration(
                             color:
