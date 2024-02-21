@@ -23,6 +23,7 @@ class _ViewRequestState extends State<ViewRequest> {
     final dataFromRoute = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     requestData = dataFromRoute['data'];
+    print(requestData);
     final _getSize = MediaQuery.of(context).size;
     DateTime dateTime = DateTime.parse(requestData['time']);
     String formattedTimeDifference = formatTimeDifference(dateTime);
@@ -57,7 +58,9 @@ class _ViewRequestState extends State<ViewRequest> {
                         ),
                       ),
                       Text("Request Details"),
-                   SizedBox(width: 24,)
+                      SizedBox(
+                        width: 24,
+                      )
                     ],
                   ),
                 ),
@@ -151,7 +154,7 @@ class _ViewRequestState extends State<ViewRequest> {
                   children: [
                     Text(
                       "Service needed:",
-                     style: AppFonts.bodyText.copyWith(
+                      style: AppFonts.bodyText.copyWith(
                           color: Pallete.text,
                           fontSize: 14,
                           fontWeight: FontWeight.w600),
@@ -184,10 +187,10 @@ class _ViewRequestState extends State<ViewRequest> {
                   children: [
                     Text(
                       "Request:",
-                     style: AppFonts.bodyText.copyWith(
+                      style: AppFonts.bodyText.copyWith(
                           color: Pallete.text,
                           fontSize: 14,
-                                  fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w600),
                     ),
                     SizedBox(
                       height: _getSize.height * 0.008,
@@ -203,15 +206,17 @@ class _ViewRequestState extends State<ViewRequest> {
                             itemCount: requestData['problems'].length,
                             itemBuilder: (context, index) {
                               return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
                                 child: Container(
                                     decoration: const BoxDecoration(
                                         color: Pallete.whiteColor,
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(8))),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8))),
                                     child: Padding(
                                       padding: const EdgeInsets.all(16.0),
-                                      child: Text(requestData['problems'][index]),
+                                      child:
+                                          Text(requestData['problems'][index]),
                                     )),
                               );
                             }))
@@ -228,7 +233,7 @@ class _ViewRequestState extends State<ViewRequest> {
                       style: AppFonts.bodyText.copyWith(
                           color: Pallete.text,
                           fontSize: 14,
-                                     fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w600),
                     ),
                     SizedBox(
                       height: _getSize.height * 0.005,
@@ -250,7 +255,7 @@ class _ViewRequestState extends State<ViewRequest> {
                   children: [
                     Text(
                       "Timeline:",
-                     style: AppFonts.bodyText.copyWith(
+                      style: AppFonts.bodyText.copyWith(
                           color: Pallete.text,
                           fontSize: 14,
                           fontWeight: FontWeight.w600),
@@ -284,17 +289,16 @@ class _ViewRequestState extends State<ViewRequest> {
                             height: _getSize.height * 0.015,
                           ),
                           SizedBox(
-                              width: _getSize.width * 0.6,
-                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            width: _getSize.width * 0.6,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
-                                 
-                       
                                   children: [
                                     Icon(Icons.alarm),
-                                     SizedBox(
-                                width: 4,
-                              ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
                                     Text(
                                       requestData['period'],
                                       style: AppFonts.body1.copyWith(
@@ -302,8 +306,7 @@ class _ViewRequestState extends State<ViewRequest> {
                                       ),
                                     ),
                                   ],
-                                )
-,                             
+                                ),
                               ],
                             ),
                           ),
@@ -366,7 +369,7 @@ class _ViewRequestState extends State<ViewRequest> {
                               SizedBox(
                                 width: _getSize.width * 0.35,
                                 child: Text(
-                               requestData['email'],
+                                  requestData['email'],
                                   overflow: TextOverflow.ellipsis,
                                   style: AppFonts.body1.copyWith(
                                     color: Pallete.text,

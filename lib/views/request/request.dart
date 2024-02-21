@@ -51,7 +51,7 @@ class _RequestScreenState extends State<RequestScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
-                 SizedBox(),
+                  SizedBox(),
                   Text("Request"),
                   Icon(Icons.filter_list)
                 ],
@@ -121,8 +121,8 @@ class _RequestScreenState extends State<RequestScreen> {
                         List.from(requestData);
                     sortedData.sort((a, b) => DateTime.parse(b['time'])
                         .compareTo(DateTime.parse(a['time'])));
-                    var pendingRq = filterRequest(sortedData, false);
-                    var acceptedRq = filterRequest(sortedData, true);
+                    var pendingRq = filterPendingRequest(sortedData);
+                    var acceptedRq = filterAcceptedRequest(sortedData);
                     var categories = [
                       'Pending (${pendingRq.length})',
                       'Accepted (${acceptedRq.length})',
@@ -132,10 +132,9 @@ class _RequestScreenState extends State<RequestScreen> {
                       child: Column(
                         children: [
                           ButtonsTabBar(
-                            
                             height: _getSize.height * 0.03,
-                            contentPadding:EdgeInsets.symmetric(
-                                horizontal: _getSize.height * 0.01) ,
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: _getSize.height * 0.01),
                             buttonMargin: EdgeInsets.symmetric(
                                 horizontal: _getSize.height * 0.07),
                             borderWidth: 0.5,
@@ -230,7 +229,7 @@ class _RequestScreenState extends State<RequestScreen> {
                                             child: TabBarView(
                                               // physics: const NeverScrollableScrollPhysics(),
                                               children: <Widget>[
-                                                tabContent(
+                                                tabPendingContent(
                                                   requestData: pendingRq,
                                                   getSize: _getSize,
                                                   items: pendingRq.length,
@@ -268,8 +267,8 @@ class _RequestScreenState extends State<RequestScreen> {
   }
 }
 
-class tabContent extends StatelessWidget {
-  tabContent(
+class tabPendingContent extends StatelessWidget {
+  tabPendingContent(
       {super.key,
       required Size getSize,
       required this.items,
@@ -422,7 +421,7 @@ class tabAcceptedContent extends StatelessWidget {
                       padding: const EdgeInsets.only(
                           top: 8.0, bottom: 8, right: 8, left: 4),
                       child: Container(
-                        height: _getSize.height * 0.09,
+                        height: _getSize.height * 0.095,
                         width: _getSize.width,
                         decoration: BoxDecoration(
                             color:
@@ -447,12 +446,12 @@ class tabAcceptedContent extends StatelessWidget {
                                 child: Image.network(
                                   photo,
                                   fit: BoxFit.cover,
-                                  width: 52,
-                                  height: 52,
+                                  width: _getSize.height * 0.055,
+                                  height:_getSize.height * 0.055,
                                 ),
                               ),
                               SizedBox(
-                                width: 12,
+                                width: _getSize.width*0.025,
                               ),
                               SizedBox(
                                 width: _getSize.width * 0.67,
@@ -488,10 +487,10 @@ class tabAcceptedContent extends StatelessWidget {
                                             Image.asset(
                                               getIconAssetName(
                                                   requestData[index]['agent']),
-                                              width: _getSize.width * 0.045,
+                                              width:requestData[index]['agent']=="Painter"||requestData[index]['agent']=="Carpenter"? _getSize.width * 0.035:_getSize.width * 0.045,
                                             ),
                                             SizedBox(
-                                              width: 12,
+                                            width: _getSize.width*0.025,
                                             ),
                                             Text(
                                               requestData[index]['agent'],
@@ -628,16 +627,24 @@ class TabBarItem extends StatelessWidget {
   }
 }
 
-filterRequest(data, isApprove) {
+filterAcceptedRequest(data) {
   List<Map<String, dynamic>> filteredData =
-      data.where((obj) => obj['isLandlordApproved'] == isApprove).toList();
+      data.where((obj) => obj['isLandlordApproved'] == true&&obj['from']=="tenant").toList();
+        print(filteredData);
+  return filteredData;
+}
+
+filterPendingRequest(data) {
+  List<Map<String, dynamic>> filteredData =
+      data.where((obj) => obj['isLandlordApproved'] == false && obj['from']=="tenant").toList();
+  print(filteredData);
   return filteredData;
 }
 
 String formatTimeDifference(DateTime dateTime) {
   final now = DateTime.now();
   final difference = now.difference(dateTime);
-  print(difference.inHours);
+
   if (difference.inDays > 0) {
     return '${difference.inDays} ${difference.inDays == 1 ? 'day' : 'days'} ago';
   } else if (difference.inHours > 0) {
