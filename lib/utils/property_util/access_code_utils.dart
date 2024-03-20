@@ -39,13 +39,15 @@ class AccessCodeUtil {
           // Navigator.of(context)
           // .popAndPushNamed(AppRoutes.confirmLandlordScreen);
         } else {
-          AppUtils.showAlertDialog(
+          AppUtils.singleDialog(
               context,
+              "Oops",
               value['error'],
-              'Another tenant has already loaded into this unit.',
-              'Contact Landlord',
               'Close',
-              () => Navigator.of(context).pop());
+              const Icon(Icons.error_rounded),
+              const Text(""),
+              () => Navigator.of(context).pushNamedAndRemoveUntil(
+                  AppRoutes.loginScreen, (route) => false));
         }
       });
     }
@@ -62,12 +64,9 @@ class AccessCodeUtil {
 
     print(code);
 
-  
     Provider.of<PropertyProvider>(context, listen: false)
         .accessCode(code)
         .then((value) async {
-
-
       if (value['statusCode'] == 200 || value['statusCode'] == 202) {
         print("heere");
       } else {

@@ -35,6 +35,7 @@ class SwitchAccountUtil {
 
         await saveOnce(3);
         var responseData = value;
+      
         await saveAccessCode(responseData['data']['data']['unitID']);
         await saveUnitData(responseData['data']['data']);
         await savePropertyData(responseData['data']);

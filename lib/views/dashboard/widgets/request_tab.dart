@@ -60,8 +60,12 @@ class DashboardRequestMenu extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
+                   List<Map<String, dynamic>> sortedData =
+                        List.from(requestData);
+                    sortedData.sort((a, b) => DateTime.parse(b['time'])
+                        .compareTo(DateTime.parse(a['time'])));
                   DateTime dateTime =
-                      DateTime.parse(requestData[index]['time']);
+                      DateTime.parse(sortedData[index]['time']);
                   String formattedTimeDifference =
                       formatTimeDifference(dateTime);
                   return Padding(
@@ -71,7 +75,7 @@ class DashboardRequestMenu extends StatelessWidget {
                       height: getSizeHeight * 0.07,
                       width: getSizeWidth,
                       decoration: BoxDecoration(
-                          color: getIconAssetColor(requestData[index]['agent']),
+                          color: getIconAssetColor(sortedData[index]['agent']),
                           boxShadow: [
                             BoxShadow(
                               color: Color.fromARGB(44, 85, 80, 80),
@@ -89,7 +93,7 @@ class DashboardRequestMenu extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
-                              getIconAssetName(requestData[index]['agent']),
+                              getIconAssetName(sortedData[index]['agent']),
                               width: getSizeWidth * 0.065,
                             ),
                             SizedBox(
@@ -107,7 +111,7 @@ class DashboardRequestMenu extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Text(
-                                        requestData[index]['agent'],
+                                        sortedData[index]['agent'],
                                         style: AppFonts.body1.copyWith(
                                             color: Pallete.text,
                                             fontSize: 14,
@@ -129,7 +133,7 @@ class DashboardRequestMenu extends StatelessWidget {
                                 SizedBox(
                                   width: getSizeWidth * 0.6,
                                   child: Text(
-                                    requestData[index]['description'],
+                                    sortedData[index]['description'],
                                     style: AppFonts.body1.copyWith(
                                         color: Pallete.fade,
                                         fontSize: 12,

@@ -54,12 +54,16 @@ class _RequestDetailsState extends State<RequestDetails> {
   };
   var landlordID = '';
   var unitID = '';
+    var email = '';
+      var phone = '';
 
   bool startOver = false;
   getPropertyItems() async {
     var unitString = await showUnitData();
     var propertyString = await showPropertyData();
     unitID = await showuuId();
+     email = await showEmail();
+      phone = await showPhone();
     var getUnit = Map<String, dynamic>.from(jsonDecode(unitString));
     var getProperty = Map<String, dynamic>.from(jsonDecode(propertyString));
     setState(() {
@@ -679,11 +683,11 @@ class _RequestDetailsState extends State<RequestDetails> {
                   ],
                 ),
                 CustomInput3(
-                  onSaved: (v) {},
-                  onChanged: (p) {
-                    requestData['phone'] = p;
+                   enabled: false,
+                  onSaved: (p) {
+                    requestData['phone'] = phone;
                   },
-                  hint: 'Phone',
+                  hint: phone,
                   type: 'number',
                   label: 'Phone Number',
                 ),
@@ -707,11 +711,12 @@ class _RequestDetailsState extends State<RequestDetails> {
                   ],
                 ),
                 CustomInput3(
-                  onSaved: (v) {},
-                  onChanged: (p) {
-                    requestData['email'] = p;
+               
+                     enabled: false,
+                  onSaved: (p) {
+                    requestData['email'] = email;
                   },
-                  hint: 'Email',
+                  hint: email,
                   label: 'Email',
                 ),
                 SizedBox(

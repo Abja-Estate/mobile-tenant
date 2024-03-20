@@ -27,7 +27,7 @@ savePropertyItem(cartItems) async {
 }
 
 saveRentHistory(cartItems) async {
-  print(cartItems);
+
   s_prefs = await SharedPreferences.getInstance();
   String jsonString = jsonEncode(cartItems);
   s_prefs.setString("rentItem", jsonString);
@@ -165,7 +165,7 @@ showPropertyItem() async {
 }
 
 
-showRentItem() async {
+showRentHistory() async {
   s_prefs = await SharedPreferences.getInstance();
 
   String? temp = s_prefs.getString("rentItem");

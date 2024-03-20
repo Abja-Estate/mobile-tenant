@@ -30,56 +30,59 @@ class LoginUtil {
       )
           .then((value) async {
         print(value);
+
         Navigator.of(context).pop();
 
         if (value['statusCode'] == 200) {
-          print("yes ${value}");
           // formkey.currentState!.reset();
-          await saveId(value['data']['_id'].toString());
-          await saveEmail(value['data']['email']);
-          await saveName(value['data']['name']);
-          await savePhone(value['data']['phone']);
-          await saveSurname(value['data']['surname']);
-          await saveSelfie(value['data']['selfie']);
-          await saveAccessCode(value['data']['rentHistory'][0]['accessCode']);
-          await saveAbout(value['data']['about'] ?? "");
-          await saveCreatedAt(value['data']['created']);
 
-          AppUtils.showLoginLoader(context);
-
-          var responseData = await PropertyAPI.switchAccount(
-              value['data']['rentHistory'][0]['accessCode'],
-              loginData['email'].trim());
-
-          if (responseData['statusCode'] == 200) {
-          
-            await saveRentHistory(value['data']['rentHistory']);
-            await saveUnitData(responseData['data']['data']);
-            await savePropertyData(responseData['data']);
-            await saveuuId(responseData['data']['data']['unitID']);
-            await saveOnce(3);
+          if (value['data']['rentHistory'].length == 0) {
             Navigator.of(context).pop();
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NavBar(
-                        initialScreen: Dashboard(),
-                        initialTab: 0,
-                      )),
-              (route) => false,
-            );
+            // ignore: use_build_context_synchronously
+            AppUtils.singleDialog(
+                context,
+                'There\'s no unit attached to you',
+                'Your landlord needs to assign a unit to you first',
+                'Close',
+                Icon(Icons.error_rounded),
+                Text(""),
+                () => Navigator.of(context).pushNamed(AppRoutes.welcomeScreen));
           } else {
-            if (responseData['statusCode'] == 404) {
+            await saveData(value);
+
+            AppUtils.showLoginLoader(context);
+
+            var responseData = await callSwitch(value, loginData['email']);
+
+            if (responseData['statusCode'] == 200) {
+         
+              await saveUnitData(responseData['data']['data']);
+              await savePropertyData(responseData['data']);
+              await saveuuId(responseData['data']['data']['unitID']);
+              await saveOnce(3);
               Navigator.of(context).pop();
-              // ignore: use_build_context_synchronously
-              AppUtils.showAlertDialog(
-                  context,
-                  'There\'s no unit attached to you',
-                  responseData['error'],
-                  'Enter Code again',
-                  'Close',
-                  () =>
-                      Navigator.of(context).pushNamed(AppRoutes.welcomeScreen));
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => NavBar(
+                          initialScreen: Dashboard(),
+                          initialTab: 0,
+                        )),
+                (route) => false,
+              );
+            } else {
+              if (responseData['statusCode'] == 404) {
+                Navigator.of(context).pop();
+                // ignore: use_build_context_synchronously
+                AppUtils.showAlertDialog(
+                    context,
+                    'There\'s no unit attached to you',
+                    responseData['error'],
+                    'Enter Code again',
+                    'Close',
+                    () => Navigator.of(context)
+                        .pushNamed(AppRoutes.welcomeScreen));
+              }
             }
           }
         } else {
@@ -140,4 +143,24 @@ class LoginUtil {
 
     return result;
   }
+}
+
+saveData(value) async {
+  await saveId(value['data']['_id'].toString());
+       await saveRentHistory(value['data']['rentHistory']);
+  await saveEmail(value['data']['email']);
+  await saveName(value['data']['name']);
+  await savePhone(value['data']['phone']);
+  await saveSurname(value['data']['surname']);
+  await saveSelfie(value['data']['selfie']);
+  await saveAccessCode(value['data']['rentHistory'][0]['accessCode']);
+  await saveAbout(value['data']['about'] ?? "");
+  await saveCreatedAt(value['data']['created']);
+}
+
+callSwitch(value, email) async {
+  var res = await PropertyAPI.switchAccount(
+      value['data']['rentHistory'][0]['accessCode'], email.trim());
+
+  return res;
 }

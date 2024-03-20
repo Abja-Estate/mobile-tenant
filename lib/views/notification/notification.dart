@@ -109,12 +109,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             userProvider.history, "request");
                         var rentHistory = filterRentNotifications(
                             userProvider.history, "rent");
-                           List combinedList = rentHistory + requestHistory;
+                        List combinedList = rentHistory + requestHistory;
                         return !userProvider.fetchingHistory
                             ? Expanded(
                                 child: TabBarView(
                                   children: <Widget>[
-                                     bottom(getSize: _getSize,data: combinedList,),
+                                    bottom(
+                                      getSize: _getSize,
+                                      data: combinedList,
+                                    ),
                                     bottom(
                                       getSize: _getSize,
                                       data: rentHistory,
@@ -299,7 +302,9 @@ Widget buildListItem(BuildContext context, List<Map<String, dynamic>> service,
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                    color:service[index]['status']=="Paid"? Color(0xFFC8DCC5):Color(0xFFBCE3DC),
+                                    color: service[index]['status'] == "Paid"
+                                        ? Color(0xFFC8DCC5)
+                                        : Color(0xFFBCE3DC),
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -308,14 +313,20 @@ Widget buildListItem(BuildContext context, List<Map<String, dynamic>> service,
                                     children: [
                                       Icon(
                                         Icons.circle,
-                                        color:service[index]['status']=="Paid"? Pallete.primaryColor:Color(0xFF21A18A),
+                                        color:
+                                            service[index]['status'] == "Paid"
+                                                ? Pallete.primaryColor
+                                                : Color(0xFF21A18A),
                                         size: 4,
                                       ),
                                       const SizedBox(width: 2),
                                       Text(
                                         service[index]['status'],
                                         style: AppFonts.body1.copyWith(
-                                            color: service[index]['status']=="Paid"? Pallete.primaryColor:Color(0xFF21A18A),
+                                            color: service[index]['status'] ==
+                                                    "Paid"
+                                                ? Pallete.primaryColor
+                                                : Color(0xFF21A18A),
                                             fontSize: 10),
                                       )
                                     ],
@@ -328,17 +339,17 @@ Widget buildListItem(BuildContext context, List<Map<String, dynamic>> service,
                         ),
                         !show
                             ? SizedBox(
-                              width: getSizeWidth*0.445,
-                              child: Text(
+                                width: getSizeWidth * 0.445,
+                                child: Text(
                                   service[index]['status'] != "Paid"
                                       ? "Your Rent will expires in ${service[index]['expires']} month, kindly pay your rent"
                                       : "Your Rent for ${service[index]['expires']} months has been paid!",
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                   style: AppFonts.bodyText.copyWith(
                                       color: Pallete.text, fontSize: 12),
                                 ),
-                            )
+                              )
                             : Text(
                                 "Your Request for ${service[index]['agent']} is ",
                                 style: AppFonts.bodyText.copyWith(
@@ -412,6 +423,8 @@ filterNotifications(data, type) {
   // Filter the list to get all objects with type "request"
   List<Map<String, dynamic>> requestList =
       data.where((request) => request['type'] == type).toList();
+       requestList.sort((a, b) => DateTime.parse(b['data']['time']).compareTo(DateTime.parse(a['data']['time'])));
+  print(requestList);
 
   // Group the requests by time frame
   Map<String, List<Map<String, dynamic>>> groupedByTime =
@@ -459,6 +472,9 @@ filterRentNotifications(data, type) {
   // Filter the list to get all objects with type "request"
   List<Map<String, dynamic>> requestList =
       data.where((request) => request['type'] == type).toList();
+
+       requestList.sort((a, b) => DateTime.parse(b['data']['time']).compareTo(DateTime.parse(a['data']['time'])));
+  print(requestList);
 
   // Group the requests by time frame
   Map<String, List<Map<String, dynamic>>> groupedByTime =

@@ -22,16 +22,11 @@ class PropertyDetails extends StatefulWidget {
 class _PropertyDetailsState extends State<PropertyDetails> {
   @override
   void initState() {
-    getRent();
+  
     super.initState();
   }
 
-  var rent;
-  getRent() async {
-    var rentsString = await showRentItem();
-    print(rentsString);
-    rent = List.from(jsonDecode(rentsString));
-  }
+
 
   List<Map<String, dynamic>> features = [
     {"icon": AppImages.football, "text": "Football"},
@@ -360,7 +355,96 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                               ),
                             ],
                           ),
-
+                          SizedBox(
+                            height: _getSize.height * 0.02,
+                          ),
+                          Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            Text(
+                                "Cost",
+                                style: AppFonts.boldText.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Pallete.text,
+                                    fontSize: 14),
+                              ),
+                              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                 Row(
+                                        children: [
+                                          Text(
+                                            "Monthly Cost",
+                                            style: AppFonts.body1.copyWith(
+                                                fontSize: 12,
+                                                color: Pallete.fade,
+                                               ),
+                                          ),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text(
+                                            "*",
+                                            style: AppFonts.bodyText.copyWith(
+                                                color: Color.fromARGB(
+                                                    255, 208, 0, 0)),
+                                          ),
+                                        ],
+                                      ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFDAE7D9)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Text("USh${unit["data"]["monthlyCost"]}",style: AppFonts.body1.copyWith(fontSize: 12,color: Pallete.text),),
+                                          Text(" / month",style: AppFonts.body1.copyWith(fontSize: 12,color: Pallete.text),)
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                              , SizedBox(
+                            height: _getSize.height * 0.02,
+                          ),  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                 Row(
+                                        children: [
+                                          Text(
+                                            "Extra Charges",
+                                            style: AppFonts.body1.copyWith(
+                                                fontSize: 12,
+                                                color: Pallete.fade,
+                                               ),
+                                          ),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text(
+                                            "*",
+                                            style: AppFonts.bodyText.copyWith(
+                                                color: Color.fromARGB(
+                                                    255, 208, 0, 0)),
+                                          ),
+                                        ],
+                                      ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFDAE7D9)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Text("USh${unit["data"]["extraWages"]}",style: AppFonts.body1.copyWith(fontSize: 12,color: Pallete.text),),
+                                          Text(" / month",style: AppFonts.body1.copyWith(fontSize: 12,color: Pallete.text),)
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                           ],
+                          ),
                           SizedBox(
                             height: _getSize.height * 0.02,
                           ),
@@ -475,9 +559,11 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                 height: _getSize.height * 0.0025,
                               ),
                               GestureDetector(
-                                    onTap: () {
-                                  AppUtils.showDocPhoto(context,
-                                      unit['data']['tenantInfo']['rentalPhoto']);
+                                onTap: () {
+                                  AppUtils.showDocPhoto(
+                                      context,
+                                      unit['data']['tenantInfo']
+                                          ['rentalPhoto']);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -500,8 +586,9 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                           "Agreement",
                                           maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
-                                          style: AppFonts.smallWhiteBold.copyWith(
-                                              color: Pallete.primaryColor),
+                                          style: AppFonts.smallWhiteBold
+                                              .copyWith(
+                                                  color: Pallete.primaryColor),
                                         ),
                                       ],
                                     ),
@@ -509,9 +596,11 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                 ),
                               ),
                               GestureDetector(
-                                    onTap: () {
-                                  AppUtils.showDocPhoto(context,
-                                      unit['data']['tenantInfo']['receiptPhoto']);
+                                onTap: () {
+                                  AppUtils.showDocPhoto(
+                                      context,
+                                      unit['data']['tenantInfo']
+                                          ['receiptPhoto']);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -534,8 +623,9 @@ class _PropertyDetailsState extends State<PropertyDetails> {
                                           "Reciept",
                                           maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
-                                          style: AppFonts.smallWhiteBold.copyWith(
-                                              color: Pallete.primaryColor),
+                                          style: AppFonts.smallWhiteBold
+                                              .copyWith(
+                                                  color: Pallete.primaryColor),
                                         ),
                                       ],
                                     ),

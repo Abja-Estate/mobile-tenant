@@ -10,24 +10,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:location/location.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:provider/provider.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_fonts.dart';
 import '../../constants/app_images.dart';
 import '../../constants/app_routes.dart';
-import '../../constants/resources.dart';
-import '../../models/tenanModel.dart';
-import '../../network/property.dart';
+
 import '../../provider/websocket_provider.dart';
 import '../../utils/app_utils.dart';
-import '../../utils/local_storage.dart';
-import '../../utils/location.dart';
-import '../../utils/permissions.dart';
 import '../navbar/nav.dart';
 import 'widgets/bottomsheet.dart';
 import 'widgets/request_tab.dart';
@@ -59,15 +50,19 @@ class _DashboardState extends State<Dashboard> {
     });
   }
 
+  getins() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-    
+    getins();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-          AccessCodeUtil.isDeleted(context);
+      AccessCodeUtil.isDeleted(context);
       Provider.of<RequestProvider>(context, listen: false).getAllRequest();
       Provider.of<UserProvider>(context, listen: false).getItems();
-  
+      Provider.of<PropertyProvider>(context, listen: false).validateAccount();
       Provider.of<WebSocketProvider>(context, listen: false).init();
     });
   }
@@ -96,10 +91,19 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       Column(
                         children: [
-                          Consumer<UserProvider>(
-                              builder: (context, userProvider, child) {
+                          Consumer2<UserProvider, PropertyProvider>(builder:
+                              (context, userProvider, propertyProvider, child) {
                             name = userProvider.name;
                             photo = userProvider.photo;
+                            var isRefresh = propertyProvider.refresh;
+                            if (isRefresh) {
+                              Future.delayed(Duration(seconds: 3), () {
+                                // setState to trigger a rebuild after the delay
+                                setState(() {
+                                  // Change state here
+                                });
+                              });
+                            }
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

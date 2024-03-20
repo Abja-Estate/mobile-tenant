@@ -51,10 +51,20 @@ class DashboardUnitContent extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                               Text(
+                            unit['data']["nick"],
+                            style: AppFonts.boldText.copyWith(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w900,
+                                color: Pallete.primaryColorVariant),
+                          ),
+                          SizedBox(
+                            height: getSizeHeight * 0.005,
+                          ),
                           Text(
                             unit["propertyName"],
                             style: AppFonts.boldText.copyWith(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w900,
                                 color: Color.fromARGB(255, 79, 88, 106)),
                           ),

@@ -40,7 +40,7 @@ class _RequestScreenState extends State<RequestScreen> {
   @override
   Widget build(BuildContext context) {
     final _getSize = MediaQuery.of(context).size;
-
+ Provider.of<RequestProvider>(context, listen: false).getAllRequest();
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -393,15 +393,6 @@ class tabAcceptedContent extends StatelessWidget {
   final int items;
   List requestData;
 
-  /**
-   *     PersistentNavBarNavigator.pushNewScreen(
-        context,
-        screen: MainScreen(),
-        withNavBar: true, // OPTIONAL VALUE. True by default.
-        pageTransitionAnimation: PageTransitionAnimation.cupertino,
-    );
-   */
-
   var photo = 'https://picsum.photos/200';
   @override
   Widget build(BuildContext context) {
@@ -629,15 +620,15 @@ class TabBarItem extends StatelessWidget {
 
 filterAcceptedRequest(data) {
   List<Map<String, dynamic>> filteredData =
-      data.where((obj) => obj['isLandlordApproved'] == true&&obj['from']=="tenant").toList();
-        print(filteredData);
+      data.where((obj) => obj['status'] == "Accepted" ).toList();
+       
   return filteredData;
 }
 
 filterPendingRequest(data) {
   List<Map<String, dynamic>> filteredData =
-      data.where((obj) => obj['isLandlordApproved'] == false && obj['from']=="tenant").toList();
-  print(filteredData);
+      data.where((obj) => obj['status'] != "Accepted").toList();
+  
   return filteredData;
 }
 
