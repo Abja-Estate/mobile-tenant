@@ -36,230 +36,251 @@ class _RequestScreenState extends State<RequestScreen> {
     super.initState();
   }
 
+  Future _refreshscreen() async {
+    Provider.of<RequestProvider>(context, listen: false).getAllRequest();
+  }
+
   var photo = 'https://picsum.photos/200';
   @override
   Widget build(BuildContext context) {
     final _getSize = MediaQuery.of(context).size;
- Provider.of<RequestProvider>(context, listen: false).getAllRequest();
+    Provider.of<RequestProvider>(context, listen: false).getAllRequest();
     return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  SizedBox(),
-                  Text("Request"),
-                  Icon(Icons.filter_list)
-                ],
-              ),
-              SizedBox(
-                height: _getSize.height * 0.035,
-              ),
-              Container(
-                height: _getSize.height * 0.055,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.5,
-                    color: Color(0xFF949494),
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-                child: Row(
+        body: RefreshIndicator(
+      onRefresh: _refreshscreen,
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: [
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8),
-                        child: TextField(
-                          onChanged: (value) => _runFilter(value),
-                          decoration: const InputDecoration(
-                            hintText: 'Search',
-                            border: InputBorder.none,
-                          ),
-                          style: AppFonts.body1.copyWith(fontSize: 14),
-                          // Add any necessary event handlers for text changes or submission.
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        var searchItem;
-                        if (searchItem.isEmpty) {
-                          AppUtils.showSnackBarMessage(
-                              'Enter an item to search for', context);
-                        } else {
-                          Navigator.of(context).pushNamed(
-                            AppRoutes.randomSearch,
-                            arguments: {
-                              'search': searchItem,
-                            },
-                          );
-                        }
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: Image.asset(AppImages.search),
-                      ),
-                    ),
+                  children: const [
+                    SizedBox(),
+                    Text("Request"),
+                    Icon(Icons.filter_list)
                   ],
                 ),
-              ),
-              SizedBox(
-                height: _getSize.height * 0.02,
-              ),
-              SizedBox(
-                height: _getSize.height * 0.76,
-                child: Stack(children: [
-                  Consumer<RequestProvider>(
-                      builder: (context, requestProvider, child) {
-                    var requestData = requestProvider.request;
-                    List<Map<String, dynamic>> sortedData =
-                        List.from(requestData);
-                    sortedData.sort((a, b) => DateTime.parse(b['time'])
-                        .compareTo(DateTime.parse(a['time'])));
-                    var pendingRq = filterPendingRequest(sortedData);
-                    var acceptedRq = filterAcceptedRequest(sortedData);
-                    var categories = [
-                      'Pending (${pendingRq.length})',
-                      'Accepted (${acceptedRq.length})',
-                    ];
-                    return DefaultTabController(
-                      length: 2,
-                      child: Column(
-                        children: [
-                          ButtonsTabBar(
-                            height: _getSize.height * 0.03,
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: _getSize.height * 0.01),
-                            buttonMargin: EdgeInsets.symmetric(
-                                horizontal: _getSize.height * 0.07),
-                            borderWidth: 0.5,
-                            borderColor: Pallete.primaryColor,
-                            backgroundColor: Pallete.primaryColor,
-                            labelSpacing: 5,
-                            unselectedBackgroundColor:
-                                const Color.fromARGB(255, 255, 255, 255),
-                            unselectedLabelStyle:
-                                const TextStyle(color: Colors.black),
-                            labelStyle: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                            tabs: categories.map((category) {
-                              return Tab(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 2.0, horizontal: 12),
-                                  child: Text(
-                                    category,
-                                    style: AppFonts.bodyText.copyWith(),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+                SizedBox(
+                  height: _getSize.height * 0.035,
+                ),
+                Container(
+                  height: _getSize.height * 0.055,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 0.5,
+                      color: Color(0xFF949494),
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8),
+                          child: TextField(
+                            onChanged: (value) => _runFilter(value),
+                            decoration: const InputDecoration(
+                              hintText: 'Search',
+                              border: InputBorder.none,
+                            ),
+                            style: AppFonts.body1.copyWith(fontSize: 14),
+                            // Add any necessary event handlers for text changes or submission.
                           ),
-                          !loaded
-                              ? Container(
-                                  margin: EdgeInsets.only(bottom: 8),
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFFF6F9F5),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  width: _getSize.width,
-                                  height: _getSize.height * 0.38,
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        SpinKitRing(
-                                          size: 30,
-                                          color: Pallete.primaryColor,
-                                          lineWidth: 2.0,
-                                        ),
-                                        Text(
-                                          "Looking for your request Listing",
-                                          style: AppFonts.body1,
-                                        ),
-                                      ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          var searchItem;
+                          if (searchItem.isEmpty) {
+                            AppUtils.showSnackBarMessage(
+                                'Enter an item to search for', context);
+                          } else {
+                            Navigator.of(context).pushNamed(
+                              AppRoutes.randomSearch,
+                              arguments: {
+                                'search': searchItem,
+                              },
+                            );
+                          }
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Image.asset(AppImages.search),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: _getSize.height * 0.02,
+                ),
+                SizedBox(
+                  height: _getSize.height * 0.76,
+                  child: Stack(children: [
+                    Consumer<RequestProvider>(
+                        builder: (context, requestProvider, child) {
+                      var requestData = requestProvider.request;
+                      List<Map<String, dynamic>> sortedData =
+                          List.from(requestData);
+                      sortedData.sort((a, b) => DateTime.parse(b['time'])
+                          .compareTo(DateTime.parse(a['time'])));
+                      var pendingRq = filterPendingRequest(sortedData);
+                      var acceptedRq = filterAcceptedRequest(sortedData);
+                      var completedRq = filterCompletedRequest(sortedData);
+                      var categories = [
+                        'Pending (${pendingRq.length})',
+                        'Accepted (${acceptedRq.length})',
+                        'Completed (${completedRq.length})',
+                      ];
+                      return DefaultTabController(
+                        length: 3,
+                        child: Column(
+                          children: [
+                            ButtonsTabBar(
+                              height: _getSize.height * 0.03,
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: _getSize.height * 0.001),
+                              buttonMargin: EdgeInsets.symmetric(
+                                  horizontal: _getSize.height * 0.03),
+                              borderWidth: 0.5,
+                              borderColor: Pallete.primaryColor,
+                              backgroundColor: Pallete.primaryColor,
+                              labelSpacing: 5,
+                              unselectedBackgroundColor:
+                                  const Color.fromARGB(255, 255, 255, 255),
+                              unselectedLabelStyle:
+                                  const TextStyle(color: Colors.black),
+                              labelStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              tabs: categories.map((category) {
+                                return Tab(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 2.0, horizontal: 12),
+                                    child: Text(
+                                      category,
+                                      style: AppFonts.bodyText.copyWith(),
                                     ),
                                   ),
-                                )
-                              : Column(
-                                  children: [
-                                    requestData.isEmpty
-                                        ? Container(
-                                            margin: EdgeInsets.only(bottom: 8),
-                                            decoration: BoxDecoration(
-                                                color: Color(0xFFF6F9F5),
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            width: _getSize.width,
-                                            height: _getSize.height * 0.38,
-                                            child: Center(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  Image.asset(
-                                                    AppImages.no_prop,
-                                                    width: _getSize.width * 0.6,
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        "You currently have no accepted/pending request",
-                                                        style: AppFonts.body1,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height:
-                                                        _getSize.height * 0.01,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ) // Widget to show when many is 0
-                                        : SizedBox(
-                                            height: _getSize.height * 0.6795,
-                                            child: TabBarView(
-                                              // physics: const NeverScrollableScrollPhysics(),
-                                              children: <Widget>[
-                                                tabPendingContent(
-                                                  requestData: pendingRq,
-                                                  getSize: _getSize,
-                                                  items: pendingRq.length,
-                                                ),
-                                                tabAcceptedContent(
-                                                  requestData: acceptedRq,
-                                                  getSize: _getSize,
-                                                  items: acceptedRq.length,
-                                                ),
-                                              ],
-                                            ),
+                                );
+                              }).toList(),
+                            ),
+                            !loaded
+                                ? Container(
+                                    margin: EdgeInsets.only(bottom: 8),
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFF6F9F5),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    width: _getSize.width,
+                                    height: _getSize.height * 0.38,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          SpinKitRing(
+                                            size: 30,
+                                            color: Pallete.primaryColor,
+                                            lineWidth: 2.0,
                                           ),
-                                  ],
-                                )
-                        ],
-                      ),
-                    );
-                  }),
-                  Positioned(
-                    bottom: 60,
-                    child: ButtonWithFuction(
-                        text: 'Make A Request',
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(AppRoutes.createRequest);
-                        }),
-                  ),
-                ]),
-              ),
-            ],
+                                          Text(
+                                            "Looking for your request Listing",
+                                            style: AppFonts.body1,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : Column(
+                                    children: [
+                                      requestData.isEmpty
+                                          ? Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 8),
+                                              decoration: BoxDecoration(
+                                                  color: Color(0xFFF6F9F5),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              width: _getSize.width,
+                                              height: _getSize.height * 0.38,
+                                              child: Center(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    Image.asset(
+                                                      AppImages.no_prop,
+                                                      width:
+                                                          _getSize.width * 0.6,
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Text(
+                                                          "You currently have no accepted/pending request",
+                                                          style: AppFonts.body1,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: _getSize.height *
+                                                          0.01,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ) // Widget to show when many is 0
+                                          : Padding(
+                                            padding: const EdgeInsets.only(top:16.0),
+                                            child: SizedBox(
+                                                height: _getSize.height * 0.6795,
+                                                child: TabBarView(
+                                                  // physics: const NeverScrollableScrollPhysics(),
+                                                  children: <Widget>[
+                                                    tabPendingContent(
+                                                      requestData: pendingRq,
+                                                      getSize: _getSize,
+                                                      items: pendingRq.length,
+                                                    ),
+                                                    tabAcceptedContent(
+                                                      requestData: acceptedRq,
+                                                      getSize: _getSize,
+                                                      items: acceptedRq.length,
+                                                    ),
+                                                    tabAcceptedContent(
+                                                      requestData: completedRq,
+                                                      getSize: _getSize,
+                                                      items: completedRq.length,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                          ),
+                                    ],
+                                  )
+                          ],
+                        ),
+                      );
+                    }),
+                    Positioned(
+                      bottom: 60,
+                      child: ButtonWithFuction(
+                          text: 'Make A Request',
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(AppRoutes.createRequest);
+                          }),
+                    ),
+                  ]),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -438,11 +459,11 @@ class tabAcceptedContent extends StatelessWidget {
                                   photo,
                                   fit: BoxFit.cover,
                                   width: _getSize.height * 0.055,
-                                  height:_getSize.height * 0.055,
+                                  height: _getSize.height * 0.055,
                                 ),
                               ),
                               SizedBox(
-                                width: _getSize.width*0.025,
+                                width: _getSize.width * 0.025,
                               ),
                               SizedBox(
                                 width: _getSize.width * 0.67,
@@ -461,7 +482,8 @@ class tabAcceptedContent extends StatelessWidget {
                                           height: _getSize.height * 0.005,
                                         ),
                                         Text(
-                                          requestData[index]['agentName'] ??
+                                          requestData[index]
+                                                  ['servicePersonnelName'] ??
                                               "-- --",
                                           style: AppFonts.body1.copyWith(
                                               color: Pallete.text,
@@ -478,10 +500,17 @@ class tabAcceptedContent extends StatelessWidget {
                                             Image.asset(
                                               getIconAssetName(
                                                   requestData[index]['agent']),
-                                              width:requestData[index]['agent']=="Painter"||requestData[index]['agent']=="Carpenter"? _getSize.width * 0.035:_getSize.width * 0.045,
+                                              width: requestData[index]
+                                                              ['agent'] ==
+                                                          "Painter" ||
+                                                      requestData[index]
+                                                              ['agent'] ==
+                                                          "Carpenter"
+                                                  ? _getSize.width * 0.035
+                                                  : _getSize.width * 0.045,
                                             ),
                                             SizedBox(
-                                            width: _getSize.width*0.025,
+                                              width: _getSize.width * 0.025,
                                             ),
                                             Text(
                                               requestData[index]['agent'],
@@ -620,15 +649,24 @@ class TabBarItem extends StatelessWidget {
 
 filterAcceptedRequest(data) {
   List<Map<String, dynamic>> filteredData =
-      data.where((obj) => obj['status'] == "Accepted" ).toList();
-       
+      data.where((obj) => obj['isLandlordApproved'] == true).toList();
+
+  return filteredData;
+}
+
+filterCompletedRequest(data) {
+  List<Map<String, dynamic>> filteredData =
+      data.where((obj) => obj['status'] == "Completed").toList();
+
   return filteredData;
 }
 
 filterPendingRequest(data) {
-  List<Map<String, dynamic>> filteredData =
-      data.where((obj) => obj['status'] != "Accepted").toList();
-  
+  List<Map<String, dynamic>> filteredData = data
+      .where((obj) =>
+          obj['status'] == "Pending" && obj['isLandlordApproved'] == false)
+      .toList();
+
   return filteredData;
 }
 

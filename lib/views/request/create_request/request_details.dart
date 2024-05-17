@@ -28,7 +28,6 @@ class RequestDetails extends StatefulWidget {
 
 class _RequestDetailsState extends State<RequestDetails> {
   late WebSocketProvider webSocketProvider;
-  bool wssResult = false;
   bool isSlotAPicked = false;
   bool isSlotBPicked = false;
   int selectedIndex = -1;
@@ -54,16 +53,18 @@ class _RequestDetailsState extends State<RequestDetails> {
   };
   var landlordID = '';
   var unitID = '';
-    var email = '';
-      var phone = '';
+  var email = '';
+  var phone = '';
 
   bool startOver = false;
   getPropertyItems() async {
     var unitString = await showUnitData();
     var propertyString = await showPropertyData();
     unitID = await showuuId();
-     email = await showEmail();
-      phone = await showPhone();
+    email = await showEmail();
+    phone = await showPhone();
+    requestData['phone'] = phone;
+    requestData['email'] = email;
     var getUnit = Map<String, dynamic>.from(jsonDecode(unitString));
     var getProperty = Map<String, dynamic>.from(jsonDecode(propertyString));
     setState(() {
@@ -102,7 +103,6 @@ class _RequestDetailsState extends State<RequestDetails> {
   @override
   void initState() {
     webSocketProvider = Provider.of<WebSocketProvider>(context, listen: false);
-
     getPropertyItems();
     super.initState();
     // Initialize your lists here
@@ -136,9 +136,13 @@ class _RequestDetailsState extends State<RequestDetails> {
     return false; // Return false if all values are non-empty
   }
 
+  bool? wssresult;
   var agent = '';
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<WebSocketProvider>();
+    wssresult = provider.result;
+   
     final _getSize = MediaQuery.of(context).size;
     final dataFromRoute = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
@@ -211,17 +215,14 @@ class _RequestDetailsState extends State<RequestDetails> {
                                       Checkbox(
                                         value: select[index],
                                         onChanged: (value) {
-                                          print(select[index]);
                                           select[index] = value ??
                                               true; // Update the select list
                                           if (select[index]) {
                                             problemsArray.add(issues[
                                                 index]); // Item selected, add it
-                                            print("Added: ${issues[index]}");
                                           } else {
                                             problemsArray.remove(issues[
                                                 index]); // Item deselected, remove it
-                                            print("Removed: ${issues[index]}");
                                           }
                                           setState(() {});
                                         },
@@ -500,10 +501,6 @@ class _RequestDetailsState extends State<RequestDetails> {
                                         periodB = timeSlot[index];
                                         if (isSlotAPicked == true &&
                                             selectedTimeSlotIndexFrom < index) {
-                                          print(selectedTimeSlotIndexFrom);
-
-                                          print(selectedTimeSlotIndexFrom);
-
                                           isSlotBPicked = true;
                                           selectedTimeSlotIndexTo =
                                               index; // Select the tapped item
@@ -683,7 +680,7 @@ class _RequestDetailsState extends State<RequestDetails> {
                   ],
                 ),
                 CustomInput3(
-                   enabled: false,
+                  enabled: false,
                   onSaved: (p) {
                     requestData['phone'] = phone;
                   },
@@ -711,8 +708,7 @@ class _RequestDetailsState extends State<RequestDetails> {
                   ],
                 ),
                 CustomInput3(
-               
-                     enabled: false,
+                  enabled: false,
                   onSaved: (p) {
                     requestData['email'] = email;
                   },
@@ -752,7 +748,7 @@ class _RequestDetailsState extends State<RequestDetails> {
                           "message": jsonEncode(requestData),
                           "sender_id": unitID
                         };
-                        print(data);
+
                         if (isDataEmpty(requestData)) {
                           AppUtils.ErrorDialog(
                             context,
@@ -769,12 +765,12 @@ class _RequestDetailsState extends State<RequestDetails> {
                           AppUtils.showLoader(context);
                           webSocketProvider.sendMessage(jsonEncode(data));
                           await Future.delayed(Duration(seconds: 2));
-                          var m = await showToken();
                           setState(() {});
-                          print(m);
-                          Navigator.of(context).pop();
-                          if (m) {
-                            showModalBottomSheet(
+                       
+                          if (wssresult!) {
+                          
+                            Navigator.of(context).pop();
+                          showModalBottomSheet(
                               context: context,
                               elevation: 10,
                               shape: RoundedRectangleBorder(
@@ -800,7 +796,7 @@ class _RequestDetailsState extends State<RequestDetails> {
                               }
                             });
                           } else {
-                            AppUtils.ErrorDialog(
+                             AppUtils.ErrorDialog(
                               context,
                               'Request Failed',
                               "Your request failed to deliver",
@@ -811,7 +807,8 @@ class _RequestDetailsState extends State<RequestDetails> {
                                 size: 30,
                               ),
                             );
-                          }
+                            await webSocketProvider.init();
+                                }
                         }
                       }),
                 )

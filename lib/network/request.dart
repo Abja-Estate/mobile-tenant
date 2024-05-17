@@ -6,7 +6,7 @@ import '../utils/local_storage.dart';
 class RequestAPI {
   static Future addProperty(data) async {
     var id = await showId();
-    print(data);
+    
     var response = await http.post(
       Uri.parse('$BaseURL/service/landlord/add_property'),
       headers: <String, String>{
@@ -36,28 +36,28 @@ class RequestAPI {
     );
 
     var parsedResponse = jsonDecode(response.body);
-    print(parsedResponse);
+   
     return parsedResponse;
   }
 
-  static Future getAllRequest(uid,lid) async {
-    
+  static Future getAllRequest(uid, email) async {
+
     var response = await http.post(
       Uri.parse('$BaseURL/request/tenant/all_unit_request'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'authorization': APIKEY
       },
-      body: jsonEncode(<String, String>{"landlordID": lid,"unitID": uid}),
+      body: jsonEncode(<String, String>{"email": email, "unitID": uid}),
     );
 
     var parsedResponse = jsonDecode(response.body);
-    print(parsedResponse);
+   
     return parsedResponse;
   }
 
   static Future getProperty(propid) async {
-    print(propid);
+
     var id = await showId();
     var response = await http.post(
       Uri.parse('$BaseURL/service/tenant/propertybyid'),
@@ -70,7 +70,7 @@ class RequestAPI {
     );
 
     var parsedResponse = jsonDecode(response.body);
-    print(parsedResponse);
+   
     return parsedResponse;
   }
 
@@ -91,7 +91,7 @@ class RequestAPI {
 
     var parsedResponse = jsonDecode(response.body);
 
-    print(parsedResponse);
+   
 
     return parsedResponse;
   }
@@ -112,7 +112,7 @@ class RequestAPI {
   }
 
   static Future refresh(email) async {
-    print(email);
+
     var response = await http.put(
       Uri.parse('$BaseURL/auth/landlord/refresh_token'),
       headers: <String, String>{
@@ -126,20 +126,18 @@ class RequestAPI {
   }
 
   static Future accessCode(code) async {
-     print(code);
+
     var response = await http.post(
       Uri.parse('$BaseURL/service/tenant/verify_access'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'authorization': APIKEY
       },
-      body: jsonEncode(<String, String>{
-        "unitID": code
-      }),
+      body: jsonEncode(<String, String>{"unitID": code}),
     );
 
     var parsedResponse = jsonDecode(response.body);
-    print(parsedResponse);
+   
     return parsedResponse;
   }
 }

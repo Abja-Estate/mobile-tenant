@@ -27,7 +27,7 @@ class AuthProvider extends ChangeNotifier {
 
       if (responseData['statusCode'] == 200) {
         notifyListeners();
-        print(data);
+      
         data;
       } else {
         data;
@@ -50,7 +50,7 @@ class AuthProvider extends ChangeNotifier {
       if (responseData['statusCode'] == 200) {
         notifyListeners();
         data = responseData;
-        print(data);
+      
       } else {
         data = responseData;
       }
@@ -70,7 +70,7 @@ class AuthProvider extends ChangeNotifier {
       var responseData = await AuthAPI.register(
           firstName, lastName, password, confirmPassword, email, phone);
 
-      print(responseData);
+   
       if (responseData['statusCode'] == 200) {
         notifyListeners();
 
@@ -86,7 +86,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> forgotPassword(email) async {
-    print(email);
+   
     dynamic data;
     notifyListeners();
 
@@ -95,7 +95,7 @@ class AuthProvider extends ChangeNotifier {
 
       if (response != null) {
         notifyListeners();
-        print(response);
+    
         data = response;
       }
     } catch (e) {
@@ -138,7 +138,7 @@ class AuthProvider extends ChangeNotifier {
 
       if (responseData['statusCode'] == 200) {
         notifyListeners();
-        print(data);
+       
         data;
       } else {
         data;

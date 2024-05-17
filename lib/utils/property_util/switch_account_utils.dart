@@ -27,7 +27,7 @@ class SwitchAccountUtil {
       email,
     )
         .then((value) async {
-      print(value);
+    
       Navigator.of(context).pop();
 
       if (value['statusCode'] == 200) {

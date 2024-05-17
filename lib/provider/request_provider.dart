@@ -16,10 +16,10 @@ class RequestProvider extends ChangeNotifier {
   Future<void> getAllRequest() async {
     notifyListeners();
     var uid = await showuuId();
-    var lid = await showLandlordID();
+    var email = await showEmail();
     try {
       var responseData =
-          await RequestAPI.getAllRequest(uid, lid);
+          await RequestAPI.getAllRequest(uid, email);
 
       if (responseData['statusCode'] == 200) {
         _request = List<Map<String, dynamic>>.from(responseData['data']);

@@ -7,6 +7,7 @@ import '../../dashboard/dashboard.dart';
 import '../../dashboard/widgets/request_tab.dart';
 import '../../navbar/nav.dart';
 import '../request.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ViewRequest extends StatefulWidget {
   const ViewRequest({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _ViewRequestState extends State<ViewRequest> {
     final dataFromRoute = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     requestData = dataFromRoute['data'];
-    print(requestData);
+
     final _getSize = MediaQuery.of(context).size;
     DateTime dateTime = DateTime.parse(requestData['time']);
     String formattedTimeDifference = formatTimeDifference(dateTime);
@@ -179,8 +180,70 @@ class _ViewRequestState extends State<ViewRequest> {
                     )
                   ],
                 ),
+             
+        requestData['status'] == "Accepted"
+                    ? GestureDetector(
+                        onTap: () async {
+                          var phoneNum =
+                              "${requestData['servicePersonnelPhone']}";
+                          await _callNumber(phoneNum);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: _getSize.height * 0.05,
+                            ),
+                            Center(
+                              child: Container(
+                                width: _getSize.width * 0.5,
+                                decoration: const BoxDecoration(
+                                    color: Pallete.primaryColor,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Image.asset(
+                                        AppImages.calls,
+                                        width: 24,
+                                        height: 24,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Call  ",
+                                            style: AppFonts.smallWhiteBold,
+                                          ),
+                                          Text(
+                                            requestData[
+                                                    'servicePersonnelPhone'] ??
+                                                "-- --",
+                                            style: AppFonts.smallWhiteBold
+                                                .copyWith(
+                                                    color: Pallete.whiteColor,
+                                                    fontSize: 14,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    fontWeight:
+                                                        FontWeight.w300),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : SizedBox(),
                 SizedBox(
-                  height: _getSize.height * 0.025,
+                  height: _getSize.height * 0.05,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -390,4 +453,10 @@ class _ViewRequestState extends State<ViewRequest> {
       ),
     );
   }
+}
+
+_callNumber(String number) async {
+  print("hi"); //set the number here
+  if (!await launchUrl(Uri.parse("tel://$number")))
+    throw 'Could not launch ${Uri.parse("tel://$number")}';
 }

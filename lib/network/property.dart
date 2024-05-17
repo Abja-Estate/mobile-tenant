@@ -6,7 +6,7 @@ import '../utils/local_storage.dart';
 class PropertyAPI {
   static Future addProperty(data) async {
     var id = await showId();
-    print(data);
+
     var response = await http.post(
       Uri.parse('$BaseURL/service/landlord/add_property'),
       headers: <String, String>{
@@ -36,7 +36,7 @@ class PropertyAPI {
     );
 
     var parsedResponse = jsonDecode(response.body);
-    print(parsedResponse);
+   
     return parsedResponse;
   }
 
@@ -52,12 +52,12 @@ class PropertyAPI {
     );
 
     var parsedResponse = jsonDecode(response.body);
-    print(parsedResponse);
+   
     return parsedResponse;
   }
 
   static Future getProperty(propid) async {
-    print(propid);
+
     var id = await showId();
     var response = await http.post(
       Uri.parse('$BaseURL/service/tenant/propertybyid'),
@@ -70,7 +70,7 @@ class PropertyAPI {
     );
 
     var parsedResponse = jsonDecode(response.body);
-    print(parsedResponse);
+   
     return parsedResponse;
   }
 
@@ -91,7 +91,7 @@ class PropertyAPI {
 
     var parsedResponse = jsonDecode(response.body);
 
-    print(parsedResponse);
+   
 
     return parsedResponse;
   }
@@ -112,7 +112,7 @@ class PropertyAPI {
   }
 
   static Future refresh(email) async {
-    print(email);
+  
     var response = await http.put(
       Uri.parse('$BaseURL/auth/landlord/refresh_token'),
       headers: <String, String>{
@@ -126,7 +126,7 @@ class PropertyAPI {
   }
 
   static Future accessCode(code) async {
-     print(code);
+    
     var response = await http.post(
       Uri.parse('$BaseURL/service/tenant/verify_access'),
       headers: <String, String>{
@@ -139,12 +139,12 @@ class PropertyAPI {
     );
 
     var parsedResponse = jsonDecode(response.body);
-    print(parsedResponse);
+
     return parsedResponse;
   }
 
     static Future switchAccount(code,email) async {
-     print(code);
+  
     var response = await http.post(
       Uri.parse('$BaseURL/service/tenant/switch_account'),
       headers: <String, String>{
@@ -158,7 +158,7 @@ class PropertyAPI {
     );
 
     var parsedResponse = jsonDecode(response.body);
-    print(parsedResponse);
+   
     return parsedResponse;
   }
 }

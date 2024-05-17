@@ -62,13 +62,13 @@ class AccessCodeUtil {
 
     var code = await showuuId();
 
-    print(code);
+
 
     Provider.of<PropertyProvider>(context, listen: false)
         .accessCode(code)
         .then((value) async {
       if (value['statusCode'] == 200 || value['statusCode'] == 202) {
-        print("heere");
+       
       } else {
         AppUtils.showAlertDialog(
             context,

@@ -20,7 +20,9 @@ class ServiceProviderRow extends StatelessWidget {
     return SizedBox(
         width: _getSize.width,
         height: _getSize.height * 0.1,
-        child: ListView.builder(
+        child:
+        
+         ListView.builder(
             itemCount: services.length,
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,

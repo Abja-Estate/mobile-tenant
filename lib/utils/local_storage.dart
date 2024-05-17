@@ -20,7 +20,7 @@ saveAccessCode(code) async {
 }
 
 savePropertyItem(cartItems) async {
-  print(cartItems);
+ 
   s_prefs = await SharedPreferences.getInstance();
   String jsonString = jsonEncode(cartItems);
   s_prefs.setString("propItem", jsonString);
@@ -251,13 +251,13 @@ saveNotify(Poly) async {
 }
 
 saveOnce(once) async {
-  print(once);
+
   s_prefs = await SharedPreferences.getInstance();
   s_prefs.setInt("Once", once);
 }
 
 saveWssConnect(once) async {
-  print(once);
+ 
   s_prefs = await SharedPreferences.getInstance();
   s_prefs.setBool("active", once);
 }
@@ -268,7 +268,7 @@ showOnce() async {
   int? temp = s_prefs.getInt("Once");
 
   temp ??= 0;
-  print(temp);
+  
   return temp;
 }
 
@@ -278,7 +278,7 @@ showWssConnect() async {
   bool? temp = s_prefs.getBool("active");
 
   temp ??= false;
-  print(temp);
+
   return temp;
 }
 

@@ -32,7 +32,7 @@ class AuthAPI {
       "confirmPassword": confirmPassword,
       "accessCode": code
     };
-    print(payload);
+
     var response = await http.post(
       Uri.parse('$BaseURL/auth/tenant/register'),
       headers: <String, String>{
@@ -47,8 +47,7 @@ class AuthAPI {
   }
 
   static Future login(data, password) async {
-    print(data);
-    print(password);
+
     var response = await http.post(
       Uri.parse('$BaseURL/auth/tenant/login'),
       headers: <String, String>{
@@ -74,12 +73,12 @@ class AuthAPI {
     );
 
     var parsedResponse = jsonDecode(response.body);
-    print(parsedResponse);
+    
     return parsedResponse;
   }
 
   static Future resetPassword(id, cpassword, password) async {
-    print('$id $password $cpassword');
+  
     var response = await http.post(
       Uri.parse('$BaseURL/auth/tenant/reset_password'),
       headers: <String, String>{
@@ -95,14 +94,11 @@ class AuthAPI {
 
     var parsedResponse = jsonDecode(response.body);
 
-    print(parsedResponse);
-
     return parsedResponse;
   }
 
   static Future selfie(email, token, selfie) async {
-    print(email);
-    print(token);
+   
     var response = await http.put(
       Uri.parse('$BaseURL/auth/landlord/selfie'),
       headers: <String, String>{
@@ -119,7 +115,7 @@ class AuthAPI {
   }
 
   static Future refresh(email) async {
-    print(email);
+  
     var response = await http.put(
       Uri.parse('$BaseURL/auth/landlord/refresh_token'),
       headers: <String, String>{

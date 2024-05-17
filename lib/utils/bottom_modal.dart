@@ -12,10 +12,11 @@ import '../views/request/request.dart';
 
 
 class ReusableBottomSheetContent extends StatelessWidget {
-  const ReusableBottomSheetContent({Key? key}) : super(key: key);
+   ReusableBottomSheetContent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+  
     return SizedBox(
       height: 450,
       child: Center(
@@ -33,7 +34,7 @@ class ReusableBottomSheetContent extends StatelessWidget {
             SizedBox(
               width: 350,
               child: Text(
-                'We’re currently reviewing your request and a notification would be sent across with payment details.',
+                'Thank you for choosing us! We are currently reviewing your request and we will get back to you shortly.',
                 textAlign: TextAlign.center,
                 style: AppFonts.boldText.copyWith(fontSize: 14),
               ),

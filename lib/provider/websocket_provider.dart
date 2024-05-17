@@ -10,7 +10,7 @@ import 'package:web_socket_channel/status.dart' as status;
 class WebSocketProvider extends ChangeNotifier {
   late WebSocketChannel _channel;
 
-  bool _result = false; // Initialize to false by default
+  bool _result =false; // Initialize to false by default
 
   WebSocketProvider() {
     init();
@@ -23,22 +23,24 @@ class WebSocketProvider extends ChangeNotifier {
     _channel.sink.add(message);
   }
 
-  void listenStream() async {
+  Future<void> listenStream() async {
+
+    notifyListeners();
     _channel.stream.listen(
       (message) {
-        print(message);
-
         if (message == "Connected") {
           // Handle connected scenario if needed
         } else if (message == "Delivered.✔️") {
+           _result = true;
+          notifyListeners();
           notify("Request", "Request is being $message", true);
         } else if (message == "Delivered.✔️✔️") {
+          _result = true;
+          notifyListeners();
           notify("Request", "Your Request has been $message", true);
         } else {
-          // Handle other scenarios
+        _result = false;
         }
-
-  
       },
       onDone: () {
         // Handle WebSocket stream closed, and initiate a reconnection
@@ -46,8 +48,8 @@ class WebSocketProvider extends ChangeNotifier {
       },
       onError: (error) {
         print(error);
-          // notify("Request Failed", "Your Request failed to deliver try again", false);
-        // Handle WebSocket stream error if needed
+        // notify("Request Failed", "Your Request failed to deliver try again",
+        //     false);
       },
     );
   }

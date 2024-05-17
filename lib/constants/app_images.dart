@@ -23,6 +23,7 @@ class AppImages {
   static const privacy = 'assets/images/icons/privacy.png';
   static const dustbin = 'assets/icons/dustbin.png';
   static const home = 'assets/icons/home.png';
+   static const calls = 'assets/icons/calls.png';
   static const homefilled = 'assets/icons/home-f.png';
   static const rent = 'assets/icons/rent.png';
   static const inbox = 'assets/icons/inbox.png';
