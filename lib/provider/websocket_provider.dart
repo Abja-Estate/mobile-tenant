@@ -7,10 +7,12 @@ import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
+import '../constants/resources.dart';
+
 class WebSocketProvider extends ChangeNotifier {
   late WebSocketChannel _channel;
 
-  bool _result =false; // Initialize to false by default
+  bool _result = false; // Initialize to false by default
 
   WebSocketProvider() {
     init();
@@ -24,14 +26,13 @@ class WebSocketProvider extends ChangeNotifier {
   }
 
   Future<void> listenStream() async {
-
     notifyListeners();
     _channel.stream.listen(
       (message) {
         if (message == "Connected") {
           // Handle connected scenario if needed
         } else if (message == "Delivered.✔️") {
-           _result = true;
+          _result = true;
           notifyListeners();
           notify("Request", "Request is being $message", true);
         } else if (message == "Delivered.✔️✔️") {
@@ -39,7 +40,7 @@ class WebSocketProvider extends ChangeNotifier {
           notifyListeners();
           notify("Request", "Your Request has been $message", true);
         } else {
-        _result = false;
+          _result = false;
         }
       },
       onDone: () {
@@ -56,8 +57,12 @@ class WebSocketProvider extends ChangeNotifier {
 
   init() async {
     var id = await showuuId();
-    var wsUrl = 'wss://casmara-request-app-api.onrender.com/ws?id=$id';
-    var headers = {'Authorization': 'Ayoseun'};
+    var accessToken = await showAPIAccessCode();
+    var wsUrl = '$WebsocketURL?id=$id';
+    var headers = {
+      'x-api-key': WebsocketAPIKEY,
+      'Authorization': 'Bearer $accessToken'
+    };
     _channel = IOWebSocketChannel.connect(wsUrl, headers: headers);
     listenStream();
   }

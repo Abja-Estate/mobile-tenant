@@ -6,11 +6,13 @@ import '../constants/resources.dart';
 class UserAPI {
   static Future history() async {
     var id = await showId();
+        var accessToken = await showAPIAccessCode();
     var response = await http.post(
       Uri.parse('$BaseURL/service/tenant/all_history'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'authorization': APIKEY
+         'x-api-key': APIKEY,
+        'authorization': 'Bearer $accessToken'
       },
       body: jsonEncode(<String, String>{"id": id}),
     );

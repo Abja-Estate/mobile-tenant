@@ -12,7 +12,7 @@ import 'utils/local_storage.dart';
 import 'views/auth/login/login.dart';
 import 'views/auth/welcome/welcome.dart';
 import 'views/dashboard/dashboard.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -46,7 +46,7 @@ void main() async {
 
     //add more notification type with different configuration
   ]);
-
+ await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 

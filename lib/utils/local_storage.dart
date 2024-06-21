@@ -103,7 +103,10 @@ saveuuId(id) async {
   s_prefs = await SharedPreferences.getInstance();
   s_prefs.setString("uuid", id);
 }
-
+saveAPIAccessCode(accessCode) async {
+  s_prefs = await SharedPreferences.getInstance();
+  s_prefs.setString("apiToken", accessCode);
+}
 
 
 //SHOW SAVE DATA
@@ -164,7 +167,13 @@ showPropertyItem() async {
   return temp;
 }
 
+showAPIAccessCode() async {
+  s_prefs = await SharedPreferences.getInstance();
 
+  String? temp = s_prefs.getString("apiToken");
+
+  return temp;
+}
 showRentHistory() async {
   s_prefs = await SharedPreferences.getInstance();
 

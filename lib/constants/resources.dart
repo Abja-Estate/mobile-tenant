@@ -1,16 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'app_images.dart';
 
-const BaseURL = "https://casmara-app-api.onrender.com/api";
-
+String BaseURL = dotenv.env['PROD_URL']!;
+String WebsocketURL=dotenv.env['WSS_URL']!;
 String getCurrency() {
   return '₦'; // Unicode character for Naira symbol
 }
 
-String APIKEY = '4f1fe63a-5f8b-4e7f-ad38-e68445079351';
+String APIKEY = dotenv.env['API_KEY']!; 
+String WebsocketAPIKEY =dotenv.env["WEBSOCKET_API_KEY"]!;
 const String policy = "";
 
 const String termsandcondions =
