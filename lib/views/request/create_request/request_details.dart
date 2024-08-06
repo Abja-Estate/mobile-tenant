@@ -9,7 +9,6 @@ import 'package:abjatenant/components/input_field.dart';
 import 'package:abjatenant/constants/app_colors.dart';
 import 'package:abjatenant/constants/app_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_images.dart';
 import '../../../constants/resources.dart';

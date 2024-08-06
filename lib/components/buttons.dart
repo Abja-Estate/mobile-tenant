@@ -186,11 +186,10 @@ class ButtonWithFuction extends StatelessWidget {
       child: OutlinedButton(
         child: Text(text,style: AppFonts.smallWhiteBold.copyWith(fontSize: 18),),
         style: OutlinedButton.styleFrom(
-          shape: const RoundedRectangleBorder(
+          foregroundColor: disabled != null && disabled! ?Pallete.disabledColor: Colors.white, shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-          primary: disabled != null && disabled! ?Pallete.disabledColor: Colors.white ,
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16) ,
           backgroundColor: Color.fromARGB(0, 137, 200, 140),
           shadowColor: Color.fromARGB(56, 148, 148, 148),
           elevation: 5,
@@ -227,10 +226,9 @@ class Button extends StatelessWidget {
           child: OutlinedButton(
               child: Text(text),
               style: OutlinedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
+                  foregroundColor: Colors.white, shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                  primary: Colors.white,
                   // backgroundColor: Pallete.primaryColor,
                   shadowColor: Pallete.text,
                   elevation: 0,

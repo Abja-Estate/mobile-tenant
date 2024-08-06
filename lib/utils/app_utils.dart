@@ -609,10 +609,9 @@ class AppUtils {
                   AppFonts.bodyText.copyWith(color: Colors.white, fontSize: 14),
             ),
             style: OutlinedButton.styleFrom(
-              shape: const RoundedRectangleBorder(
+              foregroundColor: Colors.white, shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               padding: const EdgeInsets.symmetric(vertical: 16),
-              primary: Colors.white,
               backgroundColor: Pallete.primaryColor,
               textStyle: const TextStyle(
                   color: Colors.black,
