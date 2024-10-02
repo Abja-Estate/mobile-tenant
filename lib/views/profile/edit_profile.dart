@@ -54,7 +54,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   getData() async {
-    photo = await showSelfie();
+    photo = (await showSelfie())!;
     if (photo == '') {
       photo = 'https://picsum.photos/200';
     } else {

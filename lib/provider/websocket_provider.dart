@@ -29,16 +29,17 @@ class WebSocketProvider extends ChangeNotifier {
     notifyListeners();
     _channel.stream.listen(
       (message) {
+        print(message);
         if (message == "Connected") {
-          // Handle connected scenario if needed
-        } else if (message == "Delivered.✔️") {
+         
+        } else if (message == "Sent.✔️") {
           _result = true;
           notifyListeners();
-          notify("Request", "Request is being $message", true);
-        } else if (message == "Delivered.✔️✔️") {
+          notify("Request", "Request has being Sent.✔️", true);
+        } else if (message == "Seen.✔️✔️") {
           _result = true;
           notifyListeners();
-          notify("Request", "Your Request has been $message", true);
+          notify("Request", "Your Request has been Recieved.✔️✔️", true);
         } else {
           _result = false;
         }
@@ -56,8 +57,9 @@ class WebSocketProvider extends ChangeNotifier {
   }
 
   init() async {
-    var id = await showuuId();
-    var accessToken = await showAPIAccessCode();
+    var id = await showUnitId();
+    print(id);
+    var accessToken = await showAccessToken();
     var wsUrl = '$WebsocketURL?id=$id';
     var headers = {
       'x-api-key': WebsocketAPIKEY,

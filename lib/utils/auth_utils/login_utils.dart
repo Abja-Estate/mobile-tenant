@@ -58,7 +58,7 @@ class LoginUtil {
          
               await saveUnitData(responseData['data']['data']);
               await savePropertyData(responseData['data']);
-              await saveuuId(responseData['data']['data']['unitID']);
+              await saveUnitId(responseData['data']['data']['unitID']);
               await saveOnce(3);
               Navigator.of(context).pop();
               Navigator.pushAndRemoveUntil(
@@ -153,6 +153,7 @@ saveData(value) async {
   await savePhone(value['data']['phone']);
   await saveSurname(value['data']['surname']);
   await saveSelfie(value['data']['selfie']);
+  await saveAccessToken(value['data']['accessToken']);
   await saveAccessCode(value['data']['rentHistory'][0]['accessCode']);
   await saveAbout(value['data']['about'] ?? "");
   await saveCreatedAt(value['data']['created']);

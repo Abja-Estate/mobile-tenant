@@ -79,7 +79,7 @@ class PropertyProvider extends ChangeNotifier {
     //dynamic dataz;
     //List<dynamic> data;
     notifyListeners();
-    var access = await showAccessCode();
+    var access = await showUnitId();
     var email = await showEmail();
     try {
       var responseData = await PropertyAPI.switchAccount(access, email);

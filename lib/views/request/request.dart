@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../../components/buttons.dart';
 import '../../constants/app_images.dart';
 import '../../constants/app_routes.dart';
+import '../../constants/resources.dart';
 import '../../provider/request_provider.dart';
 import '../../utils/app_utils.dart';
 
@@ -40,7 +41,7 @@ class _RequestScreenState extends State<RequestScreen> {
     Provider.of<RequestProvider>(context, listen: false).getAllRequest();
   }
 
-  var photo = 'https://picsum.photos/200';
+
   @override
   Widget build(BuildContext context) {
     final _getSize = MediaQuery.of(context).size;
@@ -414,7 +415,7 @@ class tabAcceptedContent extends StatelessWidget {
   final int items;
   List requestData;
 
-  var photo = 'https://picsum.photos/200';
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -649,7 +650,7 @@ class TabBarItem extends StatelessWidget {
 
 filterAcceptedRequest(data) {
   List<Map<String, dynamic>> filteredData =
-      data.where((obj) => obj['isLandlordApproved'] == true).toList();
+      data.where((obj) => obj['isOwnerApproved'] == true).toList();
 
   return filteredData;
 }
@@ -664,7 +665,7 @@ filterCompletedRequest(data) {
 filterPendingRequest(data) {
   List<Map<String, dynamic>> filteredData = data
       .where((obj) =>
-          obj['status'] == "Pending" && obj['isLandlordApproved'] == false)
+          obj['status'] == "Pending" && obj['isOwnerApproved'] == false)
       .toList();
 
   return filteredData;

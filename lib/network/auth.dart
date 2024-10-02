@@ -5,7 +5,7 @@ import '../constants/resources.dart';
 
 class AuthAPI {
   static Future OTPVerfication(email, token, otp) async {
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var response = await http.post(
       Uri.parse('$BaseURL/auth/tenant/verify_otp'),
       headers: <String, String>{
@@ -24,7 +24,7 @@ class AuthAPI {
 
   static Future register(
       firstName, lastName, password, confirmPassword, email, phone) async {
-    var code = await showAccessCode();
+    var code = await showAccessToken();
     var payload = {
       "name": firstName,
       "surname": lastName,
@@ -79,7 +79,7 @@ class AuthAPI {
   }
 
   static Future resetPassword(id, cpassword, password) async {
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var response = await http.post(
       Uri.parse('$BaseURL/auth/tenant/reset_password'),
       headers: <String, String>{
@@ -100,7 +100,7 @@ class AuthAPI {
   }
 
   static Future selfie(email, token, selfie) async {
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var response = await http.put(
       Uri.parse('$BaseURL/auth/landlord/selfie'),
       headers: <String, String>{
@@ -118,7 +118,7 @@ class AuthAPI {
   }
 
   static Future refresh(email) async {
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var response = await http.put(
       Uri.parse('$BaseURL/auth/landlord/refresh_token'),
       headers: <String, String>{
@@ -133,7 +133,7 @@ class AuthAPI {
   }
 
   static Future updateData(phone, name, surname, about, selfie) async {
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var id = await showId();
     var response = await http.put(
       Uri.parse('$BaseURL/auth/tenant/update_tenant'),
@@ -143,7 +143,7 @@ class AuthAPI {
         'authorization': 'Bearer $accessToken'
       },
       body: jsonEncode(<String, String>{
-        "id": id,
+        "id": id!,
         "phone": phone,
         "name": name,
         "surname": surname,

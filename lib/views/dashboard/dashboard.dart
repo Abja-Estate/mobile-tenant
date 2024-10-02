@@ -17,6 +17,7 @@ import '../../constants/app_fonts.dart';
 import '../../constants/app_images.dart';
 import '../../constants/app_routes.dart';
 
+import '../../constants/resources.dart';
 import '../../provider/websocket_provider.dart';
 import '../../utils/app_utils.dart';
 import '../navbar/nav.dart';
@@ -36,7 +37,7 @@ class _DashboardState extends State<Dashboard> {
   late RequestProvider requestProvider;
   late UserProvider userProvider;
 
-  var photo = 'https://picsum.photos/200';
+
 
   String searchItem = '';
 

@@ -6,7 +6,7 @@ import '../utils/local_storage.dart';
 class PropertyAPI {
   static Future addProperty(data) async {
     var id = await showId();
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var response = await http.post(
       Uri.parse('$BaseURL/service/landlord/add_property'),
       headers: <String, String>{
@@ -43,7 +43,7 @@ class PropertyAPI {
 
   static Future getAllProperty() async {
     var id = await showId();
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var response = await http.post(
       Uri.parse('$BaseURL/service/landlord/properties'),
       headers: <String, String>{
@@ -51,7 +51,7 @@ class PropertyAPI {
         'x-api-key': APIKEY,
         'authorization': 'Bearer $accessToken'
       },
-      body: jsonEncode(<String, String>{"id": id}),
+      body: jsonEncode(<String, String>{"id": id!}),
     );
 
     var parsedResponse = jsonDecode(response.body);
@@ -60,7 +60,7 @@ class PropertyAPI {
   }
 
   static Future getProperty(propid) async {
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var id = await showId();
     var response = await http.post(
       Uri.parse('$BaseURL/service/tenant/propertybyid'),
@@ -70,7 +70,7 @@ class PropertyAPI {
         'authorization': 'Bearer $accessToken'
       },
       body: jsonEncode(
-          <String, String>{"id": id, "propertyID": propid.toString()}),
+          <String, String>{"id": id!, "propertyID": propid.toString()}),
     );
 
     var parsedResponse = jsonDecode(response.body);
@@ -79,7 +79,7 @@ class PropertyAPI {
   }
 
   static Future uploadImage(selfie) async {
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var response = await http.post(
       Uri.parse('$BaseURL/service/landlord/upload'),
       headers: <String, String>{
@@ -96,7 +96,7 @@ class PropertyAPI {
   }
 
   static Future accessCode(code) async {
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var response = await http.post(
       Uri.parse('$BaseURL/service/tenant/verify_access'),
       headers: <String, String>{
@@ -113,7 +113,7 @@ class PropertyAPI {
   }
 
   static Future switchAccount(code, email) async {
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var response = await http.post(
       Uri.parse('$BaseURL/service/tenant/switch_account'),
       headers: <String, String>{

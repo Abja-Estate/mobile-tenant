@@ -25,9 +25,9 @@ class UserProvider extends ChangeNotifier {
   Future<void> getItems() async {
     notifyListeners();
 
-    _name = await showName();
+    _name = (await showName())!;
     // surname = await showSurname();
-    _photo = await showSelfie();
+    _photo = (await showSelfie())!;
     // code = await showAccessCode();
     // var mlocate =
     //     await getAddress(getUserLocation(_serviceEnabled, _permissionGranted));

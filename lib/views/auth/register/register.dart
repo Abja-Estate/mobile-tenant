@@ -83,8 +83,8 @@ class _SignUpState extends State<SignUp> {
     var tenantString = await showUnitData();
     Map<String, dynamic> jsonData = json.decode(tenantString);
     tentInfo = jsonData['tenantInfo'];
-    await saveuuId(tentInfo['unitID']);
-    print(tentInfo['email']);
+    await saveUnitId(tentInfo['unitID']);
+    
     setState(() {
       
     });

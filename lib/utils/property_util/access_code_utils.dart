@@ -60,7 +60,7 @@ class AccessCodeUtil {
 
     var result;
 
-    var code = await showuuId();
+    var code = await showAccessCode();
 
 
 
@@ -72,7 +72,7 @@ class AccessCodeUtil {
       } else {
         AppUtils.showAlertDialog(
             context,
-            value['error'],
+            value['error'].toString(),
             'This unit no longer exist',
             'Contact Landlord',
             'Close',

@@ -59,9 +59,9 @@ class _RequestDetailsState extends State<RequestDetails> {
   getPropertyItems() async {
     var unitString = await showUnitData();
     var propertyString = await showPropertyData();
-    unitID = await showuuId();
-    email = await showEmail();
-    phone = await showPhone();
+    unitID = (await showUnitId())!;
+    email = (await showEmail())!;
+    phone = (await showPhone())!;
     requestData['phone'] = phone;
     requestData['email'] = email;
     var getUnit = Map<String, dynamic>.from(jsonDecode(unitString));
@@ -735,12 +735,12 @@ class _RequestDetailsState extends State<RequestDetails> {
                         requestData["from"] = "tenant";
                         requestData["propertyLocation"] = property["location"];
                         requestData["propertyName"] = property["propertyName"];
-                        requestData["landlordID"] = landlordID;
+                        requestData["ownerID"] = landlordID;
                         requestData["propertyStructure"] =
                             property["propertyStructure"];
                         requestData["period"] = "$periodA - $periodB";
                         requestData["day"] = startholderDate;
-
+print(requestData);
                         setState(() {});
                         Map<String, dynamic> data = {
                           "target_id": landlordID,

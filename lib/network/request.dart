@@ -6,7 +6,7 @@ import '../utils/local_storage.dart';
 class RequestAPI {
 
   static Future getAllRequest(uid, email) async {
-    var accessToken = await showAPIAccessCode();
+    var accessToken = await showAccessToken();
     var response = await http.post(
       Uri.parse('$BaseURL/request/tenant/all_unit_request'),
       headers: <String, String>{

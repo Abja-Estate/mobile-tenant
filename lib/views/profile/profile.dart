@@ -22,7 +22,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  var photo = 'https://picsum.photos/200';
+  var photo = 'https://i.pravatar.cc/300';
 
   var fullname = "";
   var name = "";
@@ -33,11 +33,11 @@ class _ProfileState extends State<Profile> {
 
   var about = 'No Data';
   getData() async {
-    name = await showName();
-    about = await showAbout();
-    surname = await showSurname();
-    createdAt = await showCreated();
-    photo = await showSelfie();
+    name = (await showName())!;
+    about = (await showAbout())!;
+    surname = (await showSurname())!;
+    createdAt = (await showCreated())!;
+    photo = (await showSelfie())!;
     if (photo == '') {
       photo = 'https://picsum.photos/200';
     } else {

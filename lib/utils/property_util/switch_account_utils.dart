@@ -36,10 +36,10 @@ class SwitchAccountUtil {
         await saveOnce(3);
         var responseData = value;
       
-        await saveAccessCode(responseData['data']['data']['unitID']);
+       
         await saveUnitData(responseData['data']['data']);
         await savePropertyData(responseData['data']);
-        await saveuuId(responseData['data']['data']['unitID']);
+        await saveUnitId(responseData['data']['data']['unitID']);
         await saveOnce(3);
         Provider.of<PropertyProvider>(context, listen: false)
             .getPropertyItems();

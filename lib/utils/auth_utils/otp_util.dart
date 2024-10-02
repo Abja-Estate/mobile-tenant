@@ -13,7 +13,7 @@ class RegisterOTPUtil {
     AppUtils.showLoader(context);
     var result;
     var email = await showEmail();
-    var token = await showToken();
+    var token = await showAccessToken();
     print(token);
     print(email);
     Provider.of<AuthProvider>(context, listen: false)

@@ -99,11 +99,11 @@ saveId(id) async {
   s_prefs.setString("id", id);
 }
 
-saveuuId(id) async {
+saveUnitId(id) async {
   s_prefs = await SharedPreferences.getInstance();
-  s_prefs.setString("uuid", id);
+  s_prefs.setString("unitId", id);
 }
-saveAPIAccessCode(accessCode) async {
+saveAccessToken(accessCode) async {
   s_prefs = await SharedPreferences.getInstance();
   s_prefs.setString("apiToken", accessCode);
 }
@@ -152,10 +152,10 @@ showId() async {
   return temp;
 }
 
-showuuId() async {
+showUnitId() async {
   s_prefs = await SharedPreferences.getInstance();
 
-  String? temp = s_prefs.getString("uuid");
+  String? temp = s_prefs.getString("unitId");
 
   return temp;
 }
@@ -167,7 +167,7 @@ showPropertyItem() async {
   return temp;
 }
 
-showAPIAccessCode() async {
+showAccessToken() async {
   s_prefs = await SharedPreferences.getInstance();
 
   String? temp = s_prefs.getString("apiToken");
