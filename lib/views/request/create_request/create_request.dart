@@ -7,6 +7,7 @@ import '../../../constants/app_images.dart';
 import '../../../constants/app_routes.dart';
 import '../../../constants/resources.dart';
 import '../../../provider/websocket_provider.dart';
+import '../../../utils/auth_utils/token_util.dart';
 
 class CreateRequest extends StatefulWidget {
   const CreateRequest({Key? key}) : super(key: key);
@@ -26,9 +27,15 @@ class _CreateRequestState extends State<CreateRequest> {
   bool enabled = false;
   @override
   void initState() {
+    validateToken();
     enabled=true;
     isNotSelected;
     super.initState();
+  }
+
+  validateToken() async {
+    await UserUtil().validateToken(context);
+    setState(() {});
   }
 
   @override

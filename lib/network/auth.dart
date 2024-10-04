@@ -24,7 +24,7 @@ class AuthAPI {
 
   static Future register(
       firstName, lastName, password, confirmPassword, email, phone) async {
-    var code = await showAccessToken();
+    var code = await showAccessCode();
     var payload = {
       "name": firstName,
       "surname": lastName,
@@ -34,7 +34,7 @@ class AuthAPI {
       "confirmPassword": confirmPassword,
       "accessCode": code
     };
-
+print(payload);
     var response = await http.post(
       Uri.parse('$BaseURL/auth/tenant/register'),
       headers: <String, String>{

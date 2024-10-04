@@ -58,7 +58,7 @@ class AccessCodeUtil {
   static Future<String> isDeleted(BuildContext context) async {
     // print(code);
 
-    var result;
+    var result="";
 
     var code = await showAccessCode();
 

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants/app_images.dart';
 import '../../provider/user_provider.dart';
+import '../../utils/auth_utils/token_util.dart';
 import '../dashboard/widgets/request_tab.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -22,10 +23,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   void initState() {
+    validateToken();
     Provider.of<UserProvider>(context, listen: false).getAllHistory();
     super.initState();
   }
 
+  validateToken() async {
+    await UserUtil().validateToken(context);
+    setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     final _getSize = MediaQuery.of(context).size;

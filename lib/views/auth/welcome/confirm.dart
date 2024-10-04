@@ -18,7 +18,7 @@ class ConfirmLandlord extends StatefulWidget {
 
 class _ConfirmLandlordState extends State<ConfirmLandlord> {
   String name = '';
-  var photo = 'https://picsum.photos/200';
+  var photo = 'https://i.pravatar.cc/300';
 
   bool loading = false;
   bool isRegistered = false;

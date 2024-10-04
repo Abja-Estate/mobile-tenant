@@ -10,6 +10,7 @@ import '../../../components/buttons.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_fonts.dart';
 import '../../../constants/app_images.dart';
+import '../../../utils/auth_utils/token_util.dart';
 import '../../../utils/local_storage.dart';
 
 class PropertyDetails extends StatefulWidget {
@@ -22,11 +23,15 @@ class PropertyDetails extends StatefulWidget {
 class _PropertyDetailsState extends State<PropertyDetails> {
   @override
   void initState() {
-  
+  validateToken();
     super.initState();
   }
 
 
+  validateToken() async {
+    await UserUtil().validateToken(context);
+    setState(() {});
+  }
 
   List<Map<String, dynamic>> features = [
     {"icon": AppImages.football, "text": "Football"},

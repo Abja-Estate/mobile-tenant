@@ -20,6 +20,7 @@ import '../../constants/app_routes.dart';
 import '../../constants/resources.dart';
 import '../../provider/websocket_provider.dart';
 import '../../utils/app_utils.dart';
+import '../../utils/auth_utils/token_util.dart';
 import '../navbar/nav.dart';
 import 'widgets/bottomsheet.dart';
 import 'widgets/request_tab.dart';
@@ -51,21 +52,26 @@ class _DashboardState extends State<Dashboard> {
     });
   }
 
-  getins() {
+  validateToken() async {
+    await UserUtil().validateToken(context);
     setState(() {});
   }
+ 
 
   @override
   void initState() {
+       validateToken();
     super.initState();
-    getins();
+ 
     SchedulerBinding.instance.addPostFrameCallback((_) {
+    
       AccessCodeUtil.isDeleted(context);
       Provider.of<RequestProvider>(context, listen: false).getAllRequest();
       Provider.of<UserProvider>(context, listen: false).getItems();
       Provider.of<PropertyProvider>(context, listen: false).validateAccount();
       Provider.of<WebSocketProvider>(context, listen: false).init();
     });
+     
   }
 
   @override

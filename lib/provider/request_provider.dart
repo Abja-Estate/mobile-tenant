@@ -17,6 +17,7 @@ class RequestProvider extends ChangeNotifier {
     notifyListeners();
     var unitId = await showUnitId();
     var email = await showEmail();
+    print(unitId);
     try {
       var responseData =
           await RequestAPI.getAllRequest(unitId, email);
@@ -26,8 +27,7 @@ class RequestProvider extends ChangeNotifier {
     
         notifyListeners();
       } else {
-        print(
-            'Request API failed with status code: ${responseData['statusCode']}');
+        print(responseData);
         // Additional error handling or logging can be added here
       }
     } catch (e) {

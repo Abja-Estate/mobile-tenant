@@ -12,7 +12,7 @@ import '../local_storage.dart';
 class RegisterUtil {
   static Future<String> register(GlobalKey<FormState> formkey,
       BuildContext context, Map<String, dynamic> registerData) async {
-    // print(loginData);
+    print(registerData);
     //var token2 = await showToken();
     //var id2 = await showId();
     await saveEmail(registerData['email']);

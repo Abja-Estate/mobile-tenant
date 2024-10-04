@@ -14,6 +14,7 @@ import '../../constants/app_routes.dart';
 import '../../constants/resources.dart';
 import '../../provider/request_provider.dart';
 import '../../utils/app_utils.dart';
+import '../../utils/auth_utils/token_util.dart';
 
 class RequestScreen extends StatefulWidget {
   const RequestScreen({Key? key}) : super(key: key);
@@ -28,11 +29,15 @@ class _RequestScreenState extends State<RequestScreen> {
   bool loaded = false;
   List request = [];
 
+  validateToken() async {
+    await UserUtil().validateToken(context);
+    setState(() {});
+  }
   @override
   void initState() {
     loaded = true;
     request;
-
+validateToken();
     Provider.of<RequestProvider>(context, listen: false).getAllRequest();
     super.initState();
   }

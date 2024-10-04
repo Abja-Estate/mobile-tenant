@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_images.dart';
+import '../../utils/auth_utils/token_util.dart';
 import '../../utils/local_storage.dart';
 import '../../utils/time_formatter.dart';
 import '../dashboard/dashboard.dart';
@@ -31,6 +32,10 @@ class _ProfileState extends State<Profile> {
 
   String createdAt = '';
 
+  validateToken() async {
+    await UserUtil().validateToken(context);
+    setState(() {});
+  }
   var about = 'No Data';
   getData() async {
     name = (await showName())!;
@@ -39,7 +44,7 @@ class _ProfileState extends State<Profile> {
     createdAt = (await showCreated())!;
     photo = (await showSelfie())!;
     if (photo == '') {
-      photo = 'https://picsum.photos/200';
+      photo = 'https://i.pravatar.cc/300';
     } else {
       photo;
     }
@@ -57,6 +62,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     getData();
+    validateToken();
     super.initState();
   }
 
