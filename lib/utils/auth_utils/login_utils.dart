@@ -49,16 +49,16 @@ class LoginUtil {
                 () => Navigator.of(context).pushNamed(AppRoutes.welcomeScreen));
           } else {
             await saveData(value);
-
+            await saveAccessToken(value['data']['accessToken']);
             AppUtils.showLoginLoader(context);
 
             var responseData = await callSwitch(value, loginData['email']);
 
             if (responseData['statusCode'] == 200) {
-         
               await saveUnitData(responseData['data']['data']);
               await savePropertyData(responseData['data']);
               await saveUnitId(responseData['data']['data']['unitID']);
+
               await saveOnce(3);
               Navigator.of(context).pop();
               Navigator.pushAndRemoveUntil(
@@ -147,7 +147,7 @@ class LoginUtil {
 
 saveData(value) async {
   await saveId(value['data']['_id'].toString());
-       await saveRentHistory(value['data']['rentHistory']);
+  await saveRentHistory(value['data']['rentHistory']);
   await saveEmail(value['data']['email']);
   await saveName(value['data']['name']);
   await savePhone(value['data']['phone']);

@@ -470,27 +470,27 @@ class bottom extends StatelessWidget {
           SizedBox(
             height: _getSize.height * 0.02,
           ),
-          items(
-            text: "My Cards",
-            img: AppImages.card,
-          ),
-          SizedBox(
-            height: _getSize.height * 0.02,
-          ),
-          items(
-            text: "Settings",
-            img: AppImages.settings,
-          ),
-          SizedBox(
-            height: _getSize.height * 0.02,
-          ),
-          items(
-            text: "Help and Support",
-            img: AppImages.help,
-          ),
-          SizedBox(
-            height: _getSize.height * 0.01,
-          ),
+          // items(
+          //   text: "My Cards",
+          //   img: AppImages.card,
+          // ),
+          // SizedBox(
+          //   height: _getSize.height * 0.02,
+          // ),
+          // items(
+          //   text: "Settings",
+          //   img: AppImages.settings,
+          // ),
+          // SizedBox(
+          //   height: _getSize.height * 0.02,
+          // ),
+          // items(
+          //   text: "Help and Support",
+          //   img: AppImages.help,
+          // ),
+          // SizedBox(
+          //   height: _getSize.height * 0.01,
+          // ),
         ]));
   }
 }

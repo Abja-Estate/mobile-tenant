@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'app_images.dart';
 
-String BaseURL = dotenv.env['PROD_URL']!;
+String BaseURL = dotenv.env['DEV_URL']!;
 String WebsocketURL=dotenv.env['WSS_URL']!;
 String getCurrency() {
   return '₦'; // Unicode character for Naira symbol

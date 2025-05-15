@@ -96,13 +96,13 @@ class PropertyAPI {
   }
 
   static Future accessCode(code) async {
-    var accessToken = await showAccessToken();
+
     var response = await http.post(
       Uri.parse('$BaseURL/service/tenant/verify_access'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'x-api-key': APIKEY,
-        'authorization': 'Bearer $accessToken'
+        //'authorization': 'Bearer $accessToken'
       },
       body: jsonEncode(<String, String>{"unitID": code}),
     );

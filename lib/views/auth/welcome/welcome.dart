@@ -104,8 +104,7 @@ class _WelcomeState extends State<Welcome> {
 
                               AccessCodeUtil.accessCode(
                                   _codeFormKey, context, code);
-                              //Navigator.of(context)
-                              // .pushNamed(AppRoutes.confirmLandlordScreen);
+                         
                             }),
                         SizedBox(
                           height: _getSize.height * 0.3,

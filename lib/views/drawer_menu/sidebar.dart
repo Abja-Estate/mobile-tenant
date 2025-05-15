@@ -120,20 +120,20 @@ class SideBar extends StatelessWidget {
                         text: "Services",
                         img: AppImages.services,
                       ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      items(
-                        text: "My Cards",
-                        img: AppImages.card,
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      items(
-                        text: "Settings",
-                        img: AppImages.settings,
-                      ),
+                      // SizedBox(
+                      //   height: 16,
+                      // ),
+                      // items(
+                      //   text: "My Cards",
+                      //   img: AppImages.card,
+                      // ),
+                      // SizedBox(
+                      //   height: 16,
+                      // ),
+                      // items(
+                      //   text: "Settings",
+                      //   img: AppImages.settings,
+                      // ),
                     ],
                   ),
                   SizedBox(
